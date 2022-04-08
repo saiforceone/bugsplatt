@@ -12,7 +12,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.listen(port, async () => {
-  console.log(`[Server] Started Bugsplatt on port: ${port}`);
+  console.log(`[Server] Started Bugsplatt on: http://localhost:${port}`);
   // temporary code to connect to mongodb
   try {
     const mongoURI:string = String(process.env.MONGO_DB_URI);

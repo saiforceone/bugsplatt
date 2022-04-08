@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { IUserProfile } from './UserProfile.interface';
+import { IUserProfile } from '../interfaces/UserProfile.interface';
 
 const userProfileSchema = new Schema<IUserProfile>({
   accountId: {required: true, trim: true, type: String,},
