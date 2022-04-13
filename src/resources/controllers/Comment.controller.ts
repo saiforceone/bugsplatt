@@ -1,5 +1,6 @@
 import { IComment } from "../interfaces/Comment.interface";
 import CommentModel from "../models/Comment.model";
+import { DEFAULT_PAGE_LIMIT } from "../constants";
 
 export default class CommentController {
   public async createComment(data: Partial<IComment>) {
@@ -19,8 +20,8 @@ export default class CommentController {
     if (ignorePagination) {
       return CommentModel.find(queryObj);
     }
-    // TODO: define page limit as constant or pass as param / arg
-    return CommentModel.find(queryObj).skip(page * 10).limit(10);
+  
+    return CommentModel.find(queryObj).skip(page * DEFAULT_PAGE_LIMIT).limit(DEFAULT_PAGE_LIMIT);
   }
 
 }

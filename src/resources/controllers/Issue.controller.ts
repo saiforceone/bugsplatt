@@ -1,3 +1,4 @@
+import { DEFAULT_PAGE_LIMIT } from "../constants";
 import { IIssue } from "../interfaces/Issue.interface";
 import IssueModel from "../models/Issue.model";
 
@@ -54,7 +55,7 @@ export default class IssueController {
       return IssueModel.find(queryObject);
     }
 
-    return IssueModel.find(queryObject).skip(page * 10).limit(10);
+    return IssueModel.find(queryObject).skip(page * DEFAULT_PAGE_LIMIT).limit(DEFAULT_PAGE_LIMIT);
   }
 
   /**
@@ -70,12 +71,12 @@ export default class IssueController {
 
   /**
    * @public
-   * @method removeIssue
+   * @method deleteIssue
    * @param {string} issueId Specifies the issue to be deleted
    * @description Removes the issue but not the related data like comments
    * @returns {Promise<any>}
    */
-  public async removeIssue(issueId: string) {
+  public async deleteIssue(issueId: string) {
     return IssueModel.findByIdAndDelete(issueId);
   }
 }
