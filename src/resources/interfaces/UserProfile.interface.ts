@@ -1,4 +1,6 @@
-export interface IUserProfile {
+import { IBase } from "./Base.interface";
+
+export interface IUserProfile extends IBase {
   _id: string;
   createdAt: Date;
   accountId: string;

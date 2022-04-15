@@ -1,6 +1,7 @@
 import {Types} from 'mongoose';
+import { IBase } from './Base.interface';
 
-export interface IProject {
+export interface IProject extends IBase {
   associatedTeam: Types.ObjectId;
   projectName: string;
   description: string;

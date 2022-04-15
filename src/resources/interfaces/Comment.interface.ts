@@ -1,6 +1,6 @@
 import {Types} from 'mongoose';
-
-export interface IComment {
+import {IBase} from './Base.interface';
+export interface IComment extends IBase {
   associatedIssue: Types.ObjectId;
   createdBy: Types.ObjectId;
   content: string;
