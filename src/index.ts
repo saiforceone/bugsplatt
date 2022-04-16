@@ -1,15 +1,19 @@
+import 'dotenv/config';
 import express, {Express, Request, Response} from 'express';
-import dotenv from 'dotenv';
 import {connect} from 'mongoose';
-
-dotenv.config();
+import CommentRouter from './routers/Comment.router';
 
 const app: Express = express();
 const port: number = Number(process.env.PORT);
 
+app.use(express.json())
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Bugsplatt!');
 });
+
+const commentRouter = new CommentRouter('/comments');
+app.use(commentRouter.getRoutes())
 
 app.listen(port, async () => {
   console.log(`[Server] Started Bugsplatt on: http://localhost:${port}`);

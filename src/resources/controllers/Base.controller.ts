@@ -28,9 +28,9 @@ abstract class BaseController {
    * @method createDocument
    * @param {Partial<IBase>} data Specifies data to be used in creating the document
    * @description Given data, attempts to create a document
-   * @returns 
+   * @returns {Promise<IBase|null>}
    */
-  public async createDocument(data: Partial<IBase>) {
+  public async createDocument(data: Partial<IBase>): Promise<IBase|null> {
     return this._model.create(data);
   }
 
@@ -41,9 +41,9 @@ abstract class BaseController {
    * @method getDocumentById
    * @param {string} documentId Id of the document to retrieve
    * @description Given a doc id, attempts to retrieve the matching document
-   * @returns 
+   * @returns {Promise<IBase|null>}
    */
-  public async getDocumentById(documentId: string) {
+  public async getDocumentById(documentId: string): Promise<IBase|null> {
     return this._model.findById(documentId);
   }
 
@@ -63,9 +63,9 @@ abstract class BaseController {
    * @param {object} queryObject Defines the object to filter by
    * @param {number?} page Optionally defines the page of results to return. If not specified, implies all results returned
    * @description Given a query object and an optional page number, attempts to retrieve an array of matching documents
-   * @returns 
+   * @returns {Promise<IBase[]>}
    */
-  public async getDocuments(queryObject: object, page?: number) {
+  public async getDocuments(queryObject: object, page?: number): Promise<IBase[]> {
     if (!page) {
       return this._model.find(queryObject);
     }
@@ -81,10 +81,10 @@ abstract class BaseController {
    * @param {string} documentId Specifies the id of the document to update
    * @param {Partial<IBase>} data Specifies what the document should be updated with
    * @description Given a document id and data, attempts to update the matching document
-   * @returns 
+   * @returns {Promise<IBase|null>}
    */
-  public async updateDocument(documentId: string, data: Partial<IBase>) {
-    return this._model.findByIdAndUpdate(documentId, data);
+  public async updateDocument(documentId: string, data: Partial<IBase>): Promise<IBase|null> {
+    return this._model.findByIdAndUpdate(documentId, data, {returnDocument: 'after'});
   }
 
   // Delete
@@ -94,9 +94,9 @@ abstract class BaseController {
    * @method deleteDocument
    * @param {string} documentId Specifies the id of the document to be removed
    * @description Given a document id, attempts to delete the matchind document
-   * @returns 
+   * @returns {Promise<IBase|null>}
    */
-  public async deleteDocument(documentId: string) {
+  public async deleteDocument(documentId: string): Promise<IBase|null> {
     return this._model.findByIdAndRemove(documentId);
   }
 }
