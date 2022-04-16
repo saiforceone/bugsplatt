@@ -3,10 +3,11 @@ import { DEFAULT_PAGE_LIMIT } from '../constants';
 import { IBase } from '../interfaces/Base.interface';
 
 /**
+ * @abstract
  * @class BaseController
  * @description defines a base controller that can be extended. not to be used by itself
  */
-class BaseController {
+abstract class BaseController {
 
   /**
    * @protected
