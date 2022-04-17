@@ -9,4 +9,5 @@ export interface IProject extends IBase {
   endDate: Date;
   colorCode?: string;
   tags: Array<string>;
+  createdBy: Types.ObjectId;
 }
