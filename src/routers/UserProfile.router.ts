@@ -24,29 +24,62 @@ export default class UserProfileRouter extends BaseRouter {
     this._teamModel = TeamModel;
   }
 
-  // #TODO complete implementation
-  // private async _removeRelatedUserData(currentUser: IUserProfile): Promise<string[]> {
-  //   return [];
-  // }
+  private async _removeRelatedUserData(currentUser: IUserProfile): Promise<string[]> {
 
-  // protected deleteResource(middleware: RequestHandler[] = []): RequestHandler[] {
-  //   return [...middleware, async (req: Request, res: Response) => {
-  //     const response = this.getDefaultResponse();
-  //     try {
-  //       // NOTE START: we will need the middleware to retrieve the user 
-  //       // #TODO: COMPLETE IMPLEMENTATION BELOW
-  //       // 1. get current user
-  //       // const currentUser = await this._controller.getDocumentById(req.user._id) as IUserProfile;
-  //       // 2. find and remove all teams
-  //       // const delRelatedErrors = await this._removeRelatedUserData(currentUser);
-  //       // 3. for each team, find related projects
-  //       // 4. for each project, find and remove all issues
+    const errors = [];
+    // 1. find the related projects
+    try {
 
-  //       // NOTE END
-  //     } catch (e) {
-  //       response.error = (e as Error).message;
-  //       return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
-  //     }
-  //   }];
-  // }
+      const relatedTeams = await this._teamModel.find({
+        managedBy: currentUser._id,
+      });
+
+      for (const team of relatedTeams) {
+
+        const relatedProjects = await this._projectModel.find({
+          createdBy: currentUser._id,
+          associatedTeam: team._id,
+        });
+
+        // delete the issues for each project
+        for (const project of relatedProjects) {
+          const delIssuesResult = await this._issueModel.deleteMany({
+            associatedProject: project._id,
+          });
+          console.log(`${this.constructor.name}._removeRelatedUserData: `, delIssuesResult);
+          const delProjResult = await project.delete();
+          console.log(`${this.constructor.name}._removeRelatedUserData: `, delProjResult);
+        }
+
+        const teamDelResult = await team.delete();
+        console.log(`${this.constructor.name}._removeRelationUserData: `, teamDelResult);
+      }
+
+    } catch (e) {
+      errors.push((e as Error).message);
+    }
+
+    return errors;
+  }
+
+  protected deleteResource(middleware: RequestHandler[] = []): RequestHandler[] {
+    return [...middleware, async (req: Request, res: Response) => {
+      const response = this.getDefaultResponse();
+      try {
+        // NOTE START: we will need the middleware to retrieve the user 
+        // #TODO: COMPLETE IMPLEMENTATION BELOW
+        // 1. get current user
+        // const currentUser = await this._controller.getDocumentById(req.user._id) as IUserProfile;
+        // 2. find and remove all teams
+        // const delRelatedErrors = await this._removeRelatedUserData(currentUser);
+        // 3. for each team, find related projects
+        // 4. for each project, find and remove all issues
+
+        // NOTE END
+      } catch (e) {
+        response.error = (e as Error).message;
+        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+      }
+    }];
+  }
 }
