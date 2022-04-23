@@ -7,6 +7,6 @@ export interface IUserProfile extends IBase {
   providerName: string;
   firstName: string;
   lastName: string;
-  emailAddres: string;
+  emailAddress: string;
   profilePicture?: string;
 }

@@ -7,7 +7,7 @@ const userProfileSchema = new Schema<IUserProfile>({
   providerName: {default: 'auth0', trim: true, type: String},
   firstName: {required: true, trim: true, type: String,},
   lastName: {required: true, trim: true, type: String,},
-  emailAddres: {required: true, trim: true, type: String}, // TODO: add validation for email addresses
+  emailAddress: {required: true, trim: true, type: String}, // TODO: add validation for email addresses
   profilePicture: {type: String},
 }, {
   timestamps: true

@@ -16,6 +16,8 @@ export const ROUTER_RESPONSE_CODES: {[key: string]: number} = {
   RESOURCE_FOUND: 200,
   RESOURCE_NOT_FOUND: 404,
   EXCEPTION: 500,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
 };
 
 export const ROUTER_RESPONSE_MESSAGES: {[key: string]: string} = {

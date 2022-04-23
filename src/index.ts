@@ -2,16 +2,23 @@ import 'dotenv/config';
 import express, {Express, Request, Response} from 'express';
 import {connect} from 'mongoose';
 
+import { configureMiddleware } from './middleware';
+import { requireAuthAPI } from './middleware/auth0Middleware';
 import { configureRoutes } from './routes';
 
 const app: Express = express();
 const port: number = Number(process.env.PORT);
 
-app.use(express.json())
+app.use(express.json());
+configureMiddleware(app);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Bugsplatt!');
+  res.send(req.oidc.isAuthenticated() ? 'Bugsplatt!' : 'Not logged in');
 });
+
+app.get('/test', requireAuthAPI, (req: Request, res: Response) => {
+  res.send(`can access this and authenticated:  ${req._user}`);
+})
 
 configureRoutes(app);
 
