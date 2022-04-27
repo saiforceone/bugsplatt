@@ -69,6 +69,10 @@ abstract class BaseRouter {
     return this.constructor.name;
   }
 
+  protected hasCurrentUser(req: Request) {
+    return !!req._user;
+  }
+
   // Create
 
   /**

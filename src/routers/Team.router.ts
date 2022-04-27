@@ -30,12 +30,8 @@ export default class TeamRouter extends BaseRouter {
 
       try {
         const body = req.body;
-        // NOTE START: We will be substituting a temporary value for the user's id
 
-        // #TODO replace line below with : body.managedBy = req.user._id;
-        body.managedBy = new Types.ObjectId();
-
-        // NOTE END
+        body.managedBy = req._user!._id;
 
         response.data = await this._controller.createDocument(body) as ITeam;
         response.success = !!response.data;
@@ -56,8 +52,7 @@ export default class TeamRouter extends BaseRouter {
 
         const teamResource = await this._controller.getDocumentWithQuery({
           _id: resourceId,
-          // #TODO uncomment when Auth0 middleware in place
-          //managedBy: req.user._id,
+          managedBy: req._user!._id,
         }) as ITeam;
 
         if (!teamResource) {

@@ -12,7 +12,6 @@ abstract class BaseController {
   /**
    * @protected
    * Local model instance
-   * #TODO: Figure out how to use an interface here instead of "any"
    */
   protected _model: Model<any>;
 

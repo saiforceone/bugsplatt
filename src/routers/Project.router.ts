@@ -27,11 +27,9 @@ export default class ProjectRouter extends BaseRouter {
       try {
         const data = req.body;
 
-        // Note start: we are substituting temporary data in here for createdBy
-        data.createdBy = new Types.ObjectId(); // #TODO replace this with req.user._id when middleware is implemented
+        data.createdBy = req._user!._id;
         data.associatedTeam = new Types.ObjectId();
-        // Note end
-
+        
         response.data = await this._controller.createDocument(data) as IProject;
         response.success = !!response.data;
 
@@ -52,20 +50,21 @@ export default class ProjectRouter extends BaseRouter {
 
         const resourceId: string = req.params.id;
 
-        const resourceToDelete = await this._controller.getDocumentById(resourceId) as IProject;
+        const resourceToDelete = await this._controller.getDocumentWithQuery({
+          _id: resourceId,
+          createdBy: req._user!._id,
+        }) as IProject;
 
         if (!resourceToDelete) {
           response.error = `${ROUTER_RESPONSE_MESSAGES.RES_NOT_FOUND} :: Project`;
           return res.status(ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND).json(response);
         }
 
-        // NOTE START: until we have actual linked data, the deleting of related data won't work as expected
-
-        const delRelatedIssuesResult = await this._issueModel.deleteMany({associatedProject: resourceToDelete._id});
+        const delRelatedIssuesResult = await this._issueModel.deleteMany({
+          associatedProject: resourceToDelete._id
+        });
 
         console.log(`${this.constructor.name}.deleteResource deletedRelatedIssues: `, delRelatedIssuesResult);
-
-        // NOTE END
 
         // Delete the actual resource
         const resDeleteResponse = await resourceToDelete.remove();

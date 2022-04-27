@@ -24,20 +24,20 @@ export default class UserProfileRouter extends BaseRouter {
     this._teamModel = TeamModel;
   }
 
-  private async _removeRelatedUserData(currentUser: IUserProfile): Promise<string[]> {
+  private async _removeRelatedUserData(currentUserId: string): Promise<string[]> {
 
     const errors = [];
     // 1. find the related projects
     try {
 
       const relatedTeams = await this._teamModel.find({
-        managedBy: currentUser._id,
+        managedBy: currentUserId,
       });
 
       for (const team of relatedTeams) {
 
         const relatedProjects = await this._projectModel.find({
-          createdBy: currentUser._id,
+          createdBy: currentUserId,
           associatedTeam: team._id,
         });
 
@@ -66,16 +66,22 @@ export default class UserProfileRouter extends BaseRouter {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
-        // NOTE START: we will need the middleware to retrieve the user 
-        // #TODO: COMPLETE IMPLEMENTATION BELOW
-        // 1. get current user
-        // const currentUser = await this._controller.getDocumentById(req.user._id) as IUserProfile;
-        // 2. find and remove all teams
-        // const delRelatedErrors = await this._removeRelatedUserData(currentUser);
-        // 3. for each team, find related projects
-        // 4. for each project, find and remove all issues
+        if (!req._user) {
+          response.error = 'User not found';
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+        
+        const delRelatedErrors = await this._removeRelatedUserData(req._user._id);
+    
+        console.log('delete user profile errors: ', delRelatedErrors);
 
-        // NOTE END
+        if (this.deleteResource.length) {
+          response.error = delRelatedErrors.join(', ');
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+
+        response.success = true;
+        return res.status(ROUTER_RESPONSE_CODES.RESOURCE_DELETED).json(response);
       } catch (e) {
         response.error = (e as Error).message;
         return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);

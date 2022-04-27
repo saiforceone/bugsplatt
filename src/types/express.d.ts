@@ -1,5 +1,10 @@
+interface RequestUser {
+  _id: string,
+}
+
 declare namespace Express {
   export interface Request {
-    _user?: object
+    _user?: RequestUser,
+    user?: object,
   }
 }

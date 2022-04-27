@@ -23,7 +23,7 @@ export default class CommentRouter extends BaseRouter {
         const data = req.body;
         // Start Note: under normal circumstances we would never do this. We will always override this in child classes
         data.associatedIssue = new Types.ObjectId();
-        data.createdBy = new Types.ObjectId();
+        data.createdBy = req._user!._id;
         // End Note
         const savedComment = await this._controller.createDocument(data);
         return res.status(201).json({

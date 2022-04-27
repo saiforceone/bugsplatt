@@ -18,11 +18,12 @@ export default class IssueRouter extends BaseRouter {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
-        const data = req.body;``
+        const data = req.body;
         // Note start: Until middleware is configured, we will substitute random object ids
-        data.associatedIssue = new Types.ObjectId();
-        data.assignedTo = new Types.ObjectId();
-        data.watchedBy = [new Types.ObjectId()];
+        data.createdBy = req._user!._id;
+        // data.associatedIssue = new Types.ObjectId();
+        // data.assignedTo = new Types.ObjectId();
+        // data.watchedBy = [new Types.ObjectId()];
         // Note end
         response.data = await this._controller.createDocument(data) as object;
         response.success = !!response.data;

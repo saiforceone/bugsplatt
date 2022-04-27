@@ -6,5 +6,7 @@ declare module NodeJS {
     APP_SECRET_KEY: string;
     AUTH0_BASE_URL: string;
     AUTH0_ISSUER_BASE_URL: string;
+    AUTH0_API_AUDIENCE: string;
+    AUTH0_API_SECRET: string;
   }
 }

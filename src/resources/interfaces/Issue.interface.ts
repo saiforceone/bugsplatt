@@ -2,6 +2,7 @@ import {Types} from 'mongoose';
 import { IBase } from './Base.interface';
 
 export interface IIssue extends IBase {
+  createdBy: Types.ObjectId;
   associatedProject: Types.ObjectId;
   assignedTo: Types.ObjectId;
   expectedCloseDate?: Date;
