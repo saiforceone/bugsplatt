@@ -5,19 +5,21 @@ import {connect} from 'mongoose';
 import { auth0CheckJWT } from './middleware/auth0CheckJWT';
 import { auth0ValidateSession } from './middleware/auth0ValidateSession';
 import { configureRoutes } from './routes';
+import { configureMiddleware } from './middleware';
 
 const app: Express = express();
 const port: number = Number(process.env.PORT);
 
 app.use(express.json());
+configureMiddleware(app);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send(req.oidc.isAuthenticated() ? 'Bugsplatt!' : 'Not logged in');
+  res.json({message: 'ok'});
 });
 
 // TODO: Test when we have the client side implementation in place
-app.get('/test', auth0CheckJWT, auth0ValidateSession, (req: Request, res: Response) => {
-  res.send(`can access this and authenticated:  ${req._user}`);
+app.get('/test', (req: Request, res: Response) => {
+  res.json({user: req._user});
 });
 
 configureRoutes(app);

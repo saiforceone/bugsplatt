@@ -7,6 +7,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Auth0Provider
+      scope='profile openid email'
       audience="https://bugsplatt-api.io"
       domain="dev-whkdhipc.us.auth0.com"
       clientId="mov6FS0c9rkGDgjTMe6QhxETUtSWH85Y"

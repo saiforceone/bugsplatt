@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import logo from './logo.svg'
 import './App.css'
 import LoginButton from './components/shared/LoginButton';
+import LogoutButton from './components/shared/LogoutButton';
 
 function App() {
   const [accessToken, setAccessToken] = useState('');
@@ -31,7 +32,7 @@ function App() {
           <h2>{user.nickname}</h2>
         </div>
       )}
-      <LoginButton />
+      {isAuthenticated ? <LogoutButton /> : <LoginButton />}
     </div>
   )
 }
