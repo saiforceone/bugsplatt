@@ -1,9 +1,13 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+console.log(`⚡ [Server]: using env file .env.${process.env.NODE_ENV}.local`);
+
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}.local`,
+});
+
 import express, {Express, Request, Response} from 'express';
 import {connect} from 'mongoose';
 
-import { auth0CheckJWT } from './middleware/auth0CheckJWT';
-import { auth0ValidateSession } from './middleware/auth0ValidateSession';
 import { configureRoutes } from './routes';
 import { configureMiddleware } from './middleware';
 
@@ -25,7 +29,7 @@ app.get('/test', (req: Request, res: Response) => {
 configureRoutes(app);
 
 app.listen(port, async () => {
-  console.log(`[Server] Started Bugsplatt on: http://localhost:${port}`);
+  console.log(`[Server] (${process.env.NODE_ENV}) Started Bugsplatt on: http://localhost:${port}`);
   // temporary code to connect to mongodb
   try {
     const mongoURI:string = String(process.env.MONGO_DB_URI);
