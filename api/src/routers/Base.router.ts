@@ -1,15 +1,16 @@
-import {Types} from 'mongoose';
-import {Request, Response, RequestHandler, Router} from 'express';
+import { Types } from 'mongoose';
+import { Request, Response, RequestHandler, Router } from 'express';
 import BaseController from '../resources/controllers/Base.controller';
 import { IComment } from '../resources/interfaces/Comment.interface';
+import logger from '../utils/logger.util';
 
 export interface IRouterResponse {
-  data: object[]|object;
+  data: object[] | object;
   success: boolean;
-  error: string|null;
+  error: string | null;
 }
 
-export const ROUTER_RESPONSE_CODES: {[key: string]: number} = {
+export const ROUTER_RESPONSE_CODES: { [key: string]: number } = {
   BAD_REQUEST: 400,
   RESOURCE_CREATED: 201,
   RESOURCE_DELETED: 200,
@@ -20,10 +21,10 @@ export const ROUTER_RESPONSE_CODES: {[key: string]: number} = {
   FORBIDDEN: 403,
 };
 
-export const ROUTER_RESPONSE_MESSAGES: {[key: string]: string} = {
+export const ROUTER_RESPONSE_MESSAGES: { [key: string]: string } = {
   RES_NOT_FOUND: 'Resource not found',
   RELATED_RES_NOT_FOUND: 'Related resource was not found',
-}
+};
 
 /**
  * @abstract
@@ -43,20 +44,22 @@ abstract class BaseRouter {
     this._basePath = basePath;
     this._router = Router();
     this._controller = controller;
-    console.log(`⚡ [Server]: {Router} :: ${this.constructor.name} initialized...`);
+    logger.info(
+      `⚡ [Server]: {Router} :: ${this.constructor.name} initialized...`
+    );
   }
 
   /**
    * @public
    * @method getDefaultResponse
-   * @return 
+   * @return
    */
   public getDefaultResponse(): IRouterResponse {
     return {
       data: {},
       error: '',
       success: false,
-    }
+    };
   }
 
   /**
@@ -78,25 +81,32 @@ abstract class BaseRouter {
   /**
    * @protected
    * @method createResource
-   * @param {Array<RequestHandler>} middleware 
+   * @param {Array<RequestHandler>} middleware
    * @description Route handler for creating a new resource
    * @returns {Array<RequestHandler>}
    */
   protected createResource(middleware: Array<RequestHandler> = []) {
-    return [...middleware, async (req: Request, res: Response) => {
-      const response = this.getDefaultResponse();
-      try {
-        const data = req.body;
-        
-        response.data = await this._controller.createDocument(data) as object;
-        response.success = !!response.data;
+    return [
+      ...middleware,
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const data = req.body;
 
-        return res.status(ROUTER_RESPONSE_CODES.RESOURCE_CREATED).json(response);
-      } catch (e) {
-        response.error = (e as Error).message;
-        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
-      }
-    }];
+          response.data = (await this._controller.createDocument(
+            data
+          )) as object;
+          response.success = !!response.data;
+
+          return res
+            .status(ROUTER_RESPONSE_CODES.RESOURCE_CREATED)
+            .json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+      },
+    ];
   }
 
   // Read
@@ -109,18 +119,25 @@ abstract class BaseRouter {
    * @returns {Array<RequestHandler>}
    */
   protected getResource(middleware: Array<RequestHandler> = []) {
-    return [...middleware, async (req: Request, res: Response) => {
-      const response = this.getDefaultResponse();
-      try {
-        const resourceId: string = req.params.id;
-        response.data = await this._controller.getDocumentById(resourceId) as IComment;
-        response.success = !!response.data;
-        return res.status(ROUTER_RESPONSE_CODES.RESOURCE_FOUND).json(response);
-      } catch (e) {
-        response.error = (e as Error).message;
-        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response); 
-      }
-    }];
+    return [
+      ...middleware,
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const resourceId: string = req.params.id;
+          response.data = (await this._controller.getDocumentById(
+            resourceId
+          )) as IComment;
+          response.success = !!response.data;
+          return res
+            .status(ROUTER_RESPONSE_CODES.RESOURCE_FOUND)
+            .json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+      },
+    ];
   }
 
   /**
@@ -131,24 +148,31 @@ abstract class BaseRouter {
    * @returns {Array<RequestHandler>}
    */
   protected getResources(middleware: Array<RequestHandler> = []) {
-    return [...middleware, async (req: Request, res: Response) => {
-      const response = this.getDefaultResponse();
-      try {
-        const comments = await this._controller.getDocuments({}) as IComment[];
+    return [
+      ...middleware,
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const comments = (await this._controller.getDocuments(
+            {}
+          )) as IComment[];
 
-        response.data = comments;
-        response.success = comments.length > 0;
+          response.data = comments;
+          response.success = comments.length > 0;
 
-        return res.status(
-          response.success 
-          ? ROUTER_RESPONSE_CODES.RESOURCE_FOUND
-          : ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND
-          ).json(response);
-      } catch (e) {
-        response.error = (e as Error).message;
-        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
-      }
-    }];
+          return res
+            .status(
+              response.success
+                ? ROUTER_RESPONSE_CODES.RESOURCE_FOUND
+                : ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND
+            )
+            .json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+      },
+    ];
   }
 
   // Update
@@ -161,21 +185,29 @@ abstract class BaseRouter {
    * @returns {Array<RequestHandler>}
    */
   protected updateResource(middleware: Array<RequestHandler> = []) {
-    return [...middleware, async (req: Request, res: Response) => {
-      const response = this.getDefaultResponse();
-      try {
-        const resourceId: string = req.params.id;
-        const data = req.body;
-        
-        response.data = await this._controller.updateDocument(resourceId, data) as object;
-        response.success = !!response.data;
+    return [
+      ...middleware,
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const resourceId: string = req.params.id;
+          const data = req.body;
 
-        return res.status(ROUTER_RESPONSE_CODES.RESOURCE_CREATED).json(response);
-      } catch (e) {
-        response.error = (e as Error).message;
-        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
-      }
-    }];
+          response.data = (await this._controller.updateDocument(
+            resourceId,
+            data
+          )) as object;
+          response.success = !!response.data;
+
+          return res
+            .status(ROUTER_RESPONSE_CODES.RESOURCE_CREATED)
+            .json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+      },
+    ];
   }
 
   // Delete
@@ -183,23 +215,30 @@ abstract class BaseRouter {
   /**
    * @protected
    * @method deleteResource
-   * @param {Array<RequestHandler>} middleware 
+   * @param {Array<RequestHandler>} middleware
    * @description Route handler for deleting a resource
    * @returns {Array<RequestHandler>}
    */
   protected deleteResource(middleware: Array<RequestHandler> = []) {
-    return [...middleware, async (req: Request, res: Response) => {
-      const response = this.getDefaultResponse();
-      try {
-        const resourceId = req.params.id;
-        const deleteResult = await this._controller.deleteDocument(resourceId);
-        response.success = !!deleteResult
-        return res.status(ROUTER_RESPONSE_CODES.RESOURCE_DELETED).json(response)
-      } catch (e) {
-        response.error = (e as Error).message;
-        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
-      }
-    }];
+    return [
+      ...middleware,
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const resourceId = req.params.id;
+          const deleteResult = await this._controller.deleteDocument(
+            resourceId
+          );
+          response.success = !!deleteResult;
+          return res
+            .status(ROUTER_RESPONSE_CODES.RESOURCE_DELETED)
+            .json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+        }
+      },
+    ];
   }
 
   /**
@@ -209,12 +248,14 @@ abstract class BaseRouter {
    * @returns {Router}
    */
   public getRoutes() {
-    this._router.route(`${this._basePath}/:id`)
+    this._router
+      .route(`${this._basePath}/:id`)
       .get(this.getResource())
       .put(this.updateResource())
       .delete(this.deleteResource());
 
-    this._router.route(`${this._basePath}`)
+    this._router
+      .route(`${this._basePath}`)
       .get(this.getResources())
       .post(this.createResource());
 

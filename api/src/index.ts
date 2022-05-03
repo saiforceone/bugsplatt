@@ -31,15 +31,15 @@ app.get('/test', (req: Request, res: Response) => {
 configureRoutes(app);
 
 app.listen(port, async () => {
-  console.log(
-    `[Server] (${process.env.NODE_ENV}) Started Bugsplatt on: http://localhost:${port}`
+  logger.info(
+    `⚡ [Server] (${process.env.NODE_ENV}) Started Bugsplatt on: http://localhost:${port}`
   );
   // temporary code to connect to mongodb
   try {
     const mongoURI: string = String(process.env.MONGO_DB_URI);
     await connect(mongoURI);
-    logger.info(`[Server] connected to db: ${mongoURI}`);
+    logger.info(`⚡ [Server] connected to db: ${mongoURI}`);
   } catch (e) {
-    logger.error(`[Server] bugsplatt error: `, e);
+    logger.error(`⚡ [Server] bugsplatt error: `, e);
   }
 });

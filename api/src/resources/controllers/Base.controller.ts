@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import logger from '../../utils/logger.util';
 import { DEFAULT_PAGE_LIMIT } from '../constants';
 import { IBase } from '../interfaces/Base.interface';
 
@@ -8,7 +9,6 @@ import { IBase } from '../interfaces/Base.interface';
  * @description defines a base controller that can be extended. not to be used by itself
  */
 abstract class BaseController {
-
   /**
    * @protected
    * Local model instance
@@ -17,7 +17,9 @@ abstract class BaseController {
 
   constructor(model: Model<any>) {
     this._model = model;
-    console.log(`⚡ [Server]: {Controller} :: ${this.constructor.name} initialized...`);
+    logger.info(
+      `⚡ [Server]: {Controller} :: ${this.constructor.name} initialized...`
+    );
   }
 
   // Create
@@ -29,7 +31,7 @@ abstract class BaseController {
    * @description Given data, attempts to create a document
    * @returns {Promise<IBase|null>}
    */
-  public async createDocument(data: Partial<IBase>): Promise<IBase|null> {
+  public async createDocument(data: Partial<IBase>): Promise<IBase | null> {
     return this._model.create(data);
   }
 
@@ -42,7 +44,7 @@ abstract class BaseController {
    * @description Given a doc id, attempts to retrieve the matching document
    * @returns {Promise<IBase|null>}
    */
-  public async getDocumentById(documentId: string): Promise<IBase|null> {
+  public async getDocumentById(documentId: string): Promise<IBase | null> {
     return this._model.findById(documentId);
   }
 
@@ -51,7 +53,7 @@ abstract class BaseController {
    * @method getDocumentWithQuery
    * @param {object} queryObject Defines the object to filter by
    * @description Given a query object, attempts to retrieve the first matching document
-   * @returns 
+   * @returns
    */
   public async getDocumentWithQuery(queryObject: object) {
     return this._model.findOne(queryObject);
@@ -64,12 +66,18 @@ abstract class BaseController {
    * @description Given a query object and an optional page number, attempts to retrieve an array of matching documents
    * @returns {Promise<IBase[]>}
    */
-  public async getDocuments(queryObject: object, page?: number): Promise<IBase[]> {
+  public async getDocuments(
+    queryObject: object,
+    page?: number
+  ): Promise<IBase[]> {
     if (!page) {
       return this._model.find(queryObject);
     }
 
-    return this._model.find(queryObject).skip(page * DEFAULT_PAGE_LIMIT).limit(DEFAULT_PAGE_LIMIT);
+    return this._model
+      .find(queryObject)
+      .skip(page * DEFAULT_PAGE_LIMIT)
+      .limit(DEFAULT_PAGE_LIMIT);
   }
 
   // Update
@@ -82,8 +90,13 @@ abstract class BaseController {
    * @description Given a document id and data, attempts to update the matching document
    * @returns {Promise<IBase|null>}
    */
-  public async updateDocument(documentId: string, data: Partial<IBase>): Promise<IBase|null> {
-    return this._model.findByIdAndUpdate(documentId, data, {returnDocument: 'after'});
+  public async updateDocument(
+    documentId: string,
+    data: Partial<IBase>
+  ): Promise<IBase | null> {
+    return this._model.findByIdAndUpdate(documentId, data, {
+      returnDocument: 'after',
+    });
   }
 
   // Delete
@@ -95,7 +108,7 @@ abstract class BaseController {
    * @description Given a document id, attempts to delete the matchind document
    * @returns {Promise<IBase|null>}
    */
-  public async deleteDocument(documentId: string): Promise<IBase|null> {
+  public async deleteDocument(documentId: string): Promise<IBase | null> {
     return this._model.findByIdAndRemove(documentId);
   }
 }
