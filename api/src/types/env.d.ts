@@ -8,5 +8,6 @@ declare module NodeJS {
     AUTH0_ISSUER_BASE_URL: string;
     AUTH0_API_AUDIENCE: string;
     AUTH0_API_SECRET: string;
+    AUTH0_API_JWKS_URI: string;
   }
 }

@@ -14,9 +14,9 @@ export const jwtCheck = jwt.expressjwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://dev-whkdhipc.us.auth0.com/.well-known/jwks.json'
+    jwksUri: process.env.AUTH0_API_JWKS_URI
   }),
-  audience: 'https://bugsplatt-api.io',
-  issuer: 'https://dev-whkdhipc.us.auth0.com/',
+  audience: process.env.AUTH0_API_AUDIENCE,
+  issuer: process.env.AUTH0_ISSUER_BASE_URL,
   algorithms: ['RS256']
 });
