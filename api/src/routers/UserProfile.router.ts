@@ -8,7 +8,6 @@ import IssueModel from '../resources/models/Issue.model';
 import { IIssue } from '../resources/interfaces/Issue.interface';
 import ProjectModel from '../resources/models/Project.model';
 import { IProject } from '../resources/interfaces/Project.interface';
-import { IUserProfile } from '../resources/interfaces/UserProfile.interface';
 
 
 export default class UserProfileRouter extends BaseRouter {

@@ -49,7 +49,7 @@ abstract class BaseRouter {
   /**
    * @public
    * @method getDefaultResponse
-   * @return 
+   * @description Returns a standard response object for our API
    */
   public getDefaultResponse(): IRouterResponse {
     return {
@@ -63,13 +63,12 @@ abstract class BaseRouter {
    * @public
    * @method getName
    * @description Helper that returns the name of the router
-   * @returns {string}
    */
   public getName(): string {
     return this.constructor.name;
   }
 
-  protected hasCurrentUser(req: Request) {
+  protected hasCurrentUser(req: Request): boolean {
     return !!req._user;
   }
 
@@ -82,7 +81,7 @@ abstract class BaseRouter {
    * @description Route handler for creating a new resource
    * @returns {Array<RequestHandler>}
    */
-  protected createResource(middleware: Array<RequestHandler> = []) {
+  protected createResource(middleware: Array<RequestHandler> = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
@@ -108,7 +107,7 @@ abstract class BaseRouter {
    * @description Route handler that retrieves a single resource
    * @returns {Array<RequestHandler>}
    */
-  protected getResource(middleware: Array<RequestHandler> = []) {
+  protected getResource(middleware: Array<RequestHandler> = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
@@ -130,10 +129,11 @@ abstract class BaseRouter {
    * @description Route handler that retrieves a list of resources
    * @returns {Array<RequestHandler>}
    */
-  protected getResources(middleware: Array<RequestHandler> = []) {
+  protected getResources(middleware: Array<RequestHandler> = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
+        // TODO: get the query params from req.query
         const comments = await this._controller.getDocuments({}) as IComment[];
 
         response.data = comments;
@@ -158,9 +158,8 @@ abstract class BaseRouter {
    * @method updateResource
    * @param {Array<RequestHandler>} middleware middleware functions that should be executed before the final router handler
    * @description Route handleer for updating a single resource
-   * @returns {Array<RequestHandler>}
    */
-  protected updateResource(middleware: Array<RequestHandler> = []) {
+  protected updateResource(middleware: RequestHandler[] = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
@@ -185,9 +184,8 @@ abstract class BaseRouter {
    * @method deleteResource
    * @param {Array<RequestHandler>} middleware 
    * @description Route handler for deleting a resource
-   * @returns {Array<RequestHandler>}
    */
-  protected deleteResource(middleware: Array<RequestHandler> = []) {
+  protected deleteResource(middleware: Array<RequestHandler> = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
       try {
@@ -206,9 +204,8 @@ abstract class BaseRouter {
    * @public
    * @method getRoutes
    * @description Returns all routes defined for this router
-   * @returns {Router}
    */
-  public getRoutes() {
+  public getRoutes(): Router {
     this._router.route(`${this._basePath}/:id`)
       .get(this.getResource())
       .put(this.updateResource())
