@@ -7,10 +7,10 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Auth0Provider
-      scope='profile openid email'
-      audience="https://bugsplatt-api.io"
-      domain="dev-whkdhipc.us.auth0.com"
-      clientId="mov6FS0c9rkGDgjTMe6QhxETUtSWH85Y"
+      scope={import.meta.env.VITE_AUTH0_SCOPE}
+      audience={import.meta.env.VITE_AUTH0_AUDIENCE}
+      domain={import.meta.env.VITE_AUTH0_DOMAIN}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       redirectUri={window.location.origin}
     >
       <App />
