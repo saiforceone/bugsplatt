@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.icon-button {
+  @apply bg-blue-500 p-2 rounded m-0;
+}
+
+.icon-button--small {
+  @apply h-9 w-9;
+}
+
+.icon-button--medium {
+  @apply h-12 w-12;
+}
