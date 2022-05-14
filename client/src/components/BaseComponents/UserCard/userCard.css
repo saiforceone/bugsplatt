@@ -1,0 +1,21 @@
+@import '../../../index.css';
+
+.user-card--container {
+  @apply bg-purple-600 content-center rounded px-3 py-4 flex flex-row text-white;
+}
+
+.user-card--image {
+  @apply h-10 w-10 object-cover rounded;
+}
+
+.user-card--content-container {
+  @apply ml-4 flex flex-col flex-1;
+}
+
+.user-card--content-name {
+  @apply font-normal text-lg uppercase;
+}
+
+.user-card--content-secondary {
+  @apply text-slate-200 text-sm font-bold mt-1;
+}

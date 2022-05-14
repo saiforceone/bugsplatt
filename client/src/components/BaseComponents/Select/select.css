@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.select--container {
+  @apply mb-1 p-1 flex flex-col;
+}
+
+.select--label {
+  @apply mb-1 text-gray-600 font-semibold;
+}
+
+.select--field {
+  @apply border-2 p-1 rounded;
+}
