@@ -1,5 +1,25 @@
 @import '../../../index.css';
 
 .default-button {
-  @apply bg-purple-800 rounded;
+  @apply bg-purple-800 align-middle flex flex-row rounded text-white duration-300;
+}
+
+.default-button--icon-container {
+  @apply mr-1 mt-1;
+}
+
+.default-button--inactive {
+  @apply bg-purple-200;
+}
+
+.default-button--small {
+  @apply px-2 py-1;
+}
+
+.default-button--medium {
+  @apply px-3 py-2;
+}
+
+.default-button--large {
+  @apply px-4 py-2;
 }

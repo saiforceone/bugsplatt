@@ -1,0 +1,17 @@
+@import '../../../index.css';
+
+.tag {
+  @apply bg-purple-800 rounded align-middle text-white;
+}
+
+.tag--icon {
+  @apply h-5 w-5 mr-1 mt-1;
+}
+
+.tag--small {
+  @apply px-2 py-1;
+}
+
+.tag--medium {
+  @apply px-3 py-2;
+}
