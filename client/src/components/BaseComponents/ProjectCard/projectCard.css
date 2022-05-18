@@ -1,0 +1,9 @@
+@import '../../../index.css';
+
+.project-card--container {
+  @apply p-4 rounded bg-slate-100;
+}
+
+.project-card--project-name {
+  @apply mb-4 text-2xl;
+}

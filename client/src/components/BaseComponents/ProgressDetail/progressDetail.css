@@ -1,0 +1,21 @@
+@import '../../../index.css';
+
+.progress-detail--container {
+  @apply flex flex-col py-2;
+}
+
+.progress-detail--top-row {
+  @apply flex flex-row justify-between mb-2;
+}
+
+.progress-detail--label {
+  @apply uppercase font-bold text-slate-600;
+}
+
+.progress-detail--bar-row {
+  @apply bg-purple-800 rounded p-1;
+}
+
+.progress-detail--bar {
+  @apply bg-slate-50 h-3 rounded-sm;
+}

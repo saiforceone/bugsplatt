@@ -6,12 +6,14 @@ export interface UserCardProps {
   displayName: string;
   profileImage?: string;
   secondaryText?: string;
+  userAction?: () => void;
 }
 
 export const UserCard = ({
   displayName = 'John Batman',
   secondaryText = 'john.batman@example.com',
   profileImage = '',
+  userAction = () => console.log('action not implemented'),
   ...props
 }) => {
   return (
@@ -27,7 +29,7 @@ export const UserCard = ({
           <p className='user-card--content-secondary'>{secondaryText}</p>
         )}
       </div>
-      <IconButton active icon={<HiCog />} buttonSize='medium' />
+      <IconButton active icon={<HiCog className='h-7 w-7' />} buttonSize='medium' onClick={userAction} />
     </div>
   );
 }

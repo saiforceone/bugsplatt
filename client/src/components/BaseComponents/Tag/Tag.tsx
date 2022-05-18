@@ -3,7 +3,8 @@ import './tag.css';
 
 export interface TagProps {
   labelText: string;
-  size: 'small' | 'medium'
+  size: 'small' | 'medium';
+  // TODO add prop for custom icon element
 }
 
 export const Tag = ({

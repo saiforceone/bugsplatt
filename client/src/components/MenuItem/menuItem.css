@@ -1,0 +1,13 @@
+@import '../../index.css';
+
+.menu-item--container {
+  @apply flex flex-row content-center px-2 py-1 hover:bg-purple-500 bg-purple-800 duration-300;
+}
+
+.menu-item--content {
+  @apply flex flex-1 flex-col text-white;
+}
+
+.menu-item--primary-text {
+  @apply text-xl font-medium;
+}
