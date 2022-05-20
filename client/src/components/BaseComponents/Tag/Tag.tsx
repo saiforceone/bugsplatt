@@ -1,21 +1,25 @@
+import React from 'react';
 import { HiTag } from 'react-icons/hi';
 import './tag.css';
 
 export interface TagProps {
   labelText: string;
   size: 'small' | 'medium';
-  // TODO add prop for custom icon element
+  icon?: React.ReactElement;
 }
 
 export const Tag = ({
   labelText = 'Tag',
   size = 'small',
+  icon,
   ...props
 }: TagProps) => {
   return (
     <label className={['tag', `tag--${size}`].join(' ')}>
-      <HiTag className='tag--icon' />
-      {labelText}
+      <>
+        {icon ? icon : <HiTag className='tag--icon' />}
+        {labelText}
+      </>
     </label>
   );
 };

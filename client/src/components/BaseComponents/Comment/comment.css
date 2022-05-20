@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.comment--container {
+  @apply bg-slate-100 px-2 pb-3 pt-2 rounded;
+}
+
+.comment--content {
+  @apply mb-3 text-lg;
+}
+
+.comment--bottom-row {
+  @apply flex flex-row content-center;
+}

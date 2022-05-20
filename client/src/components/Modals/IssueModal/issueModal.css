@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.issue-modal--container {
+  @apply bg-slate-100 p-4 rounded;
+}
+
+.issue-modal--top-row {
+  @apply flex flex-row content-center justify-between;
+}
+
+.issue-modal--top-buttons {
+  @apply flex flex-row content-center;
+}
