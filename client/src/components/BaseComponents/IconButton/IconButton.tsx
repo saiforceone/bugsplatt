@@ -10,17 +10,20 @@ export interface IconButtonProps {
   onClick?: () => void;
   /** `icon` required - icon that is shown on the button */
   icon: React.ReactElement;
+  /** `isCloseButton` indicates if the icon should be styled as a close button */
+  isCloseButton?: boolean;
 }
 
 export const IconButton = ({
   active = true,
   buttonSize = 'small',
   icon = <HiCheckCircle className="defaultIcon" />,
+  isCloseButton,
   ...props
 }: IconButtonProps) => {
   return (
     <button 
-      className={['icon-button', `icon-button--${buttonSize}`, `${active ? '' : 'icon-button--inactive'}`].join(' ')}
+      className={['icon-button', `icon-button--${buttonSize}`, `${active ? '' : 'icon-button--inactive'}`, isCloseButton ? 'icon-button--close-btn' : ''].join(' ')}
       onClick={props.onClick}
     >
       {icon}

@@ -6,6 +6,10 @@
   TODO: Add base css styles here
 */
 
-.defaultIcon {
-  @apply m-0 text-white h-5 w-5;
+.default-icon {
+  @apply text-white h-7 w-7;
+}
+
+.default-tag--icon {
+  @apply mt-1 mr-2 text-white;
 }

@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .default-button {
-  @apply bg-purple-800 align-middle flex flex-row rounded text-white duration-300;
+  @apply bg-purple-800 content-center flex flex-row rounded text-white duration-300;
 }
 
 .default-button--icon-container {

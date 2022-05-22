@@ -1,13 +1,33 @@
 @import '../../../index.css';
 
 .issue-modal--container {
-  @apply bg-slate-100 p-4 rounded;
+  @apply bg-slate-200 p-4 rounded;
 }
 
 .issue-modal--top-row {
-  @apply flex flex-row content-center justify-between;
+  @apply flex flex-row content-center justify-between mb-2;
+}
+
+.issue-modal--tag {
+  @apply mt-1 mr-1;
+}
+
+.issue-modal--issue-name {
+  @apply text-xl uppercase;
+}
+
+.issue-modal--tag-row {
+  @apply flex flex-row flex-wrap content-center mb-2;
 }
 
 .issue-modal--top-buttons {
   @apply flex flex-row content-center;
+}
+
+.issue-modal--comment-heading {
+  @apply flex flex-row content-center justify-between my-3;
+}
+
+.issue-modal--section-heading {
+  @apply text-xl font-medium;
 }

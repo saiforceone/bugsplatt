@@ -3,6 +3,7 @@ import './defaultButton.css';
 export interface DefaultButtonProps {
   active: boolean;
   buttonSize?: 'small' | 'medium' | 'large';
+  extraCss?: string;
   label: string;
   icon?: React.ReactElement;
   onClick?: () => void;
@@ -11,13 +12,14 @@ export interface DefaultButtonProps {
 export const DefaultButton = ({
   active = true,
   buttonSize = 'medium',
+  extraCss = '',
   label,
   icon = undefined,
   ...props
 }: DefaultButtonProps) => {
   return (
     <button
-      className={[`default-button default-button--${buttonSize} ${active ? '' : 'default-button--inactive'}`].join(' ')}
+      className={[`default-button default-button--${buttonSize} ${active ? '' : 'default-button--inactive'}`, extraCss].join(' ')}
       disabled={!active}
       onClick={props.onClick}
     >
@@ -26,7 +28,7 @@ export const DefaultButton = ({
           {icon}
         </div>
       )}
-      {label}
+      <span className='mt-1'>{label}</span>
     </button>
   );
 }

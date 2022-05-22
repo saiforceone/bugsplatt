@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .comment--container {
-  @apply bg-slate-100 px-2 pb-3 pt-2 rounded;
+  @apply bg-slate-100 mb-3 px-2 pb-3 pt-2 rounded;
 }
 
 .comment--content {

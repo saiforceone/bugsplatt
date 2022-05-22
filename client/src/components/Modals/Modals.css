@@ -1,0 +1,33 @@
+@import '../../index.css';
+
+.modal--container {
+  @apply bg-slate-100 px-3 py-2 rounded;
+}
+
+.modal--top-row {
+  @apply flex flex-row content-center justify-between mb-4;
+}
+
+.modal--top-buttons-container {
+  @apply flex flex-row content-center;
+}
+
+.modal--main-heading {
+  @apply text-xl uppercase;
+}
+
+.modal--row {
+  @apply flex flex-row content-center my-2;
+}
+
+.modal--section-heading {
+  @apply text-xl uppercase;
+}
+
+.modal--p {
+  @apply text-lg my-2;
+}
+
+.modal--tag {
+  @apply mt-1 mr-1;
+}
