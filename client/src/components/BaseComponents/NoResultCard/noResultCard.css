@@ -5,7 +5,7 @@
 }
 
 .no-result--icon-container {
-  @apply flex flex-row justify-items-center;
+  @apply flex flex-row;
 }
 
 .no-result--icon {
