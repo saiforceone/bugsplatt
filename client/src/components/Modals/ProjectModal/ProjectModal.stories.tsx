@@ -23,10 +23,12 @@ Primary.args = {
   projectName: 'Project One',
   projectTags: ['React', 'Redux', 'Tailwind'],
   issues: [{
-    title: 'Issue #1',
-    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,'
+    resourceId: 'iss-1',
+    issueTitle: 'Issue #1',
+    issueDesc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,'
   }, {
-    title: 'Issue #2',
-    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,'
+    resourceId: 'iss-2',
+    issueTitle: 'Issue #2',
+    issueDesc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,'
   }]
 }

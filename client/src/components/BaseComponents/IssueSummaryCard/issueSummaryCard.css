@@ -1,0 +1,17 @@
+@import '../../../index.css';
+
+.issue-summary--container {
+  @apply bg-slate-50 p-3 rounded mb-3;
+}
+
+.issue-summary--top-row {
+  @apply flex flex-row content-center;
+}
+
+.issue-summary--heading {
+  @apply mr-3  mt-1 selection:font-semibold uppercase;
+}
+
+.issue-summary--description {
+  @apply mt-1 text-lg;
+}

@@ -4,13 +4,16 @@ import { ProgressDetail, ProgressDetailProps } from '../../BaseComponents/Progre
 import { Tag } from '../../BaseComponents/Tag/Tag';
 import { DefaultButton } from '../../BaseComponents/DefaultButton/DefaultButton';
 import { IconButton } from '../../BaseComponents/IconButton/IconButton';
-import { HiXCircle, HiUserGroup, HiUserCircle, HiClock, HiHashtag } from 'react-icons/hi';
+import { HiXCircle, HiUserGroup, HiUserCircle, HiClock, HiHashtag, HiExternalLink } from 'react-icons/hi';
+import { IssueSummaryCard } from '../../BaseComponents/IssueSummaryCard/IssueSummaryCard';
+import { NoResultCard } from '../../BaseComponents/NoResultCard/NoResultCard';
 
 
 interface IssueSummary {
-  expectedCloseDate?: Date;
-  title: string;
-  description: string;
+  resourceId: string;
+  expectedCloseDate?: string;
+  issueTitle: string;
+  issueDesc: string;
 }
 
 export interface ProjectModalProps {
@@ -49,7 +52,11 @@ export const ProjectModal = ({
       <div className="modal--top-row">
         <h2 className='modal--main-heading'>{projectName}</h2>
         <div className='modal--top-buttons-container'>
-          <DefaultButton active buttonSize='medium' extraCss='mr-2' label='Go to Project' onClick={() => onGoToProject()}/>
+          <DefaultButton 
+            active buttonSize='medium' extraCss='mr-2'
+            label='Go to Project' onClick={() => onGoToProject()}
+            icon={<HiExternalLink className='default-tag--icon' />}
+          />
           <IconButton active icon={<HiXCircle className='default-icon' />} isCloseButton buttonSize='medium' onClick={() => onCloseModal()} />
         </div>
       </div>
@@ -61,6 +68,7 @@ export const ProjectModal = ({
       </div>
       <p className='modal--p'>{projectDesc}</p>
       <ProgressDetail {...issueDetails} /> 
+      {issues.length ? issues.map(issue => <IssueSummaryCard key={`issue-summary-${issue.resourceId}`} {...issue} />) : <NoResultCard primaryText='No Issues Found' />}
       <div>
         <h3 className='modal--section-heading'>Associated Tags</h3>
       </div>
