@@ -1,3 +1,4 @@
+import { Dialog } from '@headlessui/react';
 import '../Modals.css';
 import './projectModal.css';
 import { ProgressDetail, ProgressDetailProps } from '../../BaseComponents/ProgressDetail/ProgressDetail';
@@ -29,6 +30,7 @@ export interface ProjectModalProps {
   issueDetails: ProgressDetailProps;
   issues: IssueSummary[];
   projectTags: string[];
+  visible: boolean;
 }
 
 export const ProjectModal = ({
@@ -44,37 +46,50 @@ export const ProjectModal = ({
   createdBy,
   createdAt,
   projectType,
+  visible = false,
   ...props
 }: ProjectModalProps) => {
   // TODO: complete implementation, wrap with dialog component
   return (
-    <div className='modal--container'>
-      <div className="modal--top-row">
-        <h2 className='modal--main-heading'>{projectName}</h2>
-        <div className='modal--top-buttons-container'>
-          <DefaultButton 
-            active buttonSize='medium' extraCss='mr-2'
-            label='Go to Project' onClick={() => onGoToProject()}
-            icon={<HiExternalLink className='default-tag--icon' />}
-          />
-          <IconButton active icon={<HiXCircle className='default-icon' />} isCloseButton buttonSize='medium' onClick={() => onCloseModal()} />
+    <Dialog className="relative z-50" onClose={() => onCloseModal()} open={visible} static>
+      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="flex min-h-full item-center justify-center">
+          
+          <Dialog.Panel className='mx-auto max-w-sm rounded bg-white'>
+            <div className='modal--container'>
+              <div className="modal--top-row">
+                <h2 className='modal--main-heading'>{projectName}</h2>
+                <div className='modal--top-buttons-container'>
+                  <DefaultButton 
+                    active buttonSize='medium' extraCss='mr-2'
+                    label='Go to Project' onClick={() => onGoToProject()}
+                    icon={<HiExternalLink className='default-tag--icon' />}
+                  />
+                  <IconButton active icon={<HiXCircle className='default-icon' />} isCloseButton buttonSize='medium' onClick={() => onCloseModal()} />
+                </div>
+              </div>
+              <div className="modal--row flex-wrap">
+                <Tag extraCss='modal--tag' icon={<HiUserGroup className='default-tag--icon' />} labelText={`Team: ${teamName}`} size='small' />
+                <Tag extraCss='modal--tag' icon={<HiUserCircle className='default-tag--icon' />} labelText={`Author: ${createdBy}`} size='small' />
+                <Tag extraCss='modal--tag' icon={<HiClock className='default-tag--icon' />} labelText={`Created: ${createdAt}`} size='small' />
+                <Tag extraCss='modal--tag' icon={<HiHashtag className='default-tag--icon' />} labelText={projectType} size='small' />
+              </div>
+              <p className='modal--p'>{projectDesc}</p>
+              <ProgressDetail {...issueDetails} /> 
+              {issues.length ? issues.map(issue => <IssueSummaryCard key={`issue-summary-${issue.resourceId}`} {...issue} />) : <NoResultCard primaryText='No Issues Found' />}
+              <div>
+                <h3 className='modal--section-heading'>Associated Tags</h3>
+              </div>
+              <div className='modal--row'>
+                {projectTags && projectTags.length ? projectTags.map(projectTag => <Tag extraCss='mt-1 mr-2' labelText={projectTag} size='small' />) : 'No tags associated with this project'}
+              </div>
+            </div>
+          </Dialog.Panel>
+
         </div>
       </div>
-      <div className="modal--row flex-wrap">
-        <Tag extraCss='modal--tag' icon={<HiUserGroup className='default-tag--icon' />} labelText={`Team: ${teamName}`} size='small' />
-        <Tag extraCss='modal--tag' icon={<HiUserCircle className='default-tag--icon' />} labelText={`Author: ${createdBy}`} size='small' />
-        <Tag extraCss='modal--tag' icon={<HiClock className='default-tag--icon' />} labelText={`Created: ${createdAt}`} size='small' />
-        <Tag extraCss='modal--tag' icon={<HiHashtag className='default-tag--icon' />} labelText={projectType} size='small' />
-      </div>
-      <p className='modal--p'>{projectDesc}</p>
-      <ProgressDetail {...issueDetails} /> 
-      {issues.length ? issues.map(issue => <IssueSummaryCard key={`issue-summary-${issue.resourceId}`} {...issue} />) : <NoResultCard primaryText='No Issues Found' />}
-      <div>
-        <h3 className='modal--section-heading'>Associated Tags</h3>
-      </div>
-      <div className='modal--row'>
-        {projectTags && projectTags.length ? projectTags.map(projectTag => <Tag extraCss='mt-1 mr-2' labelText={projectTag} size='small' />) : 'No tags associated with this project'}
-      </div>
-    </div>
+    </Dialog>
   )
 }

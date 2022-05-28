@@ -9,7 +9,7 @@ export interface IconButtonProps {
   /** `onClick` optional - click handler for the button */
   onClick?: () => void;
   /** `icon` required - icon that is shown on the button */
-  icon: React.ReactElement;
+  icon?: React.ReactElement;
   /** `isCloseButton` indicates if the icon should be styled as a close button */
   isCloseButton?: boolean;
 }

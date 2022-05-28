@@ -1,0 +1,6 @@
+@import '../../../index.css';
+
+.new-issue-modal {
+  @apply bg-slate-50 p-4 rounded;
+}
+

@@ -1,13 +1,12 @@
+import { FC, InputHTMLAttributes } from 'react';
 import './textInput.css';
 
-export interface TextInputProps {
-  id: string;
+export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  name?: string;
   labelText?: string;
-  placeholder?: string;
-  type?: string;
 }
 
-export const TextInput = ({
+export const TextInput: FC<TextInputProps> = ({
   id = 'default-input',
   labelText = 'Text Field',
   placeholder = 'Type something...',
@@ -21,6 +20,7 @@ export const TextInput = ({
           {labelText}
         </label>
       )}
+      {/* TODO: replace with text area component based on FormControl component (to be made) */}
       <input
         className='text-input--field'
         id={id}
@@ -28,6 +28,7 @@ export const TextInput = ({
         type={type}
         {...props}
       />
+      {/* TODO: complete implementation based on design */}
     </div>
   )
 }
