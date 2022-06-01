@@ -20,6 +20,10 @@
   @apply flex flex-row content-center my-2;
 }
 
+.modal--row-extra {
+  @apply justify-between
+}
+
 .modal--section-heading {
   @apply text-xl uppercase;
 }

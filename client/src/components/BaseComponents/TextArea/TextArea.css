@@ -1,0 +1,5 @@
+@import '../../../index.css';
+
+.text-area--field {
+  @apply border-2 p-1 rounded text-base;
+}

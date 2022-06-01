@@ -1,4 +1,5 @@
 import './select.css';
+import { FormControlWrapper } from '../FormControlWrapper/FormControlWrapper';
 
 export interface SelectOption {
   label: string;
@@ -21,17 +22,18 @@ export const Select = ({
 }: SelectProps) => {
   return (
     <div className='select--container'>
-      {labelText && (
-        <label className='select--label' htmlFor={`${id}`}>
-          {labelText}
-        </label>
-      )}
-      <select className='select--field' disabled={!active} id={id} {...props}>
-        <option disabled>Choose...</option>
-        {options.map(opt => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
-        ))}
-      </select>
+      <FormControlWrapper 
+        labelId={id}
+        labelText={labelText}
+        control={
+          <select className='select--field' disabled={!active} id={id} {...props}>
+            <option disabled>Choose...</option>
+            {options.map(opt => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        }
+      />
     </div>
   );
 }

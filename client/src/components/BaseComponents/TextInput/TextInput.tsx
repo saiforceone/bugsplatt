@@ -1,5 +1,6 @@
 import { FC, InputHTMLAttributes } from 'react';
 import './textInput.css';
+import { FormControlWrapper } from '../FormControlWrapper/FormControlWrapper';
 
 export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
@@ -15,19 +16,20 @@ export const TextInput: FC<TextInputProps> = ({
 }: TextInputProps) => {
   return (
     <div className='text-input--container'>
-      {labelText && (
-        <label className='text-input--label' htmlFor={`${id}`}>
-          {labelText}
-        </label>
-      )}
-      {/* TODO: replace with text area component based on FormControl component (to be made) */}
-      <input
-        className='text-input--field'
-        id={id}
-        placeholder={placeholder}
-        type={type}
-        {...props}
+      <FormControlWrapper 
+        labelId={id}
+        labelText={labelText}
+        control={
+          <input
+            className='text-input--field'
+            id={id}
+            placeholder={placeholder}
+            type={type}
+            {...props}
+          />
+        }
       />
+      
       {/* TODO: complete implementation based on design */}
     </div>
   )

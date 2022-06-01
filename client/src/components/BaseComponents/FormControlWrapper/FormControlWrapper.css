@@ -1,0 +1,9 @@
+@import '../../../index.css';
+
+.form-control-wrapper {
+  @apply flex flex-1 flex-col p-1 mb-2;
+}
+
+.form-control-wrapper--label {
+  @apply mb-1 text-gray-600 font-semibold;
+}

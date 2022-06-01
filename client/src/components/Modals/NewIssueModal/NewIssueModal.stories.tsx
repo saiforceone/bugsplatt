@@ -14,5 +14,12 @@ Primary.args = {
   project: {
     objectId: '123456',
     projectName: 'Proejct One'
-  }
+  },
+  projectPriorities: [{
+    label: 'Do another day',
+    value: 'do-another-day'
+  }, {
+    label: 'OMG WTF',
+    value: 'omg-wtf'
+  }]
 }

@@ -7,6 +7,7 @@ export interface TagProps {
   labelText: string;
   size: 'small' | 'medium';
   icon?: React.ReactElement;
+  action?: () => void;
 }
 
 export const Tag = ({
@@ -14,6 +15,7 @@ export const Tag = ({
   labelText = 'Tag',
   size = 'small',
   icon,
+  action,
   ...props
 }: TagProps) => {
   return (
