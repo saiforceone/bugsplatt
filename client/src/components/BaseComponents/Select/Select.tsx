@@ -1,3 +1,4 @@
+import { FC, SelectHTMLAttributes } from 'react';
 import './select.css';
 import { FormControlWrapper } from '../FormControlWrapper/FormControlWrapper';
 
@@ -6,7 +7,7 @@ export interface SelectOption {
   value: string;
 }
 
-export interface SelectProps {
+export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   active?: boolean;
   id: string;
   labelText?: string;
@@ -26,7 +27,7 @@ export const Select = ({
         labelId={id}
         labelText={labelText}
         control={
-          <select className='select--field' disabled={!active} id={id} {...props}>
+          <select className='form-control--field' disabled={!active} id={id} {...props}>
             <option disabled>Choose...</option>
             {options.map(opt => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>

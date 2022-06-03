@@ -7,7 +7,7 @@ export interface TagProps {
   labelText: string;
   size: 'small' | 'medium';
   icon?: React.ReactElement;
-  action?: () => void;
+  actionElements?: React.ReactElement;
 }
 
 export const Tag = ({
@@ -15,7 +15,7 @@ export const Tag = ({
   labelText = 'Tag',
   size = 'small',
   icon,
-  action,
+  actionElements,
   ...props
 }: TagProps) => {
   return (
@@ -23,6 +23,7 @@ export const Tag = ({
       <>
         {icon ? icon : <HiTag className='tag--icon' />}
         {labelText}
+        {actionElements}
       </>
     </label>
   );

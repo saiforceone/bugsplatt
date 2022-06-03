@@ -1,0 +1,17 @@
+@import '../../../index.css';
+
+.modal-wrapper {
+  @apply flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none;
+}
+
+.modal-wrapper--inner {
+  @apply relative w-auto my-8 mx-auto max-w-4xl;
+}
+
+.modal-wrapper--content-wrapper {
+  @apply border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none;
+}
+
+.modal-wrapper--content {
+  @apply relative p-2 flex-auto;
+}
