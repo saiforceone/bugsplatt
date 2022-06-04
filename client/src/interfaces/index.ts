@@ -1,3 +1,6 @@
+export interface UserComment {
+  content: string;
+}
 export interface ProjectPriority {
   label: string;
   value: string;

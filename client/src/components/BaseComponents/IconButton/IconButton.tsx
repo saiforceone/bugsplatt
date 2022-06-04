@@ -22,8 +22,8 @@ export const IconButton = ({
   ...props
 }: IconButtonProps) => {
   return (
-    <button 
-      className={['icon-button', `icon-button--${buttonSize}`, `${active ? '' : 'icon-button--inactive'}`, isCloseButton ? 'icon-button--close-btn' : ''].join(' ')}
+    <button
+      className={['icon-button', `icon-button--${buttonSize}`, `${active ? '' : 'icon-button--inactive'}`, isCloseButton ? 'icon-button--close-btn' : '', 'center-center'].join(' ')}
       onClick={props.onClick}
     >
       {icon}

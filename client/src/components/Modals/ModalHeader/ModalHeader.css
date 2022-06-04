@@ -1,0 +1,21 @@
+@import '../../../index.css';
+
+.modal-header {
+  @apply flex flex-1 flex-row content-center p-2 border-b-2;
+}
+
+.modal-header--icon {
+  @apply flex align-middle justify-center mr-2;
+}
+
+.modal-header--content {
+  @apply flex flex-col flex-1;
+}
+
+.modal-header--content-title {
+  @apply font-normal text-lg text-gray-800;
+}
+
+.modal-header--content-subtitle {
+  @apply font-medium text-sm text-gray-600;
+}

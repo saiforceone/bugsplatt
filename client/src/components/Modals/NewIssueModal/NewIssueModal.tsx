@@ -66,109 +66,111 @@ export const NewIssueModal = ({
 
   return (
     <ModalWrapper visible={visible}>
-      <div className="modal--container">
-        <div className="modal--top-row">
-          <h3>Create New Issue</h3>
-          <IconButton
-            active
-            buttonSize="medium"
-            icon={<HiXCircle className="h-7 w-7 text-white" />}
-            isCloseButton
-            onClick={() => onCloseModal()}
+      <div className="">
+        <div className="modal--container">
+          <div className="modal--top-row">
+            <h3>Create New Issue</h3>
+            <IconButton
+              active
+              buttonSize="medium"
+              icon={<HiXCircle className="h-7 w-7 text-white" />}
+              isCloseButton
+              onClick={() => onCloseModal()}
+            />
+          </div>
+          <div>
+            <Tag labelText={`Project: ${project.projectName}`} size="small" />
+          </div>
+          <TextInput
+            labelText="Issue Name"
+            id="new-issue-name"
+            onChange={(e) => setIssueName(e.target.value)}
+            value={issueName}
           />
-        </div>
-        <div>
-          <Tag labelText={`Project: ${project.projectName}`} size="small" />
-        </div>
-        <TextInput
-          labelText="Issue Name"
-          id="new-issue-name"
-          onChange={(e) => setIssueName(e.target.value)}
-          value={issueName}
-        />
-        <TextArea
-          labelText="Describe the issue"
-          onChange={(e) => setDescription(e.target.value)}
-          value={description}
-        />
-        <div className="modal--row">
-          <Calendar
-            labelText="Choose Date"
-            id="issue-due-date"
-            onChange={e => setIssueDueDate(e.target.value)}
-            value={issueDueDate}
+          <TextArea
+            labelText="Describe the issue"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
-          <Select
-            id="issue-priority"
-            labelText="Priority"
-            options={projectPriorities}
-            onChange={(e) => setIssuePriority(e.target.value)}
-            value={issuePriority}
+          <div className="modal--row">
+            <Calendar
+              labelText="Choose Date"
+              id="issue-due-date"
+              onChange={e => setIssueDueDate(e.target.value)}
+              value={issueDueDate}
+            />
+            <Select
+              id="issue-priority"
+              labelText="Priority"
+              options={projectPriorities}
+              onChange={(e) => setIssuePriority(e.target.value)}
+              value={issuePriority}
+            />
+          </div>
+          <div className="modal--row modal--row-extra">
+            <h3>Watched By: 1 User</h3>
+            <DefaultButton
+              active
+              label="Manage Watchers"
+              buttonSize="medium"
+              icon={<HiEye className="default--icon mt-1" />}
+              onClick={onManageWatchers}
+            />
+          </div>
+          <div className="modal--row modal--row-extra">
+            {/* TODO: Implement functionality on backend for file uploads and figure out how to represent within this component before upload */}
+            <h3>Attachments (1)</h3>
+            <DefaultButton
+              active
+              label="Add Attachments"
+              buttonSize="medium"
+              icon={<HiDocumentAdd className="default--icon mt-1" />}
+              onClick={onManageAttachments}
+            />
+          </div>
+          <TextInput
+            labelText="Add Tags"
+            placeholder="Type text and press 'enter' to add a tag"
+            onChange={(e) => setTagText(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                onAddTag();
+              }
+            }}
+            value={tagText}
           />
-        </div>
-        <div className="modal--row modal--row-extra">
-          <h3>Watched By: 1 User</h3>
-          <DefaultButton
-            active
-            label="Manage Watchers"
-            buttonSize="medium"
-            icon={<HiEye className="default--icon mt-1" />}
-            onClick={onManageWatchers}
-          />
-        </div>
-        <div className="modal--row modal--row-extra">
-          {/* TODO: Implement functionality on backend for file uploads and figure out how to represent within this component before upload */}
-          <h3>Attachments (1)</h3>
-          <DefaultButton
-            active
-            label="Add Attachments"
-            buttonSize="medium"
-            icon={<HiDocumentAdd className="default--icon mt-1" />}
-            onClick={onManageAttachments}
-          />
-        </div>
-        <TextInput
-          labelText="Add Tags"
-          placeholder="Type text and press 'enter' to add a tag"
-          onChange={(e) => setTagText(e.target.value)}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              onAddTag();
-            }
-          }}
-          value={tagText}
-        />
-        <div className="modal--row flex-wrap">
-          {issueTags.length ? (
-            issueTags.map((tag, index) => (
-              <Tag
-                key={`new-issue-tag-${index}-${tag}`}
-                extraCss="mr-1 mt-1"
-                labelText={tag}
-                size="small"
-                actionElements={
-                  <HiX
-                    className="h-5 w-5 ml-2 mt-1"
-                    onClick={() => onRemoveTag(index)}
-                  />
-                }
-              />
-            ))
-          ) : (
-            <div className="modal--row">
-              <HiInformationCircle className="h-5 w-5 mr-2" />
-              <span>No tags added for this issue yet</span>
-            </div>
-          )}
-        </div>
-        <div className="modal--row justify-center">
-          <DefaultButton
-            active
-            label="Create Issue"
-            buttonSize="medium"
-            icon={<HiCheckCircle className="default--icon mt-1" />}
-            onClick={onCreateIssue}
-          />
+          <div className="modal--row flex-wrap">
+            {issueTags.length ? (
+              issueTags.map((tag, index) => (
+                <Tag
+                  key={`new-issue-tag-${index}-${tag}`}
+                  extraCss="mr-1 mt-1"
+                  labelText={tag}
+                  size="small"
+                  actionElements={
+                    <HiX
+                      className="h-5 w-5 ml-2 mt-1"
+                      onClick={() => onRemoveTag(index)}
+                    />
+                  }
+                />
+              ))
+            ) : (
+              <div className="modal--row">
+                <HiInformationCircle className="h-5 w-5 mr-2" />
+                <span>No tags added for this issue yet</span>
+              </div>
+            )}
+          </div>
+          <div className="modal--row justify-center">
+            <DefaultButton
+              active
+              label="Create Issue"
+              buttonSize="medium"
+              icon={<HiCheckCircle className="default--icon mt-1" />}
+              onClick={onCreateIssue}
+            />
+          </div>
         </div>
       </div>
     </ModalWrapper>

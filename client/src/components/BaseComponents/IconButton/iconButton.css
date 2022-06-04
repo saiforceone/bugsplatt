@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .icon-button {
-  @apply bg-purple-800 p-2 rounded m-0 duration-300;
+  @apply bg-purple-800 rounded m-0 duration-300 flex justify-center align-middle content-center text-white;
 }
 
 .icon-button--inactive {
