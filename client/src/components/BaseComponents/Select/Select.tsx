@@ -22,19 +22,17 @@ export const Select = ({
   ...props
 }: SelectProps) => {
   return (
-    <div className='select--container'>
-      <FormControlWrapper 
-        labelId={id}
-        labelText={labelText}
-        control={
-          <select className='form-control--field' disabled={!active} id={id} {...props}>
-            <option disabled>Choose...</option>
-            {options.map(opt => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
-        }
-      />
-    </div>
+    <FormControlWrapper
+      labelId={id}
+      labelText={labelText}
+      control={
+        <select className='form-control--field' disabled={!active} id={id} {...props}>
+          <option disabled>Choose...</option>
+          {options.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+      }
+    />
   );
 }

@@ -3,6 +3,7 @@ import './ModalHeader.css';
 import { IconButton } from '../../BaseComponents/IconButton/IconButton';
 
 export interface ModalHeaderProps {
+  extraActions?: React.ReactNode;
   icon?: React.ReactElement;
   onClose: () => void;
   subtitle?: string;
@@ -10,6 +11,7 @@ export interface ModalHeaderProps {
 }
 
 export const ModalHeader = ({
+  extraActions,
   icon,
   onClose,
   subtitle,
@@ -22,6 +24,9 @@ export const ModalHeader = ({
         <h3 className='modal-header--content-title'>{title}</h3>
         {subtitle && <small className='modal-header--content-subtitle'>{subtitle}</small>}
       </div>
+      {extraActions && <div className='modal-header--extra-actions'>
+        {extraActions}
+      </div>}
       <IconButton active buttonSize='small' icon={<HiX className='center-center' />} isCloseButton onClick={onClose} />
     </div>
   );

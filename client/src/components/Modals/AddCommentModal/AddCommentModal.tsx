@@ -29,13 +29,8 @@ export const AddCommentModal = ({
   }, [commentText])
 
   return (
-    <ModalWrapper visible={visible}>
+    <ModalWrapper modalHeaderProps={{onClose, subtitle: 'Use the field below to add a comment for this issue...', title: 'Add Comment'}} visible={visible}>
       <div className='modal--container'>
-        <ModalHeader
-          onClose={onClose}
-          subtitle='Use the field below to add a comment for this issue...'
-          title='Add Comment'
-        />
         <div className="modal--row">
           <TextArea
             id='add-comment-field'

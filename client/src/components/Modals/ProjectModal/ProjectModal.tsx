@@ -59,28 +59,24 @@ export const ProjectModal = ({
   ...props
 }: ProjectModalProps) => {
   return (
-    <ModalWrapper visible={visible}>
+    <ModalWrapper
+      modalHeaderProps={{
+        extraActions: <>
+          <DefaultButton
+            active
+            buttonSize="small"
+            extraCss="mr-2"
+            label="Go to Project"
+            onClick={() => onGoToProject()}
+            icon={<HiExternalLink className="h-5 w-5 text-white" />}
+          />
+        </>,
+        onClose: onCloseModal,
+        title: `${projectName}`
+      }}
+      visible={visible}
+    >
       <div className="">
-        <div className="modal--top-row">
-          <h2 className="modal--main-heading">{projectName}</h2>
-          <div className="modal--top-buttons-container">
-            <DefaultButton
-              active
-              buttonSize="medium"
-              extraCss="mr-2"
-              label="Go to Project"
-              onClick={() => onGoToProject()}
-              icon={<HiExternalLink className="default-tag--icon" />}
-            />
-            <IconButton
-              active
-              icon={<HiXCircle className="default-icon" />}
-              isCloseButton
-              buttonSize="medium"
-              onClick={() => onCloseModal()}
-            />
-          </div>
-        </div>
         <div className="modal--row flex-wrap">
           <Tag
             extraCss="modal--tag"
@@ -125,8 +121,8 @@ export const ProjectModal = ({
         <div className="modal--row">
           {projectTags && projectTags.length
             ? projectTags.map((projectTag) => (
-                <Tag extraCss="mt-1 mr-2" labelText={projectTag} size="small" />
-              ))
+              <Tag extraCss="mt-1 mr-2" labelText={projectTag} size="small" />
+            ))
             : "No tags associated with this project"}
         </div>
       </div>

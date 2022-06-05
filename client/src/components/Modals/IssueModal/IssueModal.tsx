@@ -35,30 +35,27 @@ export const IssueModal = ({
   projectName = "Project 1",
   visible = true,
   comments,
+  onCloseAction,
   ...props
 }: IssueModalProps) => {
   return (
-    <ModalWrapper visible={visible}>
+    <ModalWrapper
+      modalHeaderProps={{
+        extraActions: <>
+          <DefaultButton
+            active
+            buttonSize="small"
+            icon={<HiCog className="h-5 w-5 text-white" />}
+            label="Manage Issue"
+            onClick={() => props.onManageIssue()}
+          />
+        </>,
+        onClose: onCloseAction,
+        title: `${issueName}`
+      }}
+      visible={visible}
+    >
       <div className="issue-modal--container">
-        <div className="issue-modal--top-row">
-          <h2 className="issue-modal--issue-name">{issueName}</h2>
-          <div className="issue-modal--top-buttons">
-            <DefaultButton
-              active
-              extraCss="mr-2"
-              icon={<HiCog className="h-7 w-7 text-white" />}
-              label="Manage Issue"
-              onClick={() => props.onManageIssue()}
-            />
-            <IconButton
-              active
-              icon={<HiXCircle className="h-7 w-7 text-white" />}
-              isCloseButton
-              buttonSize="medium"
-              onClick={() => props.onCloseAction()}
-            />
-          </div>
-        </div>
         <div className="issue-modal--tag-row">
           <Tag
             extraCss="issue-modal--tag"

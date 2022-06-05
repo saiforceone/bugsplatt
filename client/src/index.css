@@ -27,5 +27,5 @@
 }
 
 .form-control--field {
-  @apply border-2 rounded p-2;
+  @apply border-2 rounded p-2 h-11;
 }

@@ -15,22 +15,18 @@ export const TextInput: FC<TextInputProps> = ({
   ...props
 }: TextInputProps) => {
   return (
-    <div className='text-input--container'>
-      <FormControlWrapper 
-        labelId={id}
-        labelText={labelText}
-        control={
-          <input
-            className='text-input--field'
-            id={id}
-            placeholder={placeholder}
-            type={type}
-            {...props}
-          />
-        }
-      />
-      
-      {/* TODO: complete implementation based on design */}
-    </div>
-  )
+    <FormControlWrapper
+      labelId={id}
+      labelText={labelText}
+      control={
+        <input
+          className='form-control--field'
+          id={id}
+          placeholder={placeholder}
+          type={type}
+          {...props}
+        />
+      }
+    />
+  );
 }

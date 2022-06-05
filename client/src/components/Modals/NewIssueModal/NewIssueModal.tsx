@@ -65,20 +65,16 @@ export const NewIssueModal = ({
   );
 
   return (
-    <ModalWrapper visible={visible}>
+    <ModalWrapper
+      modalHeaderProps={{
+        onClose: onCloseModal,
+        title: 'Create New Issue'
+      }}
+      visible={visible}
+    >
       <div className="">
         <div className="modal--container">
-          <div className="modal--top-row">
-            <h3>Create New Issue</h3>
-            <IconButton
-              active
-              buttonSize="medium"
-              icon={<HiXCircle className="h-7 w-7 text-white" />}
-              isCloseButton
-              onClick={() => onCloseModal()}
-            />
-          </div>
-          <div>
+          <div className="modal--row">
             <Tag labelText={`Project: ${project.projectName}`} size="small" />
           </div>
           <TextInput

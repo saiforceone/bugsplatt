@@ -28,7 +28,7 @@ export const DefaultButton = ({
           {icon}
         </div>
       )}
-      <span className='mt-1'>{label}</span>
+      <span className='flex self-center'>{label}</span>
     </button>
   );
 }

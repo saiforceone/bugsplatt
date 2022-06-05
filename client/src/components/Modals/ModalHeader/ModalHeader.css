@@ -13,9 +13,13 @@
 }
 
 .modal-header--content-title {
-  @apply font-normal text-lg text-gray-800;
+  @apply font-medium text-lg text-gray-800 uppercase;
 }
 
 .modal-header--content-subtitle {
-  @apply font-medium text-sm text-gray-600;
+  @apply font-bold text-sm text-gray-600;
+}
+
+.modal-header--extra-actions {
+  @apply flex flex-row mr-4 content-center;
 }
