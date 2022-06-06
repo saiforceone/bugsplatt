@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .modal-header {
-  @apply flex flex-1 flex-row content-center p-2 border-b-2;
+  @apply flex flex-1 flex-row content-center p-2 border-b-2 mb-2;
 }
 
 .modal-header--icon {

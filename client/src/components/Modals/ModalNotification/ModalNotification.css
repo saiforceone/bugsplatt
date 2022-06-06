@@ -1,0 +1,25 @@
+@import '../../../index.css';
+
+.modal-notification {
+  @apply border-2 flex flex-1 flex-row content-center mb-1 p-2 rounded;
+}
+
+.modal-notification--icon {
+  @apply self-center;
+}
+
+.modal-notification-default {
+  @apply border-slate-700 bg-slate-400;
+}
+
+.modal-notification-error {
+  @apply border-red-600 bg-red-900 text-white;
+}
+
+.modal-notification-info {
+  @apply border-blue-900 bg-blue-500;
+}
+
+.modal-notification-warning {
+  @apply border-orange-900 bg-orange-500;
+}
