@@ -9,3 +9,11 @@ export default {
 const Template: ComponentStory<typeof ModalErrorContainer> = args => <ModalErrorContainer {...args} />
 
 export const Primary = Template.bind({});
+
+Primary.args = {
+  errors: [{
+    title: 'Missing field',
+    details: 'Filed does not have a value',
+    notificationType: 'error'
+  }]
+}

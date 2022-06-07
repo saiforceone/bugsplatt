@@ -26,8 +26,8 @@ export const ModalNotification = ({ notification }: ModalNofiticationProps): JSX
     <div className={['modal-notification', `${notification.notificationType ? 'modal-notification-' + notification.notificationType : 'modal-notification-default'}`].join(' ')}>
       {iconElement}
       <div className="ml-2">
-        <h4>{notification.title}</h4>
-        <p>{notification.details}</p>
+        <h4 className="modal-notification--title">{notification.title}</h4>
+        <p className="modal-notification--details">{notification.details}</p>
       </div>
     </div>
   );

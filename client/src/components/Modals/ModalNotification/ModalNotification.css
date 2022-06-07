@@ -8,6 +8,14 @@
   @apply self-center;
 }
 
+.modal-notification--title {
+  @apply uppercase font-medium;
+}
+
+.modal-notification--details {
+  @apply font-normal text-sm;
+}
+
 .modal-notification-default {
   @apply border-slate-700 bg-slate-400;
 }

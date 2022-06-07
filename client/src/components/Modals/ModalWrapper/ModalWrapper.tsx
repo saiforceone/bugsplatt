@@ -2,14 +2,12 @@ import './ModalWrapper.css';
 import { ModalHeader, ModalHeaderProps } from '../ModalHeader/ModalHeader';
 
 export interface ModalWrapperProps {
-  extraActions?: React.ReactNode;
   modalHeaderProps: ModalHeaderProps;
   visible: boolean;
   children: React.ReactElement;
 }
 
 export const ModalWrapper = ({
-  extraActions,
   modalHeaderProps,
   visible = false,
   children,

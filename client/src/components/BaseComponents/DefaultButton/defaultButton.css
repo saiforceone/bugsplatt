@@ -13,7 +13,7 @@
 }
 
 .default-button--small {
-  @apply px-2;
+  @apply px-2 py-0;
 }
 
 .default-button--medium {

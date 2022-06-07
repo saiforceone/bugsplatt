@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HiFilter } from "react-icons/hi";
+import { HiFilter, HiRefresh } from "react-icons/hi";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
 import { SelectOption } from "../../../interfaces";
 import '../Modals.css';
@@ -27,8 +27,15 @@ export const FilterProjectModal = ({
   return (
     <ModalWrapper
       modalHeaderProps={{
+        extraActions: <>
+          <DefaultButton
+            active
+            buttonSize="small"
+            icon={<HiRefresh className="h-5 w-5" />}
+            label="Reset Filter"
+          />
+        </>,
         onClose: onCloseModal,
-        subtitle: 'Use the fields below to filter projects...',
         title: 'Filter Projects'
       }}
       visible={visible}
