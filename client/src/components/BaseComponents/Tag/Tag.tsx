@@ -19,13 +19,11 @@ export const Tag = ({
   ...props
 }: TagProps) => {
   return (
-    <label className={['tag', `tag--${size}`, extraCss].join(' ')}>
-      <>
-        {icon ? icon : <HiTag className='tag--icon' />}
-        {labelText}
-        {actionElements}
-      </>
-    </label>
+    <div className={['tag', `tag--${size}`, extraCss].join(' ')}>
+      {icon ? icon : <HiTag className='tag--icon' />}
+      {labelText}
+      {actionElements}
+    </div>
   );
 };
 

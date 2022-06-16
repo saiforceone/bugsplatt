@@ -5,11 +5,11 @@
 }
 
 .no-result--icon-container {
-  @apply flex flex-row;
+  @apply flex flex-row justify-center;
 }
 
 .no-result--icon {
-  @apply h-7 w-7 text-slate-600 ml-auto mr-auto mb-2;
+  @apply h-7 w-7 text-slate-600 mb-2;
 }
 
 .no-result--primary-text {

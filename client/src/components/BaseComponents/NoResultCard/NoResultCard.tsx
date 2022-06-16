@@ -15,7 +15,7 @@ export const NoResultCard = ({
 }: NoResultCardProps): JSX.Element => {
   return (
     <div className='no-result--container'>
-      <div className='no-result--icon--container'>
+      <div className='no-result--icon-container'>
         {icon ? icon : <HiExclamation className='no-result--icon' />}
       </div>
       <h4 className='no-result--primary-text'>{primaryText ? primaryText : 'No Results Found'}</h4>
