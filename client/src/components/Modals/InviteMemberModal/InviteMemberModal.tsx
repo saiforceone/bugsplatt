@@ -5,7 +5,7 @@ import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
 import { Tag } from "../../BaseComponents/Tag/Tag";
 import { TextInput } from "../../BaseComponents/TextInput/TextInput";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
-import { HiMail, HiTrash, HiX } from "react-icons/hi";
+import { HiMail, HiTrash } from "react-icons/hi";
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
 
 export interface InviteMemberModalProps {
@@ -43,7 +43,9 @@ export const InviteMemberModal = ({
   );
 
   const onExecuteSendInvites = useCallback(() => {
-    // TODO: implement functionality. check for empty invites
+    if (!invites.length) {
+      return alert('Invitees have not been specified');
+    }
     onSendInvites(invites);
   }, [invites]);
 
