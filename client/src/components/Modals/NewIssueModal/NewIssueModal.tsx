@@ -1,7 +1,14 @@
 import { useCallback, useState } from "react";
 import "../Modals.css";
 import "./newIssueModal.css";
-import { HiCheckCircle, HiDocumentAdd, HiEye, HiInformationCircle, HiX, HiXCircle } from "react-icons/hi";
+import {
+  HiCheckCircle,
+  HiDocumentAdd,
+  HiEye,
+  HiInformationCircle,
+  HiX,
+  HiXCircle,
+} from "react-icons/hi";
 
 import {
   NewIssueProject,
@@ -16,6 +23,10 @@ import { Select } from "../../BaseComponents/Select/Select";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
 import { Calendar } from "../../BaseComponents/Calendar/Calendar";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
+import { FileAttachmentCard } from "../../BaseComponents/FileAttachmentCard/FileAttachmentCard";
+import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
+import { FormattingUtils } from "../../../utils/FormattingUtils";
+import { HiddenFileInput } from "../../BaseComponents/HiddenFileInput/HiddenFileInput";
 
 export interface NewIssueModalProps {
   onCloseModal: () => void;
@@ -44,6 +55,7 @@ export const NewIssueModal = ({
   const [tagText, setTagText] = useState("");
   const [issuePriority, setIssuePriority] = useState<string | undefined>();
   const [issueDueDate, setIssueDueDate] = useState("");
+  const [fileBlobs, setFileBlobs] = useState<File[]>([]);
   // TODO: Figure out how to store the attachements in this component before upload
 
   const onAddTag = useCallback(() => {
@@ -64,11 +76,23 @@ export const NewIssueModal = ({
     [issueTags]
   );
 
+  const onAddFile = useCallback((file: File) => {
+    const _fileBlobs = [...fileBlobs];
+    _fileBlobs.push(file);
+    setFileBlobs(_fileBlobs);
+  }, [fileBlobs]);
+
+  const onRemoveFile = useCallback((index: number) => {
+    const _fileBlobs = [...fileBlobs];
+    _fileBlobs.splice(index, 1);
+    setFileBlobs(_fileBlobs);
+  }, [fileBlobs]);
+
   return (
     <ModalWrapper
       modalHeaderProps={{
         onClose: onCloseModal,
-        title: 'Create New Issue'
+        title: "Create New Issue",
       }}
       visible={visible}
     >
@@ -92,7 +116,7 @@ export const NewIssueModal = ({
             <Calendar
               labelText="Choose Date"
               id="issue-due-date"
-              onChange={e => setIssueDueDate(e.target.value)}
+              onChange={(e) => setIssueDueDate(e.target.value)}
               value={issueDueDate}
             />
             <Select
@@ -115,14 +139,29 @@ export const NewIssueModal = ({
           </div>
           <div className="modal--row modal--row-extra">
             {/* TODO: Implement functionality on backend for file uploads and figure out how to represent within this component before upload */}
-            <h3>Attachments (1)</h3>
-            <DefaultButton
-              active
-              label="Add Attachments"
-              buttonSize="medium"
-              icon={<HiDocumentAdd className="default--icon mt-1" />}
-              onClick={onManageAttachments}
+            <h3 className="uppercase text-lg">Attachments ({fileBlobs.length})</h3>
+            
+            <HiddenFileInput
+              buttonText="Add Attachment"
+              onAddFile={onAddFile}
             />
+          </div>
+          <div>
+            {fileBlobs.length ? (
+              fileBlobs.map((file, index) => (
+                <FileAttachmentCard
+                  key={`file-attachment-${index}`}
+                  fileName={file.name}
+                  fileSize={`${FormattingUtils.formatBytes(file.size)}`}
+                  removeAction={() => onRemoveFile(index)}
+                />
+              ))
+            ) : (
+              <NoResultCard
+                primaryText="No files attached"
+                secondaryText="Click the button above to add attachments"
+              />
+            )}
           </div>
           <TextInput
             labelText="Add Tags"

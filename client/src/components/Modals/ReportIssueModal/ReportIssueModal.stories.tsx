@@ -9,3 +9,18 @@ export default {
 const Template: ComponentStory<typeof ReportIssueModal> = args => <ReportIssueModal {...args} />
 
 export const Primary = Template.bind({});
+
+Primary.args = {
+  teamName: 'Bug Smashers Extreme',
+  userName: 'John Batman',
+  issueTypes: [{
+    label: 'General Issue',
+    value: 'general-issue'
+  }, {
+    label: 'Usability Issue',
+    value: 'usability-issue'
+  }, {
+    label: 'IDK',
+    value: 'idk'
+  }]
+}

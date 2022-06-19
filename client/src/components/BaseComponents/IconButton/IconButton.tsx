@@ -17,7 +17,7 @@ export interface IconButtonProps {
 export const IconButton = ({
   active = true,
   buttonSize = 'small',
-  icon = <HiCheckCircle className="defaultIcon" />,
+  icon = <HiCheckCircle className="default--icon self-center" />,
   isCloseButton,
   ...props
 }: IconButtonProps) => {

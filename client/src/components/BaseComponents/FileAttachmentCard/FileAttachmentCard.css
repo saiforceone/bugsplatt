@@ -1,0 +1,21 @@
+@import '../../../index.css';
+
+.file-attachment-card {
+  @apply bg-white flex flex-1 rounded mb-2;
+}
+
+.file-attachment-card--icon-container {
+  @apply bg-slate-500 flex flex-row justify-center w-9 rounded-tl rounded-bl;
+}
+
+.file-attachment-card--content {
+  @apply flex flex-1 flex-col ml-2;
+}
+
+.file-attachment-card--file-name {
+  @apply text-lg uppercase;
+}
+
+.file-attachment-card--file-size {
+  @apply font-semibold uppercase;
+}
