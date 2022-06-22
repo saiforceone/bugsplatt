@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.team-card {
+  @apply rounded bg-slate-50 p-2;
+}
+
+.team-card--team-name {
+  @apply text-xl;
+}
+
+.team-card--row {
+  @apply flex flex-1 flex-wrap content-center;
+}

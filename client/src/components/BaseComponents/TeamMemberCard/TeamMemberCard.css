@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.team-member-card {
+  @apply bg-slate-50 rounded flex flex-1 content-center p-2;
+}
+
+.team-member-card--name {
+  @apply font-medium uppercase text-gray-800;
+}
+
+.team-member-card--email {
+  @apply font-semibold uppercase text-xs text-gray-600;
+}
