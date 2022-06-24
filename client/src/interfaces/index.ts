@@ -39,3 +39,10 @@ export interface AppNotification {
   details: string;
   notificationType: 'default' | 'error' | 'info' | 'success' | 'warning';
 }
+
+export interface NewProjectData {
+  colorCode?: string;
+  projectDesc: string;
+  projectName: string;
+  projectType: string;
+}

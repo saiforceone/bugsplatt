@@ -1,0 +1,25 @@
+@import '../../../index.css';
+
+.page-header {
+  @apply content-center flex flex-1 mb-2 p-1;
+}
+
+.page-header--content {
+  @apply flex flex-1 flex-col self-center;
+}
+
+.page-header--title {
+  @apply ml-0 my-1 text-3xl text-gray-700;
+}
+
+.page-header--subtitle {
+  @apply text-gray-400 font-semibold;
+}
+
+.page-header--back-action {
+  @apply flex mr-3 w-fit self-center;
+}
+
+.page-header--actions {
+  @apply flex ml-2 self-center;
+}

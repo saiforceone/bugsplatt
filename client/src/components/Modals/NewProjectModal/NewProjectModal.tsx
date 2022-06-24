@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import { HiCheckCircle } from 'react-icons/hi';
-import { ProjectType } from '../../../interfaces';
+import { NewProjectData, ProjectType } from '../../../interfaces';
 import { DefaultButton } from '../../BaseComponents/DefaultButton/DefaultButton';
 import { Select } from '../../BaseComponents/Select/Select';
 import { TextArea } from '../../BaseComponents/TextArea/TextArea';
@@ -10,16 +10,14 @@ import { ModalWrapper } from '../ModalWrapper/ModalWrapper';
 
 export interface NewProjectModalProps {
   onCloseModal: () => void;
-  onCreateProject: (data: object) => void;
+  onCreateProject: (data: NewProjectData) => void;
   visible: boolean;
-  projectOwner: string;
   projectTypes: ProjectType[];
 }
 
 export const NewProjectModal: FC<NewProjectModalProps> = ({
   onCloseModal,
   onCreateProject,
-  projectOwner,
   projectTypes,
   visible
 }) => {
@@ -27,15 +25,17 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
   const [projectName, setProjectName] = useState('');
   const [projectDesc, setProjectDesc] = useState('');
   const [projectType, setProjectType] = useState('');
+  const [colorCode, setColorCode] = useState('');
 
   const onExecCreateProject = useCallback(() => {
     // TODO validation / error handling
     onCreateProject({
       projectName,
       projectDesc,
-      projectType
+      projectType,
+      colorCode
     });
-  }, [projectName, projectDesc, projectType])
+  }, [projectName, projectDesc, projectType, colorCode])
 
   return (
     <ModalWrapper
@@ -55,6 +55,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           onChange={e => setProjectType(e.target.value)}
           value={projectType}
         />
+        <TextInput labelText={`(Optional) Color Code ${colorCode}`} placeholder='Color Code' type='color' value={colorCode} onChange={e => setColorCode(e.target.value)} />
         <div className="modal--row justify-center">
           <DefaultButton active label='Create Project' onClick={onExecCreateProject} icon={<HiCheckCircle className='default-tag--icon' />} />
         </div>
