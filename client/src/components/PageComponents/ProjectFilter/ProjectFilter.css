@@ -1,0 +1,9 @@
+@import '../../../index.css';
+
+.project-filter {
+  @apply bg-slate-100 content-center flex flex-1 p-1;
+}
+
+.project-filter--controls {
+  @apply flex flex-1;
+}

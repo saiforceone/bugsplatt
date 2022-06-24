@@ -29,3 +29,7 @@
 .form-control--field {
   @apply border-2 rounded p-2 h-11;
 }
+
+.default-actions-container {
+  @apply flex self-center;
+}

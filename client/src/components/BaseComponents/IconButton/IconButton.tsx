@@ -5,7 +5,7 @@ export interface IconButtonProps {
   /** `active` required - indicates the state of the button */
   active: boolean;
   /** `buttonSize` optional - controls the size of the button */
-  buttonSize?: 'small' | 'medium';
+  buttonSize?: 'xsmall' | 'small' | 'medium';
   /** `onClick` optional - click handler for the button */
   onClick?: () => void;
   /** `icon` required - icon that is shown on the button */

@@ -1,0 +1,25 @@
+@import '../../../index.css';
+
+.proj-filter-opt {
+  @apply bg-slate-100 flex flex-1 p-1;
+}
+
+.proj-filter-opt--content {
+  @apply flex flex-1 mr-1;
+}
+
+.proj-filter-opt--label {
+  @apply bg-slate-400 flex mr-1 rounded px-2 py-1;
+}
+
+.proj-filter-opt--label-content {
+  @apply font-semibold self-center text-xs uppercase;
+}
+
+.proj-filter-opt--value {
+  @apply flex flex-1 ml-1;
+}
+
+.proj-filter-opt--value-content {
+  @apply font-semibold self-center text-xs truncate uppercase;
+}

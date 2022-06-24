@@ -8,6 +8,10 @@
   @apply bg-purple-200;
 }
 
+.icon-button--xsmall {
+  @apply h-5 w-5;
+}
+
 .icon-button--small {
   @apply h-9 w-9;
 }

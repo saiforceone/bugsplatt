@@ -1,0 +1,21 @@
+@import '../../../index.css';
+
+.section-header {
+  @apply content-center flex flex-1 flex-row mb-2;
+}
+
+.section-header--content {
+  @apply flex flex-1 flex-col mr-2;
+}
+
+.section-header--title {
+  @apply text-2xl text-gray-800;
+}
+
+.section-header--subtitle {
+  @apply font-semibold text-sm text-gray-500 uppercase;
+}
+
+.section-header--actions {
+  @apply flex self-center;
+}
