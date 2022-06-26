@@ -1,5 +1,13 @@
 @import '../../../index.css';
 
 .sel-opt-item {
+  @apply bg-white flex flex-1 mb-2 p-1 rounded;
+}
+
+.sel-opt-item--container {
   @apply flex flex-1;
+}
+
+.sel-opt-item--label {
+  @apply text-gray-700 text-lg truncate flex self-center;
 }

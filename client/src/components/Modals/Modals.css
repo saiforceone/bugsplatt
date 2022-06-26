@@ -5,6 +5,10 @@
   min-width: 600px;
 }
 
+.modal--container-sm {
+  min-width: 400px;
+}
+
 .modal--top-row {
   @apply flex flex-row content-center justify-between mb-4;
 }

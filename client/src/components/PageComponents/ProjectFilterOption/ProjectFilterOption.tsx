@@ -17,8 +17,6 @@ export const ProjectFilterOption: FC<ProjectFilterOptionProps> = ({
   extraCss
 }) => {
   
-  const [optionsVisible, setOptionsVisible] = useState(false);
-
   return (
     <div className={["proj-filter-opt", extraCss].join(' ')}>
       <div className="proj-filter-opt--content">
@@ -35,6 +33,7 @@ export const ProjectFilterOption: FC<ProjectFilterOptionProps> = ({
         icon={<HiX className="default-icon self-center" />}
         onClick={resetAction}
       />
+
     </div>
   );
 };
