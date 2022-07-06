@@ -7,13 +7,13 @@ import { ProjectFilterOption } from "../ProjectFilterOption/ProjectFilterOption"
 import "./ProjectFilter.css";
 
 interface ProjectFilterProps {
-  onFilter: () => void;
+  onFilter: (data: object) => void;
   users: SelectableOption[];
   teams: SelectableOption[];
   projectTypes: SelectableOption[];
 }
 
-type ModalTargetType = "user" | "team" | "project-type" | "date-range";
+type ModalTargetType = "user" | "team" | "project-type" | "date-range" | "project-priorities" | "project-statuses";
 
 const DefaultHeaderProps: ModalHeaderProps = {
   title: "Default Title",
@@ -22,9 +22,10 @@ const DefaultHeaderProps: ModalHeaderProps = {
 
 export const ProjectFilter: FC<ProjectFilterProps> = ({
   onFilter,
-  users,
-  teams,
-  projectTypes,
+  users = [],
+  teams = [],
+  projectTypes = [],
+
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState<SelectableOption>();
@@ -112,11 +113,18 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
   }, [selectedTarget, selectedTeam, selectedUser, selectedTarget]);
 
   const onApplyFilter = useCallback(() => {
-    // TODO: complete implementation
+    onFilter({
+      selectedUser,
+      selectedTeam,
+      selectedProjType
+    });
   }, [selectedUser, selectedTeam, selectedProjType])
 
   const onResetAllOptions = useCallback(() => {
-    // TODO: complete implementation
+    setSelectedUser(undefined);
+    setSelectedProjType(undefined);
+    setSelectedTarget(undefined);
+    setSelectedTeam(undefined);
   }, []);
 
   return (

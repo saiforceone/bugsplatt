@@ -1,0 +1,17 @@
+@import '../../../index.css';
+
+.project-issue-filter {
+  @apply flex content-center justify-between mb-2;
+}
+
+.project-filter--issue-count {
+  @apply uppercase text-lg font-semibold self-center;
+}
+
+.project-issue--filter-container {
+  @apply flex content-center self-center;
+}
+
+.project-issue--actions {
+  @apply flex ml-2 self-center;
+}
