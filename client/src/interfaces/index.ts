@@ -46,3 +46,13 @@ export interface NewProjectData {
   projectName: string;
   projectType: string;
 }
+
+export interface APIResponse {
+  data: object[]|object;
+  error: string;
+  success: boolean;
+}
+
+export interface APIQuery {
+  [key: string]: string
+}
