@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.10.1",
+    "@reduxjs/toolkit": "^1.8.3",
     "@types/qs": "^6.9.7",
     "axios": "^0.27.2",
     "qs": "^6.11.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "react-redux": "^8.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
