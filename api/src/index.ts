@@ -5,6 +5,7 @@ dotenv.config({
   path: `.env.${process.env.NODE_ENV}.local`,
 });
 
+import cors from 'cors';
 import express, {Express, Request, Response} from 'express';
 import {connect} from 'mongoose';
 
@@ -15,6 +16,7 @@ const app: Express = express();
 const port: number = Number(process.env.PORT);
 
 app.use(express.json());
+app.use(cors())
 configureMiddleware(app);
 
 app.get('/', (req: Request, res: Response) => {
