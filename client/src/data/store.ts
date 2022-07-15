@@ -17,9 +17,14 @@ const rootReducer = combineReducers({
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(commentApi.middleware)
+    getDefaultMiddleware().concat(
+      commentApi.middleware,
+      projectApi.middleware,
+      teamApi.middleware,
+      issueApi.middleware
+    ),
 });
 
 setupListeners(store.dispatch);
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;

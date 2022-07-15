@@ -63,7 +63,7 @@ export interface CommonSlice {
   totalItems: number;
 }
 
-interface FECommonData {
+export interface FECommonData {
   _id: string;
   createdAt: string;
   updatedAt: string;
@@ -96,7 +96,7 @@ export interface FEIssue extends FECommonData {
   status: string;
   tags: string[];
   title: string;
-  watchedBy: string;
+  watchedBy: string[];
 }
 
 export interface FEComment extends FECommonData {

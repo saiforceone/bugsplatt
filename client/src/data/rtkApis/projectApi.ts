@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_ENDPOINTS } from "../../constants/apiConstants";
 import { FEProject } from "../../interfaces";
-import { prepareHeaders } from "../helpers";
+import { buildCommonAddQuery, buildCommonDeleteQuery, prepareHeaders } from "../helpers";
 
 const baseUrl = `${API_ENDPOINTS.API_BASE}${API_ENDPOINTS.PROJECTS}`;
 
@@ -12,6 +12,9 @@ export const projectApi = createApi({
     prepareHeaders
   }),
   endpoints: (builder) => ({
+    addProject: builder.mutation<FEProject, Partial<FEProject>>({
+      query: (body) => buildCommonAddQuery(body)
+    }),
     getProjectWithId: builder.query<FEProject, string>({
       query: (id) => ({
         url: `/${id}`
@@ -21,11 +24,16 @@ export const projectApi = createApi({
       query: () => ({
         url: '/'
       })
+    }),
+    // TODO: IMPLEMENT UPDATE Query
+    deleteProject: builder.mutation<{ success: boolean; _id: string}, string>({
+      query: (_id) => buildCommonDeleteQuery(_id)
     })
   })
 });
 
 export const {
   useGetProjectWithIdQuery, useLazyGetProjectWithIdQuery,
-  useLazyGetProjectsQuery, useGetProjectsQuery
+  useLazyGetProjectsQuery, useGetProjectsQuery, useDeleteProjectMutation,
+  useAddProjectMutation
 } = projectApi;
