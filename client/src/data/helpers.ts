@@ -1,7 +1,9 @@
 
 import { RootState } from "./store";
-import { FECommonData } from "../interfaces";
 import { FetchArgs } from "@reduxjs/toolkit/dist/query";
+
+import { API_ENDPOINTS } from "../constants/apiConstants";
+const apiBase = API_ENDPOINTS.API_BASE;
 
 export const prepareHeaders = (headers: Headers, {getState}) => {
   const token = (getState() as RootState).auth.authToken;
@@ -41,13 +43,19 @@ export const prepareHeaders = (headers: Headers, {getState}) => {
 //   }
 // )
 
-export const buildCommonAddQuery = (body: object): FetchArgs => ({
-  url: '/',
+export const buildCommonAddQuery = (body: object, targetEndpoint: string): FetchArgs => ({
+  url: `${apiBase}/${targetEndpoint}`,
   method: 'POST',
   body
 });
 
-export const buildCommonDeleteQuery = (_id: string): FetchArgs => ({
-  url: `/${_id}`,
+export const buildCommonUpdateQuery = ({_id, ...patch}: {_id: string;}, targetEndpoint: string): FetchArgs => ({
+  url: `${targetEndpoint}/${_id}`,
+  method: 'PUT',
+  body: patch
+});
+
+export const buildCommonDeleteQuery = (_id: string, targetEndpoint: string): FetchArgs => ({
+  url: `${apiBase}/${targetEndpoint}/${_id}`,
   method: 'DELETE',
 });

@@ -59,7 +59,7 @@ function App() {
       // triggerProjects();
       triggerSingleProject("6275ee2c0e2d632d52abcf7d");
 
-      // triggerUpdateIssue({_id: "6275ede80e2d632d52abcf6f", expectedCloseDate: "2022-08-01"});
+      triggerUpdateIssue({_id: "62d0e57c597f82d81c84afcb", expectedCloseDate: "2022-08-04"});
       // triggerAddIssue({
       //   "createdBy": "622c0d168787b80069099f79",
       //   "assignedTo": "622c0d168787b80069099f79",

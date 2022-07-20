@@ -1,59 +1,33 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_ENDPOINTS } from "../../constants/apiConstants";
 import { FEIssue } from "../../interfaces";
-import { buildCommonAddQuery, buildCommonDeleteQuery, prepareHeaders } from "../helpers";
+import { api } from "./api";
+import { buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery } from "../helpers";
 
-const baseUrl = `${API_ENDPOINTS.API_BASE}${API_ENDPOINTS.ISSUES}`;
+const targetEndpoint = `${API_ENDPOINTS.ISSUES}`;
 
-export const issueApi = createApi({
-  reducerPath: 'issues',
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    prepareHeaders,
-  }),
-  tagTypes: ['Issues'],
+export const issueApi = api.injectEndpoints({
   endpoints: (builder) => ({
     addIssue: builder.mutation<FEIssue, Partial<FEIssue>>({
-      query: (body) => buildCommonAddQuery(body),
+      query: (body) => buildCommonAddQuery(body, targetEndpoint),
       invalidatesTags: [{ type: 'Issues', id: 'LIST' }]
     }),
     getIssueWithId: builder.query<FEIssue, string>({
       query: (id) => ({
-        url: `/${id}`
+        url: `${targetEndpoint}/${id}`
       })
     }),
     getIssues: builder.query<FEIssue, void>({
       query: () => ({
-        url: '/'
+        url: `${targetEndpoint}`
       })
     }),
     updateIssue: builder.mutation<FEIssue, Partial<FEIssue> & Pick<FEIssue, '_id'>>({
-      query: ({_id, ...patch}) => ({
-        url: `/${_id}`,
-        method: 'PUT',
-        body: patch
-      }),
+      query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
       transformResponse: (response: {data: FEIssue}, meta, arg) => response.data,
       invalidatesTags: ['Issues'],
-      async onQueryStarted(
-        arg,
-        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-      ) {},
-      async onCacheEntryAdded(
-        arg,
-        {
-          dispatch,
-          getState,
-          extra,
-          requestId,
-          cacheEntryRemoved,
-          cacheDataLoaded,
-          getCacheEntry,
-        }
-      ) {},
     }),
     deleteIssue: builder.mutation<{ success: boolean; _id: string}, string>({
-      query: (_id) => buildCommonDeleteQuery(_id)
+      query: (_id) => buildCommonDeleteQuery(_id, targetEndpoint)
     })
   })
 });

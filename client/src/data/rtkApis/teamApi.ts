@@ -1,20 +1,14 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { prepareHeaders } from "../helpers"; 
 import { API_ENDPOINTS } from "../../constants/apiConstants";
+import { api } from "./api";
 import { FETeam } from "../../interfaces";
 
-const baseUrl = `${API_ENDPOINTS.API_BASE}${API_ENDPOINTS.TEAMS}`;
+const targetEndpoint = `${API_ENDPOINTS.TEAMS}`;
 
-export const teamApi = createApi({
-  reducerPath: 'teams',
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    prepareHeaders,
-  }),
+export const teamApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getTeams: builder.query<FETeam, void>({
       query: () => ({
-        url: '/'
+        url: `${targetEndpoint}`
       })
     })
   })
