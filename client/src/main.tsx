@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import App from "./App";
 import { store } from "./data/store";
 import "./index.css";
+import { AuthProvider } from "./Providers/AuthProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
         redirectUri={window.location.origin}
       >
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </Auth0Provider>
     </Provider>
   </React.StrictMode>
