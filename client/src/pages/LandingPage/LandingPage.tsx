@@ -40,9 +40,6 @@ export const LandingPage = () => {
           <h2>{user.nickname}</h2>
           <Link to="/app">App Dashboard</Link>
           <br />
-          <Link to="/app/projects">Projects</Link>
-          <br />
-          <Link to="/app/teams">Teams</Link>
         </div>
       )}
       {isAuthenticated ? <LogoutButton /> : <LoginButton />}
