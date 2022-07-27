@@ -6,6 +6,7 @@ export interface ProjectCardProps {
   projectName: string;
   teamName: string;
   progressDetail: ProgressDetailProps;
+  onClick?: () => void;
 }
 
 export const ProjectCard = ({
@@ -16,10 +17,10 @@ export const ProjectCard = ({
     currentValue: 12,
     maxValue: 17
   },
-  ...props
+  onClick,
 }: ProjectCardProps) => {
   return (
-    <div className='project-card--container'>
+    <div className='project-card--container' onClick={onClick}>
       <h2 className='project-card--project-name'>{projectName}</h2>
       <Tag labelText={teamName} size='small' />
       <ProgressDetail {...progressDetail} />

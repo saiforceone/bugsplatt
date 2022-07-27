@@ -49,7 +49,7 @@ export const ProjectModal = ({
   projectName,
   teamName,
   issueDetails,
-  issues,
+  issues = [],
   projectDesc,
   projectTags,
   createdBy,

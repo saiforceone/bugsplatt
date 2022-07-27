@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 import { IsAuthenticated } from "./components/Navigation/IsAuthenticated/IsAuthenticated";
@@ -21,16 +21,27 @@ function App() {
           path="/app/*"
           element={
             <IsAuthenticated>
-              <Routes>
-                <Route element={<DashboardPage />} path="" />
-                <Route element={<ProjectListingPage />} path="projects" />
-                <Route element={<ProjectDetailPage />} path="projects/:id" />
-                <Route element={<IssueListPage />} path="issues" />
-                <Route element={<IssueDetailPage />} path="issue/:id" />
-                <Route element={<TeamListPage />} path="teams" />
-                <Route element={<TeamDetailPage />} path="teams/:id" />
-                <Route element={<HelpPage />} path="help" />
-              </Routes>
+              <>
+                <div>
+                  <Link to="/app/projects">Projects</Link>
+                  <br />
+                  <Link to="/app/issues">Issues</Link>
+                  <br />
+                  <Link to="/app/teams">Teams</Link>
+                  <br />
+                  <Link to="/app/help">Help & Support</Link>
+                </div>
+                <Routes>
+                  <Route element={<DashboardPage />} path="" />
+                  <Route element={<ProjectListingPage />} path="projects" />
+                  <Route element={<ProjectDetailPage />} path="projects/:id" />
+                  <Route element={<IssueListPage />} path="issues" />
+                  <Route element={<IssueDetailPage />} path="issue/:id" />
+                  <Route element={<TeamListPage />} path="teams" />
+                  <Route element={<TeamDetailPage />} path="teams/:id" />
+                  <Route element={<HelpPage />} path="help" />
+                </Routes>
+              </>
             </IsAuthenticated>
           }
         />
