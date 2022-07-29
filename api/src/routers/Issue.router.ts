@@ -38,4 +38,6 @@ export default class IssueRouter extends BaseRouter {
       }
     }];
   }
+
+  // TODO: override getResource & getResources method to dereference related / ref fields
 }

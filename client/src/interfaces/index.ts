@@ -69,13 +69,26 @@ export interface FECommonData {
   updatedAt: string;
 }
 
+interface FECommonUserData {
+  _id: string;
+  accountId: string;
+  createdAt: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  profilePicture: string;
+  providerName: string;
+  updatedAt: string;
+}
+
 export interface FEProject extends FECommonData {
-  createdBy: string;
   associatedTeam: string;
+  createdBy: FECommonUserData;
   projectName: string;
   projectType: string;
   colorCode?: string;
   tags: string[];
+  issues: FEIssue[];
 }
 
 export interface FETeam extends FECommonData {
@@ -87,9 +100,9 @@ export interface FETeam extends FECommonData {
 }
 
 export interface FEIssue extends FECommonData {
-  createdBy: string;
-  assignedTo: string;
-  associatedProject: string;
+  createdBy: FECommonUserData;
+  assignedTo: FECommonUserData;
+  associatedProject?: string;
   description: string;
   expectedCloseDate?: string;
   priority: string;

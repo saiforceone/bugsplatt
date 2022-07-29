@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLazyGetProjectsQuery } from "../../data/rtkApis/projectApi";
 import { useLazyGetIssuesQuery } from "../../data/rtkApis/issueApi";
 import { FEIssue, FEProject } from "../../interfaces";
@@ -15,11 +16,17 @@ import { NoResultCard } from "../../components/BaseComponents/NoResultCard/NoRes
 // TODO: Link "GoToProject" button to actual function that will navigate to page
 // TODO: Fix overall layout
 
+const getClosedIssuesForProjCount = (project: FEProject): number => {
+  return project.issues.filter(p => p.status !== 'active').length;
+}
+
 export const DashboardPage = () => {
+  const navigate = useNavigate();
   const [projectsTrigger, projectsResultObj] = useLazyGetProjectsQuery();
   const [issuesTrigger, issuesResultObj] = useLazyGetIssuesQuery();
   const [projModalVisible, setProjModalVisible] = useState(false);
   const [selectedProj, setSelectedProj] = useState<FEProject | undefined>();
+  const [selectedIssue, setSelectedIssue] = useState<FEIssue | undefined>();
 
   useEffect(() => {
     projectsTrigger();
@@ -49,6 +56,12 @@ export const DashboardPage = () => {
     }
   }, [issuesResultObj]);
 
+  const onNavigateToProject = useCallback(() => {
+    if (!selectedProj) return;
+    const targetPath = `/projects/${selectedProj._id}`;
+    navigate(targetPath);
+  }, [selectedProj]);
+
   return (
     <div>
       <PageHeader title="Dashboard" />
@@ -73,14 +86,14 @@ export const DashboardPage = () => {
           title="Recent Projects"
         />
         {recentProjects.length ? (
-          <div className="grid gap-3 grid-cols-3">
+          <div className="grid gap-3 grid-cols-3 my-8">
             {recentProjects.map((project) => (
               <ProjectCard
                 key={`project-${project._id}`}
                 progressDetail={{
                   label: "Issues",
-                  currentValue: 0,
-                  maxValue: 1,
+                  currentValue: getClosedIssuesForProjCount(project),
+                  maxValue: project.issues.length,
                 }}
                 projectName={project.projectName}
                 teamName={project.associatedTeam}
@@ -117,7 +130,7 @@ export const DashboardPage = () => {
           title="Recent Issues"
         />
         {recentIssues.length ? (
-          <div>
+          <div className="my-8">
             {recentIssues.map((issue) => (
               <IssueSummaryCard
                 key={`issue-${issue._id}`}
@@ -137,19 +150,23 @@ export const DashboardPage = () => {
       {selectedProj && (
         <ProjectModal
           {...selectedProj}
+          teamName={selectedProj.associatedTeam}
+          issues={selectedProj.issues}
           issueDetails={{
             label: "Issues",
-            currentValue: 0,
-            maxValue: 1,
+            currentValue: getClosedIssuesForProjCount(selectedProj),
+            maxValue: selectedProj.issues.length,
           }}
+          createdBy={`${selectedProj.createdBy.firstName} ${selectedProj.createdBy.lastName}`}
           onCloseModal={() => {
             setProjModalVisible(false);
             setSelectedProj(undefined);
           }}
-          onGoToProject={() => {}}
+          onGoToProject={() => onNavigateToProject()}
           visible={projModalVisible}
         />
       )}
+      {/* TODO: add issue modal here using selectedIssue && (<IssueModal />) */}
     </div>
   );
 };

@@ -18,6 +18,7 @@ import {
 import { IssueSummaryCard } from "../../BaseComponents/IssueSummaryCard/IssueSummaryCard";
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
+import { FEIssue } from "../../../interfaces";
 
 interface IssueSummary {
   resourceId: string;
@@ -37,7 +38,7 @@ export interface ProjectModalProps {
   projectType: string;
   projectDesc: string;
   issueDetails: ProgressDetailProps;
-  issues: IssueSummary[];
+  issues: FEIssue[];
   projectTags: string[];
   visible: boolean;
 }

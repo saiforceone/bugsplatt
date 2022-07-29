@@ -8,6 +8,7 @@ export interface IssueSummaryCardProps {
   expectedCloseDate?: string;
   issueDesc: string;
 }
+// TODO: Add onClick to open modal view
 
 export const IssueSummaryCard = ({
   resourceId,

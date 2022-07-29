@@ -2,6 +2,7 @@ import {Types} from 'mongoose';
 import {Request, Response, RequestHandler, Router} from 'express';
 import BaseController from '../resources/controllers/Base.controller';
 import { IComment } from '../resources/interfaces/Comment.interface';
+import { IBase } from '../resources/interfaces/Base.interface';
 
 export interface IRouterResponse {
   data: object[]|object;
@@ -134,10 +135,10 @@ abstract class BaseRouter {
       const response = this.getDefaultResponse();
       try {
         // TODO: get the query params from req.query
-        const comments = await this._controller.getDocuments({}) as IComment[];
+        const data = await this._controller.getDocuments({}) as IBase[];
 
-        response.data = comments;
-        response.success = comments.length > 0;
+        response.data = data;
+        response.success = data.length > 0;
 
         return res.status(
           response.success 
