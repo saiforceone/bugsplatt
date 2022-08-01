@@ -20,6 +20,10 @@ abstract class BaseController {
     console.log(`⚡ [Server]: {Controller} :: ${this.constructor.name} initialized...`);
   }
 
+  public getModel(): Model<any> {
+    return this._model;
+  }
+
   // Create
 
   /**

@@ -19,6 +19,7 @@ import { IssueSummaryCard } from "../../BaseComponents/IssueSummaryCard/IssueSum
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
 import { FEIssue } from "../../../interfaces";
+import { FormattingUtils } from "../../../utils/FormattingUtils";
 
 interface IssueSummary {
   resourceId: string;
@@ -62,18 +63,20 @@ export const ProjectModal = ({
   return (
     <ModalWrapper
       modalHeaderProps={{
-        extraActions: <>
-          <DefaultButton
-            active
-            buttonSize="small"
-            extraCss="mr-2"
-            label="Go to Project"
-            onClick={() => onGoToProject()}
-            icon={<HiExternalLink className="h-5 w-5 text-white" />}
-          />
-        </>,
+        extraActions: (
+          <>
+            <DefaultButton
+              active
+              buttonSize="small"
+              extraCss="mr-2"
+              label="Go to Project"
+              onClick={() => onGoToProject()}
+              icon={<HiExternalLink className="h-5 w-5 text-white" />}
+            />
+          </>
+        ),
         onClose: onCloseModal,
-        title: `${projectName}`
+        title: `${projectName}`,
       }}
       visible={visible}
     >
@@ -106,24 +109,29 @@ export const ProjectModal = ({
         </div>
         <p className="modal--p">{projectDesc}</p>
         <ProgressDetail {...issueDetails} />
-        {issues.length ? (
-          issues.map((issue) => (
-            <IssueSummaryCard
-              key={`issue-summary-${issue.resourceId}`}
-              {...issue}
-            />
-          ))
-        ) : (
-          <NoResultCard primaryText="No Issues Found" />
-        )}
+        <div className="my-4">
+          {issues.length ? (
+            issues.map((issue) => (
+              <IssueSummaryCard
+                key={`issue-summary-${issue._id}`}
+                issueDesc={issue.description}
+                issueTitle={issue.title}
+                expectedCloseDate={issue.expectedCloseDate ? FormattingUtils.formatDate(issue.expectedCloseDate) : ''}
+                resourceId={issue._id}
+              />
+            ))
+          ) : (
+            <NoResultCard primaryText="No Issues Found" />
+          )}
+        </div>
         <div>
           <h3 className="modal--section-heading">Associated Tags</h3>
         </div>
         <div className="modal--row">
           {projectTags && projectTags.length
             ? projectTags.map((projectTag) => (
-              <Tag extraCss="mt-1 mr-2" labelText={projectTag} size="small" />
-            ))
+                <Tag extraCss="mt-1 mr-2" labelText={projectTag} size="small" />
+              ))
             : "No tags associated with this project"}
         </div>
       </div>

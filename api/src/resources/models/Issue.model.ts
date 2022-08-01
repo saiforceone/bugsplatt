@@ -15,7 +15,7 @@ const issueSchema = new Schema<IIssue>({
   },
   title: {required: true, trim: true, type: String},
   watchedBy: {
-    type: [Schema.Types.ObjectId],
+    type: [{type: Schema.Types.ObjectId, ref: 'UserProfile'}],
   },
 }, {
   timestamps: true,

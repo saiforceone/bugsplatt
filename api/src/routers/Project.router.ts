@@ -1,5 +1,10 @@
 import { Model, Types } from "mongoose";
 import BaseRouter, {
+  POPULATE_ASSIGNED_TO,
+  POPULATE_ASSOC_CREATED_BY,
+  POPULATE_ASSOC_PROJ,
+  POPULATE_ASSOC_TEAM,
+  POPULATE_ASSOC_WATCHED_BY,
   ROUTER_RESPONSE_CODES,
   ROUTER_RESPONSE_MESSAGES,
 } from "./Base.router";
@@ -9,6 +14,7 @@ import { IProject } from "../resources/interfaces/Project.interface";
 import { IIssue } from "../resources/interfaces/Issue.interface";
 import Issue from "../resources/models/Issue.model";
 import ProjectModel from "../resources/models/Project.model";
+
 
 /**
  * @class ProjectRouter
@@ -30,13 +36,11 @@ export default class ProjectRouter extends BaseRouter {
     try {
       return await this._issueModel
         .find({ associatedProject: projectId })
-        .select("-associatedProject -__v")
-        .populate({
-          path: "createdBy",
-          model: "UserProfile",
-          select: "-__v",
-        })
-        .populate({ path: "assignedTo", select: "-__v" });
+        .select("-__v")
+        .populate(POPULATE_ASSOC_PROJ)
+        .populate(POPULATE_ASSOC_CREATED_BY)
+        .populate(POPULATE_ASSOC_WATCHED_BY)
+        .populate(POPULATE_ASSIGNED_TO);
     } catch (e) {
       return [];
     }
@@ -71,7 +75,21 @@ export default class ProjectRouter extends BaseRouter {
     ];
   }
 
-  // TODO: override getResource to dereference related fields and extra populate path objects that can be repeated
+  protected getResource(middleware: RequestHandler[] = []): RequestHandler[] {
+    return [...middleware, async (req: Request, res: Response) => {
+      const response = this.getDefaultResponse();
+      try {
+        const resourceId = req.params.id;
+        response.data = await this._controller.getModel().findById(resourceId) as IProject;
+        response.success = !!response.data;
+        return res.status(
+          response.success ? ROUTER_RESPONSE_CODES.RESOURCE_FOUND : ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND
+        ).json(response);
+      } catch (e) {
+        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+      }
+    }]
+  }
 
   protected getResources(middleware: RequestHandler[] = []): RequestHandler[] {
     return [
@@ -83,8 +101,8 @@ export default class ProjectRouter extends BaseRouter {
           const data = await this._projectModel
             .find()
             .select("-__v")
-            .populate({ path: "createdBy", select: "-__v" })
-            .populate({ path: "associatedTeam", select: "-__v" });
+            .populate(POPULATE_ASSOC_CREATED_BY)
+            .populate(POPULATE_ASSOC_TEAM);
 
           const _data = [];
           // fetch issues for each project

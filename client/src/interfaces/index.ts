@@ -102,7 +102,10 @@ export interface FETeam extends FECommonData {
 export interface FEIssue extends FECommonData {
   createdBy: FECommonUserData;
   assignedTo: FECommonUserData;
-  associatedProject?: string;
+  associatedProject: {
+    _id: string;
+    projectName: string;
+  };
   description: string;
   expectedCloseDate?: string;
   priority: string;

@@ -32,12 +32,15 @@ export const IssueModal = ({
   issueName = "Issue #1",
   issueDetails,
   priority = "omg-wtf",
-  projectName = "Project 1",
+  projectName,
   visible = true,
   comments,
   onCloseAction,
   ...props
 }: IssueModalProps) => {
+
+  // TODO: add query to retrieve comments from api for the selected issue
+  
   return (
     <ModalWrapper
       modalHeaderProps={{

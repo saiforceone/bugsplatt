@@ -1,4 +1,3 @@
-import {Types} from 'mongoose';
 import {Request, Response, RequestHandler, Router} from 'express';
 import BaseController from '../resources/controllers/Base.controller';
 import { IComment } from '../resources/interfaces/Comment.interface';
@@ -25,6 +24,23 @@ export const ROUTER_RESPONSE_MESSAGES: {[key: string]: string} = {
   RES_NOT_FOUND: 'Resource not found',
   RELATED_RES_NOT_FOUND: 'Related resource was not found',
 }
+
+export const POPULATE_ASSOC_PROJ = {
+  path: 'associatedProject',
+  select: 'projectName'
+}
+
+export const POPULATE_ASSOC_CREATED_BY = {
+  path: "createdBy",
+  model: "UserProfile",
+  select: "-__v",
+};
+
+export const POPULATE_ASSOC_WATCHED_BY = { path: "watchedBy", select: "-__v"};
+
+export const POPULATE_ASSIGNED_TO = { path: "assignedTo", select: "-__v" };
+
+export const POPULATE_ASSOC_TEAM = { path: "associatedTeam", select: "-__v" };
 
 /**
  * @abstract

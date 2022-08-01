@@ -7,6 +7,7 @@ export interface IssueSummaryCardProps {
   issueTitle: string;
   expectedCloseDate?: string;
   issueDesc: string;
+  onClick?: () => void;
 }
 // TODO: Add onClick to open modal view
 
@@ -15,10 +16,10 @@ export const IssueSummaryCard = ({
   issueTitle,
   expectedCloseDate,
   issueDesc,
-  ...props
+  onClick,
 }: IssueSummaryCardProps) => {
   return (
-    <div className='issue-summary--container'>
+    <div className='issue-summary--container' onClick={onClick}>
       <div className='issue-summary--top-row'>
         <h3 className='issue-summary--heading'>{issueTitle}</h3>
         <Tag

@@ -12,13 +12,14 @@ import { HiRefresh } from "react-icons/hi";
 import { IoMdOpen } from "react-icons/io";
 import { ProjectModal } from "../../components/Modals/ProjectModal/ProjectModal";
 import { NoResultCard } from "../../components/BaseComponents/NoResultCard/NoResultCard";
+import { FormattingUtils } from "../../utils/FormattingUtils";
+import { IssueModal } from "../../components/Modals/IssueModal/IssueModal";
 
-// TODO: Link "GoToProject" button to actual function that will navigate to page
 // TODO: Fix overall layout
 
 const getClosedIssuesForProjCount = (project: FEProject): number => {
-  return project.issues.filter(p => p.status !== 'active').length;
-}
+  return project.issues.filter((p) => p.status !== "active").length;
+};
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export const DashboardPage = () => {
   const [issuesTrigger, issuesResultObj] = useLazyGetIssuesQuery();
   const [projModalVisible, setProjModalVisible] = useState(false);
   const [selectedProj, setSelectedProj] = useState<FEProject | undefined>();
+  const [issueModalVisible, setIssueModalVisible] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState<FEIssue | undefined>();
 
   useEffect(() => {
@@ -80,6 +82,9 @@ export const DashboardPage = () => {
                 active
                 icon={<IoMdOpen className="default-icon" />}
                 label="View All"
+                onClick={() => {
+                  navigate('/projects')
+                }}
               />
             </>
           }
@@ -124,6 +129,9 @@ export const DashboardPage = () => {
                 active
                 icon={<IoMdOpen className="default-icon" />}
                 label="View All"
+                onClick={() => {
+                  navigate('/issues');
+                }}
               />
             </>
           }
@@ -137,6 +145,15 @@ export const DashboardPage = () => {
                 issueTitle={issue.title}
                 issueDesc={issue.description}
                 resourceId={issue._id}
+                expectedCloseDate={
+                  issue.expectedCloseDate
+                    ? FormattingUtils.formatDate(issue.expectedCloseDate)
+                    : ""
+                }
+                onClick={() => {
+                  setSelectedIssue(issue);
+                  setIssueModalVisible(true);
+                }}
               />
             ))}
           </div>
@@ -157,16 +174,35 @@ export const DashboardPage = () => {
             currentValue: getClosedIssuesForProjCount(selectedProj),
             maxValue: selectedProj.issues.length,
           }}
+          createdAt={FormattingUtils.formatDate(selectedProj.createdAt)}
           createdBy={`${selectedProj.createdBy.firstName} ${selectedProj.createdBy.lastName}`}
           onCloseModal={() => {
             setProjModalVisible(false);
             setSelectedProj(undefined);
           }}
           onGoToProject={() => onNavigateToProject()}
+          projectTags={selectedProj.tags}
           visible={projModalVisible}
         />
       )}
-      {/* TODO: add issue modal here using selectedIssue && (<IssueModal />) */}
+      {selectedIssue && (
+        <IssueModal
+          dueDate={
+            selectedIssue.expectedCloseDate
+              ? FormattingUtils.formatDate(selectedIssue.expectedCloseDate)
+              : ""
+          }
+          projectName={selectedIssue.associatedProject.projectName}
+          priority={selectedIssue.priority}
+          issueName={selectedIssue.title}
+          issueDetails={selectedIssue.description}
+          onCloseAction={() => {
+            setIssueModalVisible(false);
+            setSelectedIssue(undefined);
+          }}
+          visible={issueModalVisible}
+        />
+      )}
     </div>
   );
 };
