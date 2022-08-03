@@ -118,5 +118,5 @@ export interface FEIssue extends FECommonData {
 export interface FEComment extends FECommonData {
   associatedIssue: string;
   content: string;
-  createdBy: string;
+  createdBy: FECommonUserData;
 }

@@ -1,16 +1,21 @@
 import {
-  HiXCircle,
   HiCog,
   HiCalendar,
   HiChat,
   HiPlusCircle,
+  HiRefresh,
 } from "react-icons/hi";
-import { Comment, CommentProps } from "../../BaseComponents/Comment/Comment";
-import { IconButton } from "../../BaseComponents/IconButton/IconButton";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Comment } from "../../BaseComponents/Comment/Comment";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
 import "./issueModal.css";
 import { Tag } from "../../BaseComponents/Tag/Tag";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
+import { useAddCommentMutation, useLazyGetCommentsQuery } from "../../../data/rtkApis/commentApi";
+import { FEComment } from "../../../interfaces";
+import { FormattingUtils } from "../../../utils/FormattingUtils";
+import { AddCommentModal } from "../AddCommentModal/AddCommentModal";
 
 export interface IssueModalProps {
   dueDate: string;
@@ -19,7 +24,6 @@ export interface IssueModalProps {
   issueDetails: string;
   issueName: string;
   projectName: string;
-  comments: CommentProps[];
   visible: boolean;
   onAddComment: () => void;
   onCloseAction: () => void;
@@ -27,20 +31,39 @@ export interface IssueModalProps {
 }
 
 export const IssueModal = ({
-  resourceId = "1",
+  resourceId,
   dueDate = "5/23/22",
   issueName = "Issue #1",
   issueDetails,
   priority = "omg-wtf",
   projectName,
   visible = true,
-  comments,
   onCloseAction,
   ...props
 }: IssueModalProps) => {
 
-  // TODO: add query to retrieve comments from api for the selected issue
-  
+  const navigate = useNavigate();
+  const [showAddComment, setShowAddComment] = useState(false);
+  const [addComemntTrigger, addCommentResult] = useAddCommentMutation();
+  const [commentsTrigger, commentsResultObj] = useLazyGetCommentsQuery();
+
+  const refreshComments = useCallback(() => {
+    commentsTrigger(resourceId);
+  }, [resourceId]);
+
+  const navigateToIssue = useCallback(() => {
+    navigate(`issues/${resourceId}`);
+  }, [resourceId]);
+
+  useEffect(() => {
+    commentsTrigger(resourceId);
+  }, [resourceId]);
+
+  const comments: FEComment[] = useMemo(() => {
+    const { data: commentData } = commentsResultObj;
+    return !!commentData ? commentData['data'] : []
+  }, [commentsResultObj])
+
   return (
     <ModalWrapper
       modalHeaderProps={{
@@ -50,7 +73,7 @@ export const IssueModal = ({
             buttonSize="small"
             icon={<HiCog className="h-5 w-5 text-white" />}
             label="Manage Issue"
-            onClick={() => props.onManageIssue()}
+            onClick={() => navigateToIssue()}
           />
         </>,
         onClose: onCloseAction,
@@ -87,23 +110,49 @@ export const IssueModal = ({
         <p>{issueDetails ? issueDetails : "Issue details are not available"}</p>
         <div className="issue-modal--comment-heading">
           <h3 className="issue-modal--section-heading">Comments</h3>
-          <DefaultButton
-            active
-            buttonSize="small"
-            label="Add Comment"
-            icon={<HiPlusCircle className="h-6 w-6 mr-1" />}
-            onClick={() => props.onAddComment()}
-          />
+          <div className="default-row">
+            <DefaultButton
+              active
+              buttonSize="small"
+              extraCss="mr-2"
+              label="Add Comment"
+              icon={<HiPlusCircle className="h-6 w-6 mr-1" />}
+              onClick={() => setShowAddComment(true)}
+            />
+            <DefaultButton
+              active
+              buttonSize="small"
+              label="Refresh"
+              icon={<HiRefresh className="h-6 w-6 mr-1" />} 
+              onClick={() => refreshComments()}
+            />
+          </div>
         </div>
         <div className="issue-modal--comments">
           {comments && comments.length ? (
             comments.map((comment, index) => (
-              <Comment key={`issue-${issueName}-${index}`} {...comment} />
+              <Comment
+                key={`comment-${issueName}-${index}`}
+                commentText={comment.content}
+                commentAuthor={`${comment.createdBy.firstName} ${comment.createdBy.lastName}`}
+                commentDate={FormattingUtils.formatDate(comment.createdAt)}
+              />
             ))
           ) : (
             <p>No comments have been added for this issue</p>
           )}
         </div>
+        <AddCommentModal
+          issueName={issueName}
+          onAddComment={(commentText) => {
+            addComemntTrigger({
+              associatedIssue: resourceId,
+              content: commentText
+            })
+          }}
+          onClose={() => setShowAddComment(false)}
+          visible={showAddComment}
+        />
       </div>
     </ModalWrapper>
   );

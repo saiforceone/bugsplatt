@@ -56,7 +56,6 @@ export const NewIssueModal = ({
   const [issuePriority, setIssuePriority] = useState<string | undefined>();
   const [issueDueDate, setIssueDueDate] = useState("");
   const [fileBlobs, setFileBlobs] = useState<File[]>([]);
-  // TODO: Figure out how to store the attachements in this component before upload
 
   const onAddTag = useCallback(() => {
     const _issueTags = [...issueTags];

@@ -44,7 +44,7 @@ export const prepareHeaders = (headers: Headers, {getState}) => {
 // )
 
 export const buildCommonAddQuery = (body: object, targetEndpoint: string): FetchArgs => ({
-  url: `${apiBase}/${targetEndpoint}`,
+  url: `${targetEndpoint}`,
   method: 'POST',
   body
 });

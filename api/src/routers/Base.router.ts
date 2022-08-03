@@ -42,6 +42,8 @@ export const POPULATE_ASSIGNED_TO = { path: "assignedTo", select: "-__v" };
 
 export const POPULATE_ASSOC_TEAM = { path: "associatedTeam", select: "-__v" };
 
+export const POPULATE_ASSOC_ISSUE = { path: "associatedIssue", select: "-__v"};
+
 /**
  * @abstract
  * @class BaseRouter

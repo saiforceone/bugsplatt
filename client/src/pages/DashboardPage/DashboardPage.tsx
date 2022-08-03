@@ -200,6 +200,7 @@ export const DashboardPage = () => {
             setIssueModalVisible(false);
             setSelectedIssue(undefined);
           }}
+          resourceId={selectedIssue._id}
           visible={issueModalVisible}
         />
       )}
