@@ -12,7 +12,6 @@ import { HiRefresh } from "react-icons/hi";
 import { IoMdOpen } from "react-icons/io";
 import { ProjectModal } from "../../components/Modals/ProjectModal/ProjectModal";
 import { NoResultCard } from "../../components/BaseComponents/NoResultCard/NoResultCard";
-import { FormattingUtils } from "../../utils/FormattingUtils";
 import { IssueModal } from "../../components/Modals/IssueModal/IssueModal";
 
 // TODO: Fix overall layout
@@ -142,14 +141,7 @@ export const DashboardPage = () => {
             {recentIssues.map((issue) => (
               <IssueSummaryCard
                 key={`issue-${issue._id}`}
-                issueTitle={issue.title}
-                issueDesc={issue.description}
-                resourceId={issue._id}
-                expectedCloseDate={
-                  issue.expectedCloseDate
-                    ? FormattingUtils.formatDate(issue.expectedCloseDate)
-                    : ""
-                }
+                issue={issue}
                 onClick={() => {
                   setSelectedIssue(issue);
                   setIssueModalVisible(true);
@@ -166,41 +158,27 @@ export const DashboardPage = () => {
       </div>
       {selectedProj && (
         <ProjectModal
-          {...selectedProj}
-          teamName={selectedProj.associatedTeam}
-          issues={selectedProj.issues}
+          project={selectedProj}
           issueDetails={{
             label: "Issues",
             currentValue: getClosedIssuesForProjCount(selectedProj),
             maxValue: selectedProj.issues.length,
           }}
-          createdAt={FormattingUtils.formatDate(selectedProj.createdAt)}
-          createdBy={`${selectedProj.createdBy.firstName} ${selectedProj.createdBy.lastName}`}
           onCloseModal={() => {
             setProjModalVisible(false);
             setSelectedProj(undefined);
           }}
           onGoToProject={() => onNavigateToProject()}
-          projectTags={selectedProj.tags}
           visible={projModalVisible}
         />
       )}
       {selectedIssue && (
         <IssueModal
-          dueDate={
-            selectedIssue.expectedCloseDate
-              ? FormattingUtils.formatDate(selectedIssue.expectedCloseDate)
-              : ""
-          }
-          projectName={selectedIssue.associatedProject.projectName}
-          priority={selectedIssue.priority}
-          issueName={selectedIssue.title}
-          issueDetails={selectedIssue.description}
+          issue={selectedIssue}
           onCloseAction={() => {
             setIssueModalVisible(false);
             setSelectedIssue(undefined);
           }}
-          resourceId={selectedIssue._id}
           visible={issueModalVisible}
         />
       )}

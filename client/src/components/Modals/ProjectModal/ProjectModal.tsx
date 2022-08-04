@@ -1,3 +1,4 @@
+import {FC} from "react";
 import "../Modals.css";
 import "./projectModal.css";
 import {
@@ -6,7 +7,6 @@ import {
 } from "../../BaseComponents/ProgressDetail/ProgressDetail";
 import { Tag } from "../../BaseComponents/Tag/Tag";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
-import { IconButton } from "../../BaseComponents/IconButton/IconButton";
 import {
   HiXCircle,
   HiUserGroup,
@@ -18,48 +18,24 @@ import {
 import { IssueSummaryCard } from "../../BaseComponents/IssueSummaryCard/IssueSummaryCard";
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
-import { FEIssue } from "../../../interfaces";
+import {FEIssue, FEProject} from "../../../interfaces";
 import { FormattingUtils } from "../../../utils/FormattingUtils";
-
-interface IssueSummary {
-  resourceId: string;
-  expectedCloseDate?: string;
-  issueTitle: string;
-  issueDesc: string;
-}
 
 export interface ProjectModalProps {
   onGoToProject: () => void;
   onCloseModal: () => void;
-  resourceId: string;
-  projectName: string;
-  teamName: string;
-  createdBy: string;
-  createdAt: string;
-  projectType: string;
-  projectDesc: string;
+  project: FEProject;
   issueDetails: ProgressDetailProps;
-  issues: FEIssue[];
-  projectTags: string[];
   visible: boolean;
 }
 
-export const ProjectModal = ({
+export const ProjectModal: FC<ProjectModalProps> = ({
   onCloseModal,
   onGoToProject,
-  resourceId,
-  projectName,
-  teamName,
+  project,
   issueDetails,
-  issues = [],
-  projectDesc,
-  projectTags,
-  createdBy,
-  createdAt,
-  projectType,
   visible = false,
-  ...props
-}: ProjectModalProps) => {
+}) => {
   return (
     <ModalWrapper
       modalHeaderProps={{
@@ -76,7 +52,7 @@ export const ProjectModal = ({
           </>
         ),
         onClose: onCloseModal,
-        title: `${projectName}`,
+        title: `${project.projectName}`,
       }}
       visible={visible}
     >
@@ -85,39 +61,36 @@ export const ProjectModal = ({
           <Tag
             extraCss="modal--tag"
             icon={<HiUserGroup className="default-tag--icon" />}
-            labelText={`Team: ${teamName}`}
+            labelText={`Team: ${project.associatedTeam}`}
             size="small"
           />
           <Tag
             extraCss="modal--tag"
             icon={<HiUserCircle className="default-tag--icon" />}
-            labelText={`Author: ${createdBy}`}
+            labelText={`Author: ${project.createdBy.firstName} ${project.createdBy.lastName}`}
             size="small"
           />
           <Tag
             extraCss="modal--tag"
             icon={<HiClock className="default-tag--icon" />}
-            labelText={`Created: ${createdAt}`}
+            labelText={`Created: ${FormattingUtils.formatDate(project.createdAt)}`}
             size="small"
           />
           <Tag
             extraCss="modal--tag"
             icon={<HiHashtag className="default-tag--icon" />}
-            labelText={projectType}
+            labelText={project.projectType}
             size="small"
           />
         </div>
-        <p className="modal--p">{projectDesc}</p>
+        <p className="modal--p">{project.description}</p>
         <ProgressDetail {...issueDetails} />
         <div className="my-4">
-          {issues.length ? (
-            issues.map((issue) => (
+          {project.issues.length ? (
+            project.issues.map((issue) => (
               <IssueSummaryCard
                 key={`issue-summary-${issue._id}`}
-                issueDesc={issue.description}
-                issueTitle={issue.title}
-                expectedCloseDate={issue.expectedCloseDate ? FormattingUtils.formatDate(issue.expectedCloseDate) : ''}
-                resourceId={issue._id}
+                issue={issue}
               />
             ))
           ) : (
@@ -128,8 +101,8 @@ export const ProjectModal = ({
           <h3 className="modal--section-heading">Associated Tags</h3>
         </div>
         <div className="modal--row">
-          {projectTags && projectTags.length
-            ? projectTags.map((projectTag) => (
+          {project.tags && project.tags.length
+            ? project.tags.map((projectTag) => (
                 <Tag extraCss="mt-1 mr-2" labelText={projectTag} size="small" />
               ))
             : "No tags associated with this project"}

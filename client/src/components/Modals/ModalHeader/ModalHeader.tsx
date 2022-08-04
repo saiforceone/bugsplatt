@@ -1,3 +1,4 @@
+import React, {FC} from 'react';
 import { HiX } from 'react-icons/hi';
 import './ModalHeader.css';
 import { IconButton } from '../../BaseComponents/IconButton/IconButton';
@@ -10,13 +11,13 @@ export interface ModalHeaderProps {
   title: string;
 }
 
-export const ModalHeader = ({
+export const ModalHeader: FC<ModalHeaderProps> = ({
   extraActions,
   icon,
   onClose,
   subtitle,
   title
-}: ModalHeaderProps): JSX.Element => {
+}) => {
   return (
     <div className='modal-header'>
       {icon && <div className='modal-header--icon'>{icon}</div>}

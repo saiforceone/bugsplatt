@@ -1,34 +1,30 @@
+import {FC} from 'react';
 import { HiCalendar } from 'react-icons/hi';
 import './issueSummaryCard.css';
 import { Tag } from '../Tag/Tag';
+import {FEIssue} from '../../../interfaces';
 
 export interface IssueSummaryCardProps {
-  resourceId: string;
-  issueTitle: string;
-  expectedCloseDate?: string;
-  issueDesc: string;
+  issue: FEIssue;
   onClick?: () => void;
 }
 // TODO: Add onClick to open modal view
 
-export const IssueSummaryCard = ({
-  resourceId,
-  issueTitle,
-  expectedCloseDate,
-  issueDesc,
+export const IssueSummaryCard: FC<IssueSummaryCardProps> = ({
+  issue,
   onClick,
-}: IssueSummaryCardProps) => {
+}) => {
   return (
     <div className='issue-summary--container' onClick={onClick}>
       <div className='issue-summary--top-row'>
-        <h3 className='issue-summary--heading'>{issueTitle}</h3>
+        <h3 className='issue-summary--heading'>{issue.title}</h3>
         <Tag
           icon={<HiCalendar className='default-tag--icon' />}
-          labelText={expectedCloseDate ? expectedCloseDate : 'N/A'}
+          labelText={issue.expectedCloseDate ? issue.expectedCloseDate : 'N/A'}
           size='small'
         />
       </div>
-      <p className='issue-summary--description'>{issueDesc}</p>
+      <p className='issue-summary--description'>{issue.description}</p>
     </div>
   );
 };

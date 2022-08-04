@@ -25,9 +25,13 @@
 }
 
 .issue-modal--comment-heading {
-  @apply flex flex-row content-center justify-between my-3;
+  @apply flex flex-row content-center justify-between my-6;
 }
 
 .issue-modal--section-heading {
   @apply text-xl font-medium;
+}
+
+.issue-modal--description {
+  @apply text-lg font-normal my-2;
 }

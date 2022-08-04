@@ -5,7 +5,7 @@ import {
   HiPlusCircle,
   HiRefresh,
 } from "react-icons/hi";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Comment } from "../../BaseComponents/Comment/Comment";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
@@ -13,56 +13,47 @@ import "./issueModal.css";
 import { Tag } from "../../BaseComponents/Tag/Tag";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
 import { useAddCommentMutation, useLazyGetCommentsQuery } from "../../../data/rtkApis/commentApi";
-import { FEComment } from "../../../interfaces";
-import { FormattingUtils } from "../../../utils/FormattingUtils";
+import {FEComment, FEIssue} from "../../../interfaces";
+import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
 import { AddCommentModal } from "../AddCommentModal/AddCommentModal";
 
 export interface IssueModalProps {
-  dueDate: string;
-  priority: string;
-  resourceId: string;
-  issueDetails: string;
-  issueName: string;
-  projectName: string;
+  issue: FEIssue;
   visible: boolean;
-  onAddComment: () => void;
   onCloseAction: () => void;
-  onManageIssue: () => void;
 }
 
-export const IssueModal = ({
-  resourceId,
-  dueDate = "5/23/22",
-  issueName = "Issue #1",
-  issueDetails,
-  priority = "omg-wtf",
-  projectName,
+export const IssueModal: FC<IssueModalProps> = ({
+  issue,
   visible = true,
   onCloseAction,
-  ...props
-}: IssueModalProps) => {
+}) => {
 
   const navigate = useNavigate();
   const [showAddComment, setShowAddComment] = useState(false);
-  const [addComemntTrigger, addCommentResult] = useAddCommentMutation();
+  const [addCommentTrigger, addCommentResult] = useAddCommentMutation();
   const [commentsTrigger, commentsResultObj] = useLazyGetCommentsQuery();
 
   const refreshComments = useCallback(() => {
-    commentsTrigger(resourceId);
-  }, [resourceId]);
+    commentsTrigger(issue._id);
+  }, [issue]);
 
   const navigateToIssue = useCallback(() => {
-    navigate(`issues/${resourceId}`);
-  }, [resourceId]);
+    navigate(`issues/${issue._id}`);
+  }, [issue]);
 
   useEffect(() => {
-    commentsTrigger(resourceId);
-  }, [resourceId]);
+    commentsTrigger(issue._id);
+  }, [issue._id, addCommentResult]);
 
   const comments: FEComment[] = useMemo(() => {
-    const { data: commentData } = commentsResultObj;
+    const { data: commentData } = commentsResultObj as {[key: string]: any};
     return !!commentData ? commentData['data'] : []
-  }, [commentsResultObj])
+  }, [commentsResultObj]);
+
+  const loadingComments = useMemo(() => {
+    return commentsResultObj.isFetching;
+  }, [commentsResultObj]);
 
   return (
     <ModalWrapper
@@ -77,7 +68,7 @@ export const IssueModal = ({
           />
         </>,
         onClose: onCloseAction,
-        title: `${issueName}`
+        title: `${issue.title}`
       }}
       visible={visible}
     >
@@ -85,31 +76,33 @@ export const IssueModal = ({
         <div className="issue-modal--tag-row">
           <Tag
             extraCss="issue-modal--tag"
-            labelText={projectName}
+            labelText={issue.associatedProject.projectName}
             size="small"
           />
           <Tag
             extraCss="issue-modal--tag"
-            labelText={`Priority: ${priority}`}
+            labelText={`Priority: ${issue.priority}`}
             size="small"
           />
           <Tag
             extraCss="issue-modal--tag"
-            labelText={`Due: ${dueDate}`}
+            labelText={`Due: ${issue.expectedCloseDate ? FormattingUtils.formatDate(issue.expectedCloseDate) : 'Not Set'}`}
             size="small"
             icon={<HiCalendar className="default-tag--icon" />}
           />
           <Tag
-            extraCss="default-tag--icon"
+            extraCss="issue-modal--tag"
             labelText={`Comments: ${comments ? comments.length : 0}`}
             icon={<HiChat className="default-tag--icon" />}
             size="small"
           />
         </div>
-        <h3 className="issue-modal--section-heading">Details</h3>
-        <p>{issueDetails ? issueDetails : "Issue details are not available"}</p>
+        <div className="my-6">
+          <h3 className="issue-modal--section-heading">Issue Details</h3>
+          <p className="issue-modal--description">{issue.description ? issue.description : "Issue details are not available"}</p>
+        </div>
         <div className="issue-modal--comment-heading">
-          <h3 className="issue-modal--section-heading">Comments</h3>
+          <h3 className="issue-modal--section-heading">{comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}</h3>
           <div className="default-row">
             <DefaultButton
               active
@@ -123,7 +116,7 @@ export const IssueModal = ({
               active
               buttonSize="small"
               label="Refresh"
-              icon={<HiRefresh className="h-6 w-6 mr-1" />} 
+              icon={<HiRefresh className="h-6 w-6 mr-1" />}
               onClick={() => refreshComments()}
             />
           </div>
@@ -132,10 +125,10 @@ export const IssueModal = ({
           {comments && comments.length ? (
             comments.map((comment, index) => (
               <Comment
-                key={`comment-${issueName}-${index}`}
+                key={`comment-${comment._id}-${index}`}
                 commentText={comment.content}
                 commentAuthor={`${comment.createdBy.firstName} ${comment.createdBy.lastName}`}
-                commentDate={FormattingUtils.formatDate(comment.createdAt)}
+                commentDate={FormattingUtils.formatDate(comment.createdAt, DATE_FORMATS.MEDIUM_DATE_TIME)}
               />
             ))
           ) : (
@@ -143,10 +136,10 @@ export const IssueModal = ({
           )}
         </div>
         <AddCommentModal
-          issueName={issueName}
+          issueName={issue.title}
           onAddComment={(commentText) => {
-            addComemntTrigger({
-              associatedIssue: resourceId,
+            addCommentTrigger({
+              associatedIssue: issue._id,
               content: commentText
             })
           }}

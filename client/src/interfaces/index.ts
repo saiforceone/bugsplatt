@@ -85,6 +85,7 @@ export interface FEProject extends FECommonData {
   associatedTeam: string;
   createdBy: FECommonUserData;
   projectName: string;
+  description: string;
   projectType: string;
   colorCode?: string;
   tags: string[];
