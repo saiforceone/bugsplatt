@@ -4,7 +4,7 @@ import parseISO from 'date-fns/parseISO';
 export const DATE_FORMATS: {[key: string]: string} = {
   SHORT_DATE_US: "d / M / yy",
   MEDIUM_DATE: "MMM d, yyyy",
-  MEDIUM_DATE_TIME: "MMM d, yyyy - hh:mm a"
+  MEDIUM_DATE_TIME: "MMM d, yyyy - h:mm a"
 }
 
 export class FormattingUtils {

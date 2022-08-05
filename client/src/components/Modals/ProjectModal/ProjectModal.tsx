@@ -18,7 +18,7 @@ import {
 import { IssueSummaryCard } from "../../BaseComponents/IssueSummaryCard/IssueSummaryCard";
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
-import {FEIssue, FEProject} from "../../../interfaces";
+import { FEProject } from "../../../interfaces";
 import { FormattingUtils } from "../../../utils/FormattingUtils";
 
 export interface ProjectModalProps {
@@ -61,7 +61,7 @@ export const ProjectModal: FC<ProjectModalProps> = ({
           <Tag
             extraCss="modal--tag"
             icon={<HiUserGroup className="default-tag--icon" />}
-            labelText={`Team: ${project.associatedTeam}`}
+            labelText={`Team: ${project.associatedTeam.teamName}`}
             size="small"
           />
           <Tag

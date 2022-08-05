@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .page-header {
-  @apply content-center flex flex-1 mb-2 p-1;
+  @apply content-center flex flex-1 mb-8 py-1;
 }
 
 .page-header--content {

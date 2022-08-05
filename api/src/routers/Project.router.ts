@@ -57,7 +57,6 @@ export default class ProjectRouter extends BaseRouter {
           const data = req.body;
 
           data.createdBy = req._user!._id;
-          data.associatedTeam = new Types.ObjectId();
 
           response.data = (await this._controller.createDocument(
             data

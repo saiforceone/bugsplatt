@@ -13,7 +13,7 @@
 }
 
 .section-header--subtitle {
-  @apply font-semibold text-sm text-gray-500 uppercase;
+  @apply font-semibold mt-5 text-sm text-gray-500 uppercase;
 }
 
 .section-header--actions {

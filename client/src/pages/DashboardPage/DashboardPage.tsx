@@ -64,9 +64,9 @@ export const DashboardPage = () => {
   }, [selectedProj]);
 
   return (
-    <div>
+    <div className="p-4">
       <PageHeader title="Dashboard" />
-      <div className="p-4">
+      <div>
         <SectionHeader
           actions={
             <>
@@ -88,6 +88,7 @@ export const DashboardPage = () => {
             </>
           }
           title="Recent Projects"
+          subtitle="Your most recent projects at a glance"
         />
         {recentProjects.length ? (
           <div className="grid gap-3 grid-cols-3 my-8">
@@ -100,7 +101,7 @@ export const DashboardPage = () => {
                   maxValue: project.issues.length,
                 }}
                 projectName={project.projectName}
-                teamName={project.associatedTeam}
+                teamName={project.associatedTeam.teamName}
                 onClick={() => {
                   setSelectedProj(project);
                   setProjModalVisible(true);
@@ -135,6 +136,7 @@ export const DashboardPage = () => {
             </>
           }
           title="Recent Issues"
+          subtitle="Here are your most recently assigned issues"
         />
         {recentIssues.length ? (
           <div className="my-8">

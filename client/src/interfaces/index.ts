@@ -82,7 +82,12 @@ interface FECommonUserData {
 }
 
 export interface FEProject extends FECommonData {
-  associatedTeam: string;
+  associatedTeam: {
+    _id: string;
+    managedBy: FECommonUserData;
+    teamName: string;
+    teamDescription: string;
+  };
   createdBy: FECommonUserData;
   projectName: string;
   description: string;

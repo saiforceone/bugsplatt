@@ -77,7 +77,7 @@ export const IssueModal: FC<IssueModalProps> = ({
         <div className="issue-modal--tag-row">
           <Tag
             extraCss="issue-modal--tag"
-            labelText={issue.associatedProject.projectName}
+            labelText={issue.associatedProject ? issue.associatedProject.projectName : 'Not Set'}
             size="small"
           />
           <Tag
