@@ -16,6 +16,7 @@ import { useAddCommentMutation, useLazyGetCommentsQuery } from "../../../data/rt
 import {FEComment, FEIssue} from "../../../interfaces";
 import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
 import { AddCommentModal } from "../AddCommentModal/AddCommentModal";
+import {ProgressLoader} from '../../BaseComponents/ProgressLoader/ProgressLoader';
 
 export interface IssueModalProps {
   issue: FEIssue;
@@ -102,7 +103,12 @@ export const IssueModal: FC<IssueModalProps> = ({
           <p className="issue-modal--description">{issue.description ? issue.description : "Issue details are not available"}</p>
         </div>
         <div className="issue-modal--comment-heading">
-          <h3 className="issue-modal--section-heading">{comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}</h3>
+          <div className="modal--row">
+            <h3 className="issue-modal--section-heading">
+              {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
+            </h3>
+            <ProgressLoader color="#666666" visible={loadingComments} />
+          </div>
           <div className="default-row">
             <DefaultButton
               active
