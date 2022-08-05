@@ -42,9 +42,10 @@ export interface AppNotification {
 
 export interface NewProjectData {
   colorCode?: string;
-  projectDesc: string;
+  description: string;
   projectName: string;
   projectType: string;
+  associatedTeam: string;
 }
 
 export interface APIResponse {

@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "../../constants/apiConstants";
-import { FEProject } from "../../interfaces";
+import { FEProject, NewProjectData } from "../../interfaces";
 import { api } from "./api";
 import { buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery, prepareHeaders } from "../helpers";
 
@@ -7,7 +7,7 @@ const targetEndpoint = `${API_ENDPOINTS.PROJECTS}`;
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    addProject: builder.mutation<FEProject, Partial<FEProject>>({
+    addProject: builder.mutation<NewProjectData, Partial<NewProjectData>>({
       query: (body) => buildCommonAddQuery(body, targetEndpoint)
     }),
     getProjectWithId: builder.query<FEProject, string>({
