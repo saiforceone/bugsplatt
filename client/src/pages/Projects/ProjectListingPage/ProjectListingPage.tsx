@@ -8,7 +8,7 @@ import { ProjectCard } from "../../../components/BaseComponents/ProjectCard/Proj
 import { ProjectModal } from "../../../components/Modals/ProjectModal/ProjectModal";
 import { NewProjectModal } from "../../../components/Modals/NewProjectModal/NewProjectModal";
 import { FE_PROJECT_TYPES } from "../../../constants/appConstants";
-import { SelectOption } from "../../../interfaces";
+import {FETeam, SelectOption} from "../../../interfaces";
 
 export const ProjectListingPage = () => {
 
@@ -18,18 +18,33 @@ export const ProjectListingPage = () => {
   const [projTrigger, projResultObj] = useLazyGetProjectsQuery();
 
   useEffect(() => {
+    projTrigger();
     teamsTrigger();
   }, []);
 
   const availableTeams: SelectOption[] = useMemo(() => {
     try {
       const {data: {data}} = teamsResultObj as {[key: string]: any};
-      // TODO: Resolve Typescript error
-      return data ? data.map(obj => ({label: obj['teamName'], value: obj['_id']})) : []
+
+      if (!Array.isArray(data)) return [];
+      const _teams: SelectOption[] = [{label: '---', value: ''}];
+      const _data: SelectOption[] = (data as FETeam[]).map(obj => ({label: obj.teamName, value: obj._id}));
+      return _teams.concat(_data);
     } catch (e) {
       return []
     }
   }, [teamsResultObj]);
+
+  useEffect(() => {
+    try {
+      const {data: {success}} = addProjResultObj as {[key: string]: any};
+      if (success) {
+        projTrigger();
+      }
+    } catch (e) {
+
+    }
+  }, [addProjResultObj.data]);
 
   return (
     <div className="p-4">
@@ -48,6 +63,7 @@ export const ProjectListingPage = () => {
         }
       />
       <NewProjectModal
+        actionInProgress={addProjResultObj.isLoading}
         onCloseModal={() => setShowNewProjModal(false)}
         onCreateProject={projData => {
           console.log('proj data: ', projData)

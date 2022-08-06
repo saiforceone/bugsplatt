@@ -1,14 +1,17 @@
-import { ChangeEvent, FC, useCallback, useState } from "react";
-import { HiCheckCircle } from "react-icons/hi";
-import { NewProjectData, ProjectType, SelectOption } from "../../../interfaces";
-import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
-import { Select } from "../../BaseComponents/Select/Select";
-import { TextArea } from "../../BaseComponents/TextArea/TextArea";
-import { TextInput } from "../../BaseComponents/TextInput/TextInput";
+import {ChangeEvent, FC, useCallback, useState} from "react";
+import {HiCheckCircle} from "react-icons/hi";
+import {NewProjectData, ProjectType, SelectOption} from "../../../interfaces";
+import {DefaultButton} from "../../BaseComponents/DefaultButton/DefaultButton";
+import {Select} from "../../BaseComponents/Select/Select";
+import {TextArea} from "../../BaseComponents/TextArea/TextArea";
+import {TextInput} from "../../BaseComponents/TextInput/TextInput";
 import "../Modals.css";
-import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
+import {ModalWrapper} from "../ModalWrapper/ModalWrapper";
+import {ProgressLoader} from '../../BaseComponents/ProgressLoader/ProgressLoader';
+import {FormControlNotificationType} from '../../FormControlNotification/FormControlNotification';
 
 export interface NewProjectModalProps {
+  actionInProgress: boolean;
   onCloseModal: () => void;
   onCreateProject: (data: NewProjectData) => void;
   visible: boolean;
@@ -25,6 +28,7 @@ const emptyProjectData: NewProjectData = {
 };
 
 export const NewProjectModal: FC<NewProjectModalProps> = ({
+  actionInProgress = false,
   onCloseModal,
   onCreateProject,
   projectTypes,
@@ -60,14 +64,20 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
     >
       <div className="modal--container">
         <Select
+          disabled={actionInProgress}
           name="associatedTeam"
           id="new-project-team"
           labelText="Team"
           options={teams}
           onChange={(e) => onUpdateProjectData(e)}
           value={projectData.associatedTeam}
+          fieldNotification={{
+            notificationType: FormControlNotificationType.error,
+            notificationText: "Please make a selection"
+        }}
         />
         <TextInput
+          disabled={actionInProgress}
           name="projectName"
           labelText="Project Name"
           placeholder="Project name..."
@@ -75,6 +85,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           value={projectData.projectName}
         />
         <TextArea
+          disabled={actionInProgress}
           id="description"
           name="description"
           labelText="Project Description"
@@ -84,6 +95,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           onChange={(e) => onUpdateProjectData(e)}
         />
         <Select
+          disabled={actionInProgress}
           name="projectType"
           id="new-project-type"
           labelText="Project Type"
@@ -92,6 +104,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           value={projectData.projectType}
         />
         <TextInput
+          disabled={actionInProgress}
           name="colorCode"
           labelText={`(Optional) Color Code ${projectData.colorCode}`}
           placeholder="Color Code"
@@ -100,12 +113,14 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           onChange={(e) => onUpdateProjectData(e)}
         />
         <div className="modal--row justify-center">
-          <DefaultButton
-            active
-            label="Create Project"
-            onClick={onExecCreateProject}
-            icon={<HiCheckCircle className="default-tag--icon" />}
-          />
+          {actionInProgress ? <ProgressLoader visible={actionInProgress}/> :
+            <DefaultButton
+              active={!actionInProgress}
+              label="Create Project"
+              onClick={onExecCreateProject}
+              icon={<HiCheckCircle className="default-tag--icon"/>}
+            />
+          }
         </div>
       </div>
     </ModalWrapper>

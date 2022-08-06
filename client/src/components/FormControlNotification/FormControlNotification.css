@@ -1,0 +1,33 @@
+@import '../../index.css';
+
+.form-control-notification {
+  @apply flex mt-1 content-center;
+}
+
+.form-control-notification--content {
+  @apply flex flex-col flex-1 ml-2;
+}
+
+.form-control-notification--title {
+  @apply text-lg font-semibold mb-2 text-slate-700 uppercase;
+}
+
+.form-control-notification--text {
+  @apply text-slate-700;
+}
+
+.form-control-notification__text-default {
+  @apply text-slate-700;
+}
+
+.form-control-notification__text-info {
+  @apply text-blue-800;
+}
+
+.form-control-notification__text-warning {
+  @apply text-amber-600;
+}
+
+.form-control-notification__text-error {
+  @apply text-red-600;
+}

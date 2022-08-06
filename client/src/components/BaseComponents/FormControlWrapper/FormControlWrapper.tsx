@@ -1,21 +1,30 @@
-import { ReactElement } from 'react';
+import {FC, ReactElement} from 'react';
 import './FormControlWrapper.css';
+import {
+  FormControlNotification,
+  FormControlNotificationProps
+} from '../../FormControlNotification/FormControlNotification';
 
 export interface FormControlWrapperProps {
   labelId: string;
   labelText?: string;
   control: ReactElement;
+  notification?: FormControlNotificationProps;
 }
 
-export const FormControlWrapper = ({
+export const FormControlWrapper: FC<FormControlWrapperProps> = ({
   labelId,
   labelText,
   control,
-}: FormControlWrapperProps) => {
+  notification
+}) => {
   return (
     <div className='form-control-wrapper'>
-      {labelText && <label className='form-control-wrapper--label' htmlFor={labelId}>{labelText}</label>}
-      {control}
+      <>
+        {labelText && <label className='form-control-wrapper--label' htmlFor={labelId}>{labelText}</label>}
+        {control}
+        {notification && <FormControlNotification {...notification} />}
+      </>
     </div>
   );
 }

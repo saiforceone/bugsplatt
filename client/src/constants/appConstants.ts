@@ -2,6 +2,10 @@ import { SelectOption } from "../interfaces";
 
 export const FE_PROJECT_TYPES: SelectOption[] = [
   {
+    label: '---',
+    value: ''
+  },
+  {
     label: 'Backend Project',
     value: 'backend'
   }, {

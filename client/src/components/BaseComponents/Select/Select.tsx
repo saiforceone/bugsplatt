@@ -1,6 +1,7 @@
 import { FC, SelectHTMLAttributes } from 'react';
 import './select.css';
 import { FormControlWrapper } from '../FormControlWrapper/FormControlWrapper';
+import {FormControlNotificationProps} from '../../FormControlNotification/FormControlNotification';
 
 export interface SelectOption {
   label: string;
@@ -12,15 +13,17 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   id: string;
   labelText?: string;
   options: Array<SelectOption>;
+  fieldNotification?: FormControlNotificationProps
 }
 
-export const Select = ({
+export const Select: FC<SelectProps> = ({
   active = true,
   id = 'default-select',
   labelText = 'Pick something',
   options = [],
+  fieldNotification,
   ...props
-}: SelectProps) => {
+}) => {
   return (
     <FormControlWrapper
       labelId={id}
@@ -33,6 +36,7 @@ export const Select = ({
           ))}
         </select>
       }
+      notification={fieldNotification}
     />
   );
 }
