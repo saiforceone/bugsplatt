@@ -64,6 +64,12 @@ export interface CommonSlice {
   totalItems: number;
 }
 
+export interface FEProjectSearchCriteria {
+  createdBy?: string;
+  associatedTeam?: string;
+  projectType?: string;
+}
+
 export interface FECommonData {
   _id: string;
   createdAt: string;

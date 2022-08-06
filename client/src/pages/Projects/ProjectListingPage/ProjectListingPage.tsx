@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { HiPlus } from "react-icons/hi";
 import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
@@ -9,7 +9,7 @@ import { ProjectCard } from "../../../components/BaseComponents/ProjectCard/Proj
 import { ProjectModal } from "../../../components/Modals/ProjectModal/ProjectModal";
 import { NewProjectModal } from "../../../components/Modals/NewProjectModal/NewProjectModal";
 import { FE_PROJECT_TYPES } from "../../../constants/appConstants";
-import {FEProject, FETeam, SelectOption} from "../../../interfaces";
+import {FEProject, FEProjectSearchCriteria, FETeam, SelectOption} from "../../../interfaces";
 import {ProjectFilter} from '../../../components/PageComponents/ProjectFilter/ProjectFilter';
 import {NoResultCard} from '../../../components/BaseComponents/NoResultCard/NoResultCard';
 
@@ -24,7 +24,7 @@ export const ProjectListingPage = () => {
   const [selectedProjRef, setSelectedProjRef] = useState('');
 
   useEffect(() => {
-    projTrigger();
+    projTrigger({});
     teamsTrigger();
   }, []);
 
@@ -45,7 +45,7 @@ export const ProjectListingPage = () => {
     try {
       const {data: {success}} = addProjResultObj as {[key: string]: any};
       if (success) {
-        projTrigger();
+        projTrigger({});
       }
     } catch (e) {
 
@@ -67,6 +67,10 @@ export const ProjectListingPage = () => {
     return projects.find(el => el._id === selectedProjRef);
   }, [projects, selectedProjRef]);
 
+  const onApplyFilter = useCallback((filterObj?: FEProjectSearchCriteria) => {
+    filterObj ? projTrigger(filterObj) : projTrigger({});
+  }, []);
+
   return (
     <div className="p-4">
       <PageHeader
@@ -83,7 +87,11 @@ export const ProjectListingPage = () => {
           </>
         }
       />
-      <ProjectFilter onFilter={() => {}} users={[]} teams={availableTeams} projectTypes={FE_PROJECT_TYPES} />
+      <ProjectFilter
+        onFilter={(filterObj) => {
+          onApplyFilter(filterObj);
+        }} users={[]} teams={availableTeams} projectTypes={FE_PROJECT_TYPES}
+      />
       <div className="grid gap-3 grid-cols-3 my-8">
         {
           projects.length

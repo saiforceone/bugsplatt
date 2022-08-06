@@ -30,7 +30,7 @@ export const DashboardPage = () => {
   const [selectedIssue, setSelectedIssue] = useState<FEIssue | undefined>();
 
   useEffect(() => {
-    projectsTrigger();
+    projectsTrigger({});
     issuesTrigger();
   }, []);
 
@@ -75,7 +75,7 @@ export const DashboardPage = () => {
                 extraCss="mr-2"
                 icon={<HiRefresh className="default-icon" />}
                 label="Refresh"
-                onClick={() => projectsTrigger()}
+                onClick={() => projectsTrigger({})}
               />
               <DefaultButton
                 active

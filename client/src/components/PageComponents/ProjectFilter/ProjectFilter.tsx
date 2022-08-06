@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from "react";
-import { SelectableOption } from "../../../interfaces";
+import {FEProjectSearchCriteria, SelectableOption} from "../../../interfaces";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
 import { ModalHeaderProps } from "../../Modals/ModalHeader/ModalHeader";
 import { SelectableOptionModal } from "../../Modals/SelectableOptionModal/SelectableOptionModal";
@@ -7,7 +7,7 @@ import { ProjectFilterOption } from "../ProjectFilterOption/ProjectFilterOption"
 import "./ProjectFilter.css";
 
 interface ProjectFilterProps {
-  onFilter: (data: object) => void;
+  onFilter: (data: FEProjectSearchCriteria) => void;
   users: SelectableOption[];
   teams: SelectableOption[];
   projectTypes: SelectableOption[];
@@ -114,9 +114,9 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
 
   const onApplyFilter = useCallback(() => {
     onFilter({
-      selectedUser,
-      selectedTeam,
-      selectedProjType
+      createdBy: selectedUser?.value,
+      associatedTeam: selectedTeam?.value,
+      projectType: selectedProjType?.value
     });
   }, [selectedUser, selectedTeam, selectedProjType])
 

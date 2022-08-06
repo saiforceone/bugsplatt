@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "../../constants/apiConstants";
-import { FEProject, NewProjectData } from "../../interfaces";
+import {FEProject, FEProjectSearchCriteria, NewProjectData} from "../../interfaces";
 import { api } from "./api";
 import { buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery, prepareHeaders } from "../helpers";
 
@@ -15,10 +15,14 @@ export const projectApi = api.injectEndpoints({
         url: `${targetEndpoint}/${id}`
       })
     }),
-    getProjects: builder.query<FEProject, void>({
-      query: () => ({
-        url: `${targetEndpoint}`
-      })
+    getProjects: builder.query<FEProject, FEProjectSearchCriteria>({
+      query: (arg) => {
+        console.log('projectAPI args: ', arg);
+        return {
+          url: `${targetEndpoint}`,
+          params: {...arg}
+        }
+      }
     }),
     updateProject: builder.mutation<FEProject, Partial<FEProject> & Pick<FEProject, "_id">>({
       query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
