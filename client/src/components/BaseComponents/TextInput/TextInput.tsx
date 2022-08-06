@@ -1,10 +1,12 @@
 import { FC, InputHTMLAttributes } from 'react';
 import './textInput.css';
 import { FormControlWrapper } from '../FormControlWrapper/FormControlWrapper';
+import {FormControlNotificationProps} from '../../FormControlNotification/FormControlNotification';
 
 export interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   labelText?: string;
+  fieldNotification?: FormControlNotificationProps
 }
 
 export const TextInput: FC<TextInputProps> = ({
@@ -12,6 +14,7 @@ export const TextInput: FC<TextInputProps> = ({
   labelText = 'Text Field',
   placeholder = 'Type something...',
   type = 'text',
+  fieldNotification,
   ...props
 }: TextInputProps) => {
   return (
@@ -27,6 +30,7 @@ export const TextInput: FC<TextInputProps> = ({
           {...props}
         />
       }
+      notification={fieldNotification}
     />
   );
 }

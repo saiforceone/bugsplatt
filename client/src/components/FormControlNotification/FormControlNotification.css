@@ -1,15 +1,15 @@
 @import '../../index.css';
 
 .form-control-notification {
-  @apply flex mt-1 content-center;
+  @apply flex mt-2 border-2 content-center rounded px-1 py-2;
 }
 
 .form-control-notification--content {
-  @apply flex flex-col flex-1 ml-2;
+  @apply flex flex-col flex-1 ml-3;
 }
 
 .form-control-notification--title {
-  @apply text-lg font-semibold mb-2 text-slate-700 uppercase;
+  @apply text-sm font-semibold mb-0.5 text-slate-700 uppercase;
 }
 
 .form-control-notification--text {
@@ -30,4 +30,8 @@
 
 .form-control-notification__text-error {
   @apply text-red-600;
+}
+
+.notification-icon {
+  @apply h-5 w-5 self-center;
 }

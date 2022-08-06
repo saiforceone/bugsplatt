@@ -71,10 +71,10 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           options={teams}
           onChange={(e) => onUpdateProjectData(e)}
           value={projectData.associatedTeam}
-          fieldNotification={{
+          fieldNotification={!projectData.associatedTeam ? {
             notificationType: FormControlNotificationType.error,
-            notificationText: "Please make a selection"
-        }}
+            notificationText: "This project needs a team"
+          } : undefined}
         />
         <TextInput
           disabled={actionInProgress}
@@ -83,6 +83,10 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           placeholder="Project name..."
           onChange={(e) => onUpdateProjectData(e)}
           value={projectData.projectName}
+          fieldNotification={!projectData.projectName ? {
+            notificationType: FormControlNotificationType.error,
+            notificationText: "This project needs a name and make it a cool one"
+          } : undefined}
         />
         <TextArea
           disabled={actionInProgress}
@@ -93,6 +97,10 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           rows={4}
           value={projectData.description}
           onChange={(e) => onUpdateProjectData(e)}
+          fieldNotification={!projectData.description ? {
+            notificationType: FormControlNotificationType.error,
+            notificationText: "This project needs a cool but descriptive description"
+          } : undefined}
         />
         <Select
           disabled={actionInProgress}
@@ -102,6 +110,10 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           options={projectTypes}
           onChange={(e) => onUpdateProjectData(e)}
           value={projectData.projectType}
+          fieldNotification={!projectData.projectType ? {
+            notificationType: FormControlNotificationType.error,
+            notificationText: "This project needs a project type"
+          } : undefined}
         />
         <TextInput
           disabled={actionInProgress}
