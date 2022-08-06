@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { HiPlus } from "react-icons/hi";
 import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
 import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
@@ -8,14 +9,19 @@ import { ProjectCard } from "../../../components/BaseComponents/ProjectCard/Proj
 import { ProjectModal } from "../../../components/Modals/ProjectModal/ProjectModal";
 import { NewProjectModal } from "../../../components/Modals/NewProjectModal/NewProjectModal";
 import { FE_PROJECT_TYPES } from "../../../constants/appConstants";
-import {FETeam, SelectOption} from "../../../interfaces";
+import {FEProject, FETeam, SelectOption} from "../../../interfaces";
+import {ProjectFilter} from '../../../components/PageComponents/ProjectFilter/ProjectFilter';
+import {NoResultCard} from '../../../components/BaseComponents/NoResultCard/NoResultCard';
 
 export const ProjectListingPage = () => {
+
+  const navigate = useNavigate();
 
   const [showNewProjModal, setShowNewProjModal] = useState(false);
   const [teamsTrigger, teamsResultObj] = useLazyGetTeamsQuery();
   const [addProjTrigger, addProjResultObj] = useAddProjectMutation();
   const [projTrigger, projResultObj] = useLazyGetProjectsQuery();
+  const [selectedProjRef, setSelectedProjRef] = useState('');
 
   useEffect(() => {
     projTrigger();
@@ -46,6 +52,21 @@ export const ProjectListingPage = () => {
     }
   }, [addProjResultObj.data]);
 
+  const projects: FEProject[] = useMemo(() => {
+    try {
+      const {data: {data}} = projResultObj as {[key: string]: any};
+      if (!Array.isArray(data)) return [];
+      return data as FEProject[];
+    } catch (e) {
+      return [];
+    }
+  }, [projResultObj]);
+
+  const selectedProject: FEProject|undefined = useMemo(() => {
+    if (!selectedProjRef) return;
+    return projects.find(el => el._id === selectedProjRef);
+  }, [projects, selectedProjRef]);
+
   return (
     <div className="p-4">
       <PageHeader
@@ -62,6 +83,35 @@ export const ProjectListingPage = () => {
           </>
         }
       />
+      <ProjectFilter onFilter={() => {}} users={[]} teams={availableTeams} projectTypes={FE_PROJECT_TYPES} />
+      <div className="grid gap-3 grid-cols-3 my-8">
+        {
+          projects.length
+            ? projects.map(proj =>
+              <ProjectCard
+                key={`project-${proj._id}`}
+                onClick={() => setSelectedProjRef(proj._id)}
+                projectName={proj.projectName} teamName={proj.associatedTeam.teamName}
+                progressDetail={{label: 'Issues', maxValue: proj.issues.length, currentValue: 0}}
+              />
+            )
+            : <NoResultCard />
+        }
+      </div>
+      {
+        selectedProject
+        && <ProjectModal
+          project={selectedProject}
+          onCloseModal={() => {setSelectedProjRef('')}}
+          issueDetails={{
+            label: 'Issues',
+            currentValue: 0,
+            maxValue: selectedProject.issues.length
+          }}
+          onGoToProject={() => navigate(`/projects/${selectedProject._id}`)}
+          visible={!!selectedProjRef}
+        />
+      }
       <NewProjectModal
         actionInProgress={addProjResultObj.isLoading}
         onCloseModal={() => setShowNewProjModal(false)}
