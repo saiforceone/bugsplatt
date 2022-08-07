@@ -130,13 +130,13 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
   return (
     <div className="project-filter">
       <div className="project-filter--controls">
-        <ProjectFilterOption
+        {/* <ProjectFilterOption
           extraCss="mr-1"
           label="User"
           resetAction={onResetOption}
           onClick={() => onShowModal("user")}
           value={selectedUser}
-        />
+        /> */}
         <ProjectFilterOption
           extraCss="mr-1"
           label="Team"
@@ -158,7 +158,7 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
         />
       </div>
       <div className="default-actions-container">
-        <DefaultButton active label="Apply" onClick={onApplyFilter} />
+        <DefaultButton active extraCss="mr-2" label="Apply" onClick={onApplyFilter} />
         <DefaultButton active label="Reset" onClick={onResetAllOptions} />
       </div>
       <SelectableOptionModal

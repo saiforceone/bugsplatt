@@ -17,7 +17,6 @@ export const projectApi = api.injectEndpoints({
     }),
     getProjects: builder.query<FEProject, FEProjectSearchCriteria>({
       query: (arg) => {
-        console.log('projectAPI args: ', arg);
         return {
           url: `${targetEndpoint}`,
           params: {...arg}
@@ -38,5 +37,5 @@ export const projectApi = api.injectEndpoints({
 export const {
   useGetProjectWithIdQuery, useLazyGetProjectWithIdQuery,
   useLazyGetProjectsQuery, useGetProjectsQuery, useDeleteProjectMutation,
-  useAddProjectMutation
+  useAddProjectMutation, useUpdateProjectMutation
 } = projectApi;

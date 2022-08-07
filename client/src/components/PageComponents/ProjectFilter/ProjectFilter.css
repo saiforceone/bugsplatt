@@ -5,5 +5,5 @@
 }
 
 .project-filter--controls {
-  @apply flex flex-1;
+  @apply flex flex-1 mr-2;
 }

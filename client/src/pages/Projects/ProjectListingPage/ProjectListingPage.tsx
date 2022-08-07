@@ -1,27 +1,35 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
-import { useNavigate } from 'react-router-dom';
-import { HiPlus } from "react-icons/hi";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HiPlus, HiRefresh } from "react-icons/hi";
 import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
 import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
-import { useAddProjectMutation, useLazyGetProjectsQuery } from "../../../data/rtkApis/projectApi";
-import {useLazyGetTeamsQuery} from "../../../data/rtkApis/teamApi";
+import {
+  useAddProjectMutation,
+  useLazyGetProjectsQuery,
+} from "../../../data/rtkApis/projectApi";
+import { useLazyGetTeamsQuery } from "../../../data/rtkApis/teamApi";
 import { ProjectCard } from "../../../components/BaseComponents/ProjectCard/ProjectCard";
 import { ProjectModal } from "../../../components/Modals/ProjectModal/ProjectModal";
 import { NewProjectModal } from "../../../components/Modals/NewProjectModal/NewProjectModal";
 import { FE_PROJECT_TYPES } from "../../../constants/appConstants";
-import {FEProject, FEProjectSearchCriteria, FETeam, SelectOption} from "../../../interfaces";
-import {ProjectFilter} from '../../../components/PageComponents/ProjectFilter/ProjectFilter';
-import {NoResultCard} from '../../../components/BaseComponents/NoResultCard/NoResultCard';
+import {
+  FEProject,
+  FEProjectSearchCriteria,
+  FETeam,
+  SelectOption,
+} from "../../../interfaces";
+import { ProjectFilter } from "../../../components/PageComponents/ProjectFilter/ProjectFilter";
+import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
+import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
 
 export const ProjectListingPage = () => {
-
   const navigate = useNavigate();
 
   const [showNewProjModal, setShowNewProjModal] = useState(false);
   const [teamsTrigger, teamsResultObj] = useLazyGetTeamsQuery();
   const [addProjTrigger, addProjResultObj] = useAddProjectMutation();
   const [projTrigger, projResultObj] = useLazyGetProjectsQuery();
-  const [selectedProjRef, setSelectedProjRef] = useState('');
+  const [selectedProjRef, setSelectedProjRef] = useState("");
 
   useEffect(() => {
     projTrigger({});
@@ -30,31 +38,38 @@ export const ProjectListingPage = () => {
 
   const availableTeams: SelectOption[] = useMemo(() => {
     try {
-      const {data: {data}} = teamsResultObj as {[key: string]: any};
+      const {
+        data: { data },
+      } = teamsResultObj as { [key: string]: any };
 
       if (!Array.isArray(data)) return [];
-      const _teams: SelectOption[] = [{label: '---', value: ''}];
-      const _data: SelectOption[] = (data as FETeam[]).map(obj => ({label: obj.teamName, value: obj._id}));
+      const _teams: SelectOption[] = [{ label: "---", value: "" }];
+      const _data: SelectOption[] = (data as FETeam[]).map((obj) => ({
+        label: obj.teamName,
+        value: obj._id,
+      }));
       return _teams.concat(_data);
     } catch (e) {
-      return []
+      return [];
     }
   }, [teamsResultObj]);
 
   useEffect(() => {
     try {
-      const {data: {success}} = addProjResultObj as {[key: string]: any};
+      const {
+        data: { success },
+      } = addProjResultObj as { [key: string]: any };
       if (success) {
         projTrigger({});
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }, [addProjResultObj.data]);
 
   const projects: FEProject[] = useMemo(() => {
     try {
-      const {data: {data}} = projResultObj as {[key: string]: any};
+      const {
+        data: { data },
+      } = projResultObj as { [key: string]: any };
       if (!Array.isArray(data)) return [];
       return data as FEProject[];
     } catch (e) {
@@ -62,9 +77,9 @@ export const ProjectListingPage = () => {
     }
   }, [projResultObj]);
 
-  const selectedProject: FEProject|undefined = useMemo(() => {
+  const selectedProject: FEProject | undefined = useMemo(() => {
     if (!selectedProjRef) return;
-    return projects.find(el => el._id === selectedProjRef);
+    return projects.find((el) => el._id === selectedProjRef);
   }, [projects, selectedProjRef]);
 
   const onApplyFilter = useCallback((filterObj?: FEProjectSearchCriteria) => {
@@ -87,44 +102,69 @@ export const ProjectListingPage = () => {
           </>
         }
       />
+      <SectionHeader
+        title={`${projects.length} Project(s) found`}
+        actions={
+          <>
+            <DefaultButton 
+              active
+              label="Refresh Projects" 
+              icon={
+                <HiRefresh className="default-icon" />
+              }
+            />
+          </>
+        }
+      />
       <ProjectFilter
         onFilter={(filterObj) => {
           onApplyFilter(filterObj);
-        }} users={[]} teams={availableTeams} projectTypes={FE_PROJECT_TYPES}
+        }}
+        users={[]}
+        teams={availableTeams}
+        projectTypes={FE_PROJECT_TYPES}
       />
-      <div className="grid gap-3 grid-cols-3 my-8">
-        {
-          projects.length
-            ? projects.map(proj =>
+      <div>
+        {projects.length ? (
+          <div className="grid gap-3 grid-cols-3 my-8">
+            {projects.map((proj) => (
               <ProjectCard
                 key={`project-${proj._id}`}
                 onClick={() => setSelectedProjRef(proj._id)}
-                projectName={proj.projectName} teamName={proj.associatedTeam.teamName}
-                progressDetail={{label: 'Issues', maxValue: proj.issues.length, currentValue: 0}}
+                projectName={proj.projectName}
+                teamName={proj.associatedTeam.teamName}
+                progressDetail={{
+                  label: "Issues",
+                  maxValue: proj.issues.length,
+                  currentValue: 0,
+                }}
               />
-            )
-            : <NoResultCard />
-        }
+            ))}
+          </div>
+        ) : (
+          <NoResultCard />
+        )}
       </div>
-      {
-        selectedProject
-        && <ProjectModal
+      {selectedProject && (
+        <ProjectModal
           project={selectedProject}
-          onCloseModal={() => {setSelectedProjRef('')}}
-          issueDetails={{
-            label: 'Issues',
-            currentValue: 0,
-            maxValue: selectedProject.issues.length
+          onCloseModal={() => {
+            setSelectedProjRef("");
           }}
-          onGoToProject={() => navigate(`/projects/${selectedProject._id}`)}
+          issueDetails={{
+            label: "Issues",
+            currentValue: 0,
+            maxValue: selectedProject.issues.length,
+          }}
+          onGoToProject={() => navigate(`/app/projects/${selectedProject._id}`)}
           visible={!!selectedProjRef}
         />
-      }
+      )}
       <NewProjectModal
         actionInProgress={addProjResultObj.isLoading}
         onCloseModal={() => setShowNewProjModal(false)}
-        onCreateProject={projData => {
-          console.log('proj data: ', projData)
+        onCreateProject={(projData) => {
+          console.log("proj data: ", projData);
           addProjTrigger(projData);
         }}
         projectTypes={FE_PROJECT_TYPES}

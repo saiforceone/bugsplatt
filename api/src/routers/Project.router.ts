@@ -1,4 +1,5 @@
-import { Model, Types } from "mongoose";
+import { Model } from "mongoose";
+import { pick as lodashPick } from "lodash";
 import BaseRouter, {
   POPULATE_ASSIGNED_TO,
   POPULATE_ASSOC_CREATED_BY,
@@ -15,6 +16,8 @@ import { IIssue } from "../resources/interfaces/Issue.interface";
 import Issue from "../resources/models/Issue.model";
 import ProjectModel from "../resources/models/Project.model";
 
+
+const PROJECT_FILTER_FIELDS = ['projectType', 'associatedTeam', 'createdBy'];
 
 /**
  * @class ProjectRouter
@@ -36,11 +39,8 @@ export default class ProjectRouter extends BaseRouter {
     try {
       return await this._issueModel
         .find({ associatedProject: projectId })
-        .select("-__v")
-        .populate(POPULATE_ASSOC_PROJ)
-        .populate(POPULATE_ASSOC_CREATED_BY)
-        .populate(POPULATE_ASSOC_WATCHED_BY)
-        .populate(POPULATE_ASSIGNED_TO);
+        .select("-__v");
+        
     } catch (e) {
       return [];
     }
@@ -96,12 +96,13 @@ export default class ProjectRouter extends BaseRouter {
       async (req: Request, res: Response) => {
         const response = this.getDefaultResponse();
         try {
-          // const limit = req.query.limit ? req.query.limit : '';
+          // const limit = req.query.limit ? req.query.limit : '';          
+
+          const filterObj: {[key: string]: any} = lodashPick(req.query, PROJECT_FILTER_FIELDS);
+
           const data = await this._projectModel
-            .find()
-            .select("-__v")
-            .populate(POPULATE_ASSOC_CREATED_BY)
-            .populate(POPULATE_ASSOC_TEAM);
+            .find(filterObj)
+            .select("-__v");
 
           const _data = [];
           // fetch issues for each project

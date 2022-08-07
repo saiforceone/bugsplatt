@@ -56,8 +56,7 @@ export default class IssueRouter extends BaseRouter {
       try {
         const resourceId: string = req.params.id;
         
-        response.data = await this._controller.getModel().findById(resourceId)
-        .populate(POPULATE_ASSOC_PROJ).populate(POPULATE_ASSOC_WATCHED_BY) as IIssue;
+        response.data = await this._controller.getModel().findById(resourceId) as IIssue;
         response.success = !!response.data;
 
         return res.status(response.data ? ROUTER_RESPONSE_CODES.RESOURCE_FOUND : ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND).json(response)
