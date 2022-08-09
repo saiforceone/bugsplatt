@@ -26,7 +26,7 @@
     "jwks-rsa": "^2.0.5",
     "lodash": "^4.17.21",
     "mongoose": "^6.2.10",
-    "mongoose-autopopulate": "^0.16.1",
+    "mongoose-autopopulate": "^0.16.1"
   },
   "devDependencies": {
     "@types/expect": "^24.3.0",

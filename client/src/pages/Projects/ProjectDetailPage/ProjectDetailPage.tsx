@@ -14,6 +14,8 @@ import {
   useUpdateProjectMutation,
 } from "../../../data/rtkApis/projectApi";
 import { FEProject } from "../../../interfaces";
+import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES} from '../../../constants/appConstants';
+import {useAddIssueMutation} from '../../../data/rtkApis/issueApi';
 
 // TODO: Complete layout and functionality implementation
 export const ProjectDetailPage = () => {
@@ -24,6 +26,7 @@ export const ProjectDetailPage = () => {
   const [showAddIssue, setShowAddIssue] = useState(false);
   const [projTrigger, projResultObj] = useLazyGetProjectWithIdQuery();
   const [updateProjTrigger, updateResultObj] = useUpdateProjectMutation();
+  const [addIssueTrigger, addIssueResultObj] = useAddIssueMutation();
 
   useEffect(() => {
     const { id } = params;
@@ -34,10 +37,14 @@ export const ProjectDetailPage = () => {
 
   useEffect(() => {
     const {data} = projResultObj as {[key: string]: any};
-    console.log('project detail page -> project: ', data);
     if (data) {
-      // TODO Fix this....
-      // setProject(data as FEProject);
+
+      try {
+        const projData = data['data'] as FEProject;
+        setProject(projData);
+      } catch (e) {
+        console.log('failed to set project with error: ', (e as Error).message);
+      }
     }
   }, [projResultObj]);
 
@@ -97,20 +104,22 @@ export const ProjectDetailPage = () => {
       <ProjectIssueFilter
         issueCount={project ? project.issues.length : 0}
         onFilterIssues={() => {}}
-        onNewIssue={() => {}}
-        projectPriorities={[]}
-        projectStatuses={[]}
+        onNewIssue={() => setShowAddIssue(true)}
+        projectPriorities={FE_PROJECT_PRIORITIES}
+        projectStatuses={FE_PROJECT_STATUSES}
       />
       {project && (
         <NewIssueModal
           onCloseModal={() => setShowAddIssue(false)}
           visible={showAddIssue}
-          onCreateIssue={() => {}}
+          onCreateIssue={issueData => {
+            console.log('onCreateIssue with data: ', issueData);
+          }}
           project={{ objectId: project._id, projectName: project.projectName }}
           onManageAttachments={() => {}}
           onManageWatchers={() => {}}
           projectAssignees={[]}
-          projectPriorities={[]}
+          projectPriorities={FE_PROJECT_PRIORITIES}
         />
       )}
     </div>

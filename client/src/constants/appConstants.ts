@@ -1,9 +1,13 @@
-import { SelectOption } from "../interfaces";
+import {SelectOption} from "../interfaces";
+
+const EMPTY_SELECT_OPT: SelectOption = {
+  label: '---',
+  value: '',
+}
 
 export const FE_PROJECT_TYPES: SelectOption[] = [
   {
-    label: '---',
-    value: ''
+    ...EMPTY_SELECT_OPT
   },
   {
     label: 'Backend Project',
@@ -20,5 +24,41 @@ export const FE_PROJECT_TYPES: SelectOption[] = [
   }, {
     label: 'Web App',
     value: 'web-app'
+  }
+];
+
+export const FE_PROJECT_STATUSES: SelectOption[] = [
+  {
+    ...EMPTY_SELECT_OPT
+  },
+  {
+    label: 'Active',
+    value: 'active'
+  },
+  {
+    label: 'Closed',
+    value: 'close'
+  }
+];
+
+export const FE_PROJECT_PRIORITIES: SelectOption[] = [
+  {
+    ...EMPTY_SELECT_OPT
+  },
+  {
+    label: 'Low',
+    value: 'low'
+  },
+  {
+    label: 'Medium',
+    value: 'med'
+  },
+  {
+    label: 'High',
+    value: 'high'
+  },
+  {
+    label: 'OMG WTF? WHY? HOW?!',
+    value: 'omg-wtf'
   }
 ];

@@ -48,6 +48,15 @@ export interface NewProjectData {
   associatedTeam: string;
 }
 
+export interface NewIssueData {
+  associatedProject: string;
+  description: string;
+  expectedCloseDate?: string;
+  priority: string;
+  tags: string[];
+  title: string;
+}
+
 export interface APIResponse {
   data: object[] | object;
   error: string;

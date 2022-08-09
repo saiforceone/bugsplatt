@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import "../Modals.css";
 import "./newIssueModal.css";
 import {
@@ -11,6 +11,7 @@ import {
 } from "react-icons/hi";
 
 import {
+  NewIssueData,
   NewIssueProject,
   ProjectAssignee,
   ProjectPriority,
@@ -32,11 +33,19 @@ export interface NewIssueModalProps {
   onCloseModal: () => void;
   onManageWatchers: () => void;
   onManageAttachments: () => void;
-  onCreateIssue: () => void;
+  onCreateIssue: (data: NewIssueData) => void;
   project: NewIssueProject;
   projectAssignees: ProjectAssignee[];
   projectPriorities: ProjectPriority[];
   visible: boolean;
+}
+
+const INITIAL_ISSUE_DATA: NewIssueData = {
+  tags: [],
+  associatedProject: '',
+  description: '',
+  title: '',
+  priority: '',
 }
 
 export const NewIssueModal = ({
@@ -49,6 +58,8 @@ export const NewIssueModal = ({
   projectAssignees,
   projectPriorities,
 }: NewIssueModalProps): JSX.Element => {
+
+  const [issueData, setIssueData] = useState<NewIssueData>(() => ({...INITIAL_ISSUE_DATA}));
   const [issueName, setIssueName] = useState("");
   const [description, setDescription] = useState("");
   const [issueTags, setIssueTags] = useState<string[]>([]);
@@ -56,6 +67,14 @@ export const NewIssueModal = ({
   const [issuePriority, setIssuePriority] = useState<string | undefined>();
   const [issueDueDate, setIssueDueDate] = useState("");
   const [fileBlobs, setFileBlobs] = useState<File[]>([]);
+
+  const onUpdateData = (e: ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
+    try {
+      setIssueData(prevState => ({...prevState, [e.target.name]: e.target.value}));
+    } catch (e) {
+      console.log('onUpdateData error: ', (e as Error).message)
+    }
+  };
 
   const onAddTag = useCallback(() => {
     const _issueTags = [...issueTags];
@@ -101,29 +120,33 @@ export const NewIssueModal = ({
             <Tag labelText={`Project: ${project.projectName}`} size="small" />
           </div>
           <TextInput
+            name="title"
             labelText="Issue Name"
             id="new-issue-name"
-            onChange={(e) => setIssueName(e.target.value)}
-            value={issueName}
+            onChange={(e) => onUpdateData(e)}
+            value={issueData.title}
           />
           <TextArea
+            name="description"
             labelText="Describe the issue"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
+            onChange={(e) => onUpdateData(e)}
+            value={issueData.description}
           />
           <div className="modal--row">
             <Calendar
+              name="expectedCloseDate"
               labelText="Choose Date"
               id="issue-due-date"
-              onChange={(e) => setIssueDueDate(e.target.value)}
-              value={issueDueDate}
+              onChange={(e) => onUpdateData(e)}
+              value={issueData.expectedCloseDate}
             />
             <Select
+              name="priority"
               id="issue-priority"
               labelText="Priority"
               options={projectPriorities}
-              onChange={(e) => setIssuePriority(e.target.value)}
-              value={issuePriority}
+              onChange={(e) => onUpdateData(e)}
+              value={issueData.priority}
             />
           </div>
           <div className="modal--row modal--row-extra">
@@ -139,7 +162,7 @@ export const NewIssueModal = ({
           <div className="modal--row modal--row-extra">
             {/* TODO: Implement functionality on backend for file uploads and figure out how to represent within this component before upload */}
             <h3 className="uppercase text-lg">Attachments ({fileBlobs.length})</h3>
-            
+
             <HiddenFileInput
               buttonText="Add Attachment"
               onAddFile={onAddFile}
@@ -202,7 +225,7 @@ export const NewIssueModal = ({
               label="Create Issue"
               buttonSize="medium"
               icon={<HiCheckCircle className="default--icon mt-1" />}
-              onClick={onCreateIssue}
+              onClick={() => onCreateIssue(issueData)}
             />
           </div>
         </div>

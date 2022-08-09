@@ -40,7 +40,7 @@ export default class ProjectRouter extends BaseRouter {
       return await this._issueModel
         .find({ associatedProject: projectId })
         .select("-__v");
-        
+
     } catch (e) {
       return [];
     }
@@ -79,7 +79,9 @@ export default class ProjectRouter extends BaseRouter {
       const response = this.getDefaultResponse();
       try {
         const resourceId = req.params.id;
-        response.data = await this._controller.getModel().findById(resourceId) as IProject;
+        const project = await this._controller.getModel().findById(resourceId);
+        const issues = await this.getIssuesForProject(project._id);
+        response.data = {...project.toJSON(), issues};
         response.success = !!response.data;
         return res.status(
           response.success ? ROUTER_RESPONSE_CODES.RESOURCE_FOUND : ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND
@@ -96,7 +98,7 @@ export default class ProjectRouter extends BaseRouter {
       async (req: Request, res: Response) => {
         const response = this.getDefaultResponse();
         try {
-          // const limit = req.query.limit ? req.query.limit : '';          
+          // const limit = req.query.limit ? req.query.limit : '';
 
           const filterObj: {[key: string]: any} = lodashPick(req.query, PROJECT_FILTER_FIELDS);
 
