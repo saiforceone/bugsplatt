@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { HiCheck, HiPlus, HiRefresh } from "react-icons/hi";
-import { SelectableOption } from "../../../interfaces";
+import {FEIssueSearchCriteria, SelectableOption} from "../../../interfaces";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
 import { ModalHeaderProps } from "../../Modals/ModalHeader/ModalHeader";
 import { SelectableOptionModal } from "../../Modals/SelectableOptionModal/SelectableOptionModal";
@@ -11,7 +11,7 @@ interface ProjectIssueFilterProps {
   projectPriorities: SelectableOption[];
   projectStatuses: SelectableOption[];
   issueCount: number;
-  onFilterIssues: (data: object) => void;
+  onFilterIssues: (data: FEIssueSearchCriteria) => void;
   onNewIssue: () => void;
 }
 
@@ -43,11 +43,11 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
 
     const onApplyFiler = useCallback(() => {
       onFilterIssues({
-        selectedPriority,
-        selectedStatus,
+        priority: selectedPriority?.value,
+        status: selectedStatus?.value,
       });
     }, [selectedPriority, selectedPriority]);
-  
+
     const onSelectOption = useCallback((option: SelectableOption) => {
       switch (selectedTarget) {
         case "proj-priorities":
@@ -59,13 +59,13 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
       }
       setModalVisible(false);
     }, [selectedPriority, selectedStatus, selectedTarget]);
-  
+
     const showModal = useCallback((target: ModalTargetType) => {
-      
+
       const onClose = () => setModalVisible(false);
       let title = '';
       let options: SelectableOption[] = [];
-  
+
       switch (target) {
         case "proj-priorities":
           title = 'Choose Project Priority';
@@ -76,7 +76,7 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
           options = projectStatuses;
           break;
       }
-  
+
       setModalHeaderProps({
         onClose,
         title,
@@ -91,6 +91,7 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
     setSelectedStatus(undefined);
     setSelectedTarget(undefined);
     setModalOptions([]);
+    onApplyFiler();
   }, []);
 
   return (

@@ -83,6 +83,7 @@ export interface FEIssueSearchCriteria {
   assignedTo?: string;
   associatedProject?: string;
   createdBy?: string;
+  priority?: string;
   status?: string;
 }
 

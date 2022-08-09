@@ -28,8 +28,10 @@ import { FileAttachmentCard } from "../../BaseComponents/FileAttachmentCard/File
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
 import { FormattingUtils } from "../../../utils/FormattingUtils";
 import { HiddenFileInput } from "../../BaseComponents/HiddenFileInput/HiddenFileInput";
+import {ProgressLoader} from '../../BaseComponents/ProgressLoader/ProgressLoader';
 
 export interface NewIssueModalProps {
+  actionInProgress: boolean;
   onCloseModal: () => void;
   onManageWatchers: () => void;
   onManageAttachments: () => void;
@@ -49,6 +51,7 @@ const INITIAL_ISSUE_DATA: NewIssueData = {
 }
 
 export const NewIssueModal = ({
+  actionInProgress,
   onCloseModal,
   onCreateIssue,
   onManageWatchers,
@@ -217,13 +220,16 @@ export const NewIssueModal = ({
             )}
           </div>
           <div className="modal--row justify-center">
-            <DefaultButton
+            {actionInProgress ? (<ProgressLoader visible={actionInProgress} />) : <DefaultButton
               active
               label="Create Issue"
               buttonSize="medium"
               icon={<HiCheckCircle className="default--icon mt-1" />}
-              onClick={() => onCreateIssue(issueData)}
-            />
+              onClick={() => {
+                onCreateIssue(issueData);
+                setIssueData(INITIAL_ISSUE_DATA);
+              }}
+            />}
           </div>
         </div>
       </div>

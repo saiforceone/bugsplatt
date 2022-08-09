@@ -4,7 +4,7 @@ import BaseRouter, { POPULATE_ASSOC_PROJ, POPULATE_ASSOC_WATCHED_BY, ROUTER_RESP
 import IssueController from "../resources/controllers/Issue.controller";
 import { IIssue } from "../resources/interfaces/Issue.interface";
 
-const ISSUE_FILTER_FIELDS = ['createdBy', 'associatedProject', 'status', 'issuePriority'];
+const ISSUE_FILTER_FIELDS = ['createdBy', 'associatedProject', 'status', 'priority'];
 
 /**
  * @class IssueRouter
@@ -26,12 +26,9 @@ export default class IssueRouter extends BaseRouter {
         const response = this.getDefaultResponse();
         try {
           const data = req.body;
-          // Note start: Until middleware is configured, we will substitute random object ids
           data.createdBy = req._user!._id;
-          // data.associatedIssue = new Types.ObjectId();
-          // data.assignedTo = new Types.ObjectId();
-          // data.watchedBy = [new Types.ObjectId()];
-          // Note end
+          if (!data.assignedTo) data.assignedTo = req._user!._id;
+          if (!data.status) data.status = 'active';
           response.data = (await this._controller.createDocument(
             data
           )) as object;
@@ -75,7 +72,6 @@ export default class IssueRouter extends BaseRouter {
       const response = this.getDefaultResponse();
       const filterObj: {[key: string]: any} = lodashPick(req.query, ISSUE_FILTER_FIELDS);
       try {
-        // TODO: add query string processing
         const data = await this._controller.getModel().find(filterObj)
         .populate(POPULATE_ASSOC_PROJ).populate(POPULATE_ASSOC_WATCHED_BY) as IIssue[];
 

@@ -17,6 +17,7 @@ import {FEIssue, FEProject} from "../../../interfaces";
 import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES} from '../../../constants/appConstants';
 import {useAddIssueMutation, useLazyGetIssuesQuery} from '../../../data/rtkApis/issueApi';
 import {IssueSummaryCard} from '../../../components/BaseComponents/IssueSummaryCard/IssueSummaryCard';
+import {IssueModal} from '../../../components/Modals/IssueModal/IssueModal';
 
 // TODO: Complete layout and functionality implementation
 export const ProjectDetailPage = () => {
@@ -29,6 +30,7 @@ export const ProjectDetailPage = () => {
   const [updateProjTrigger, updateResultObj] = useUpdateProjectMutation();
   const [addIssueTrigger, addIssueResultObj] = useAddIssueMutation();
   const [issuesTrigger, issuesResultObj] = useLazyGetIssuesQuery();
+  const [selectedIssueRef, setSelectedIssueRef] = useState('');
 
   useEffect(() => {
     const { id } = params;
@@ -64,6 +66,27 @@ export const ProjectDetailPage = () => {
     }
 
   }, [issuesResultObj]);
+
+  useEffect(() => {
+    try {
+      const {data: {data, success}} = addIssueResultObj as {[key: string]: any};
+      if (data) {
+        console.log('data after save op: ', data);
+        if (success && project) {
+          issuesTrigger({associatedProject: project._id});
+          setShowAddIssue(false);
+        }
+      }
+    } catch (e) {
+      console.log(`Failed to create issue with error: ${(e as Error).message}`);
+    }
+
+  }, [addIssueResultObj, project]);
+
+  const selectedIssue: FEIssue|undefined = useMemo(() => {
+    if (!selectedIssueRef) return undefined;
+    return projectIssues.find(el => el._id === selectedIssueRef);
+  }, [selectedIssueRef, projectIssues]);
 
   return (
     <div className="p-4">
@@ -119,8 +142,10 @@ export const ProjectDetailPage = () => {
         )}
       </div>
       <ProjectIssueFilter
-        issueCount={project ? project.issues.length : 0}
-        onFilterIssues={() => {}}
+        issueCount={projectIssues.length}
+        onFilterIssues={(opts) => {
+          issuesTrigger(opts);
+        }}
         onNewIssue={() => setShowAddIssue(true)}
         projectPriorities={FE_PROJECT_PRIORITIES}
         projectStatuses={FE_PROJECT_STATUSES}
@@ -128,7 +153,13 @@ export const ProjectDetailPage = () => {
       <div className="my-6">
         {
           projectIssues.length
-            ? projectIssues.map(issue => <IssueSummaryCard key={`issue-${issue._id}`} issue={issue} />)
+            ? projectIssues.map(issue =>
+              <IssueSummaryCard
+                key={`issue-${issue._id}`}
+                issue={issue}
+                onClick={() => setSelectedIssueRef(issue._id)}
+              />
+            )
             : <NoResultCard
               primaryText="No Issues"
               secondaryText="Looks like no issues have been added to this project yet"
@@ -137,6 +168,7 @@ export const ProjectDetailPage = () => {
       </div>
       {project && (
         <NewIssueModal
+          actionInProgress={addIssueResultObj.isLoading}
           onCloseModal={() => setShowAddIssue(false)}
           visible={showAddIssue}
           onCreateIssue={issueData => {
@@ -150,6 +182,17 @@ export const ProjectDetailPage = () => {
           projectPriorities={FE_PROJECT_PRIORITIES}
         />
       )}
+      {
+        selectedIssue && (
+          <IssueModal
+            issue={selectedIssue}
+            visible={!!selectedIssue}
+            onCloseAction={() => {
+              setSelectedIssueRef('');
+            }}
+          />
+        )
+      }
     </div>
   );
 };
