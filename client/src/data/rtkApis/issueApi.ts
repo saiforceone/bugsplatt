@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "../../constants/apiConstants";
-import { FEIssue } from "../../interfaces";
+import {FEIssue, FEIssueSearchCriteria, NewIssueData} from "../../interfaces";
 import { api } from "./api";
 import { buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery } from "../helpers";
 
@@ -7,7 +7,7 @@ const targetEndpoint = `${API_ENDPOINTS.ISSUES}`;
 
 export const issueApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    addIssue: builder.mutation<FEIssue, Partial<FEIssue>>({
+    addIssue: builder.mutation<NewIssueData, Partial<NewIssueData>>({
       query: (body) => buildCommonAddQuery(body, targetEndpoint),
       invalidatesTags: [{ type: 'Issues', id: 'LIST' }]
     }),
@@ -16,9 +16,10 @@ export const issueApi = api.injectEndpoints({
         url: `${targetEndpoint}/${id}`
       })
     }),
-    getIssues: builder.query<FEIssue, void>({
-      query: () => ({
-        url: `${targetEndpoint}`
+    getIssues: builder.query<FEIssue, FEIssueSearchCriteria>({
+      query: (arg) => ({
+        url: `${targetEndpoint}`,
+        params: {...arg}
       })
     }),
     updateIssue: builder.mutation<FEIssue, Partial<FEIssue> & Pick<FEIssue, '_id'>>({

@@ -1,7 +1,10 @@
 import { Request, RequestHandler, Response } from "express";
+import {pick as lodashPick} from "lodash";
 import BaseRouter, { POPULATE_ASSOC_PROJ, POPULATE_ASSOC_WATCHED_BY, ROUTER_RESPONSE_CODES } from "./Base.router";
 import IssueController from "../resources/controllers/Issue.controller";
 import { IIssue } from "../resources/interfaces/Issue.interface";
+
+const ISSUE_FILTER_FIELDS = ['createdBy', 'associatedProject', 'status', 'issuePriority'];
 
 /**
  * @class IssueRouter
@@ -50,12 +53,12 @@ export default class IssueRouter extends BaseRouter {
 
   protected getResource(middleware: RequestHandler[] = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
-      
+
       const response = this.getDefaultResponse();
-      
+
       try {
         const resourceId: string = req.params.id;
-        
+
         response.data = await this._controller.getModel().findById(resourceId) as IIssue;
         response.success = !!response.data;
 
@@ -70,9 +73,10 @@ export default class IssueRouter extends BaseRouter {
   protected getResources(middleware: RequestHandler[] = []): RequestHandler[] {
     return [...middleware, async (req: Request, res: Response) => {
       const response = this.getDefaultResponse();
+      const filterObj: {[key: string]: any} = lodashPick(req.query, ISSUE_FILTER_FIELDS);
       try {
-
-        const data = await this._controller.getModel().find()
+        // TODO: add query string processing
+        const data = await this._controller.getModel().find(filterObj)
         .populate(POPULATE_ASSOC_PROJ).populate(POPULATE_ASSOC_WATCHED_BY) as IIssue[];
 
         response.data = data;

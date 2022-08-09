@@ -1,4 +1,4 @@
-import {ChangeEvent, useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useState} from "react";
 import "../Modals.css";
 import "./newIssueModal.css";
 import {
@@ -51,7 +51,6 @@ const INITIAL_ISSUE_DATA: NewIssueData = {
 export const NewIssueModal = ({
   onCloseModal,
   onCreateIssue,
-  onManageAttachments,
   onManageWatchers,
   visible,
   project,
@@ -60,13 +59,12 @@ export const NewIssueModal = ({
 }: NewIssueModalProps): JSX.Element => {
 
   const [issueData, setIssueData] = useState<NewIssueData>(() => ({...INITIAL_ISSUE_DATA}));
-  const [issueName, setIssueName] = useState("");
-  const [description, setDescription] = useState("");
-  const [issueTags, setIssueTags] = useState<string[]>([]);
   const [tagText, setTagText] = useState("");
-  const [issuePriority, setIssuePriority] = useState<string | undefined>();
-  const [issueDueDate, setIssueDueDate] = useState("");
   const [fileBlobs, setFileBlobs] = useState<File[]>([]);
+
+  useEffect(() => {
+    setIssueData(prevState => ({...prevState, associatedProject: project.objectId}));
+  }, [project]);
 
   const onUpdateData = (e: ChangeEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
     try {
@@ -77,21 +75,20 @@ export const NewIssueModal = ({
   };
 
   const onAddTag = useCallback(() => {
-    const _issueTags = [...issueTags];
-    if (_issueTags.includes(tagText)) return;
-    _issueTags.push(tagText);
-    setTagText("");
-    setIssueTags(_issueTags);
-  }, [tagText]);
+    const {tags: _tags} = issueData;
+    if (_tags.includes(tagText)) return;
+    _tags.push(tagText);
+    setTagText('');
+    setIssueData(prevState => ({...prevState, tags: _tags}));
+  }, [tagText, issueData.tags]);
 
   const onRemoveTag = useCallback(
     (tagIndex: number) => {
-      const _issueTags = [...issueTags];
-      console.log(`remove tag with index: ${tagIndex}`);
-      _issueTags.splice(tagIndex, 1);
-      setIssueTags(_issueTags);
+      const {tags: _tags} = issueData;
+      _tags.splice(tagIndex, 1);
+      setIssueData(prevState => ({...prevState, tags: _tags}));
     },
-    [issueTags]
+    [issueData.tags]
   );
 
   const onAddFile = useCallback((file: File) => {
@@ -197,8 +194,8 @@ export const NewIssueModal = ({
             value={tagText}
           />
           <div className="modal--row flex-wrap">
-            {issueTags.length ? (
-              issueTags.map((tag, index) => (
+            {issueData.tags.length ? (
+              issueData.tags.map((tag, index) => (
                 <Tag
                   key={`new-issue-tag-${index}-${tag}`}
                   extraCss="mr-1 mt-1"

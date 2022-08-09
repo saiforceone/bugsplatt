@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { HiArrowLeft, HiCog } from "react-icons/hi";
 import { useParams, useNavigate } from "react-router-dom";
 import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
@@ -13,9 +13,10 @@ import {
   useLazyGetProjectWithIdQuery,
   useUpdateProjectMutation,
 } from "../../../data/rtkApis/projectApi";
-import { FEProject } from "../../../interfaces";
+import {FEIssue, FEProject} from "../../../interfaces";
 import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES} from '../../../constants/appConstants';
-import {useAddIssueMutation} from '../../../data/rtkApis/issueApi';
+import {useAddIssueMutation, useLazyGetIssuesQuery} from '../../../data/rtkApis/issueApi';
+import {IssueSummaryCard} from '../../../components/BaseComponents/IssueSummaryCard/IssueSummaryCard';
 
 // TODO: Complete layout and functionality implementation
 export const ProjectDetailPage = () => {
@@ -27,6 +28,7 @@ export const ProjectDetailPage = () => {
   const [projTrigger, projResultObj] = useLazyGetProjectWithIdQuery();
   const [updateProjTrigger, updateResultObj] = useUpdateProjectMutation();
   const [addIssueTrigger, addIssueResultObj] = useAddIssueMutation();
+  const [issuesTrigger, issuesResultObj] = useLazyGetIssuesQuery();
 
   useEffect(() => {
     const { id } = params;
@@ -42,11 +44,26 @@ export const ProjectDetailPage = () => {
       try {
         const projData = data['data'] as FEProject;
         setProject(projData);
+        issuesTrigger({associatedProject: projData._id});
       } catch (e) {
         console.log('failed to set project with error: ', (e as Error).message);
       }
     }
   }, [projResultObj]);
+
+  const projectIssues: FEIssue[] = useMemo(() => {
+    try {
+      const {data: {data}} = issuesResultObj as { [key: string]: any };
+      if (data) {
+        if (!Array.isArray(data)) return [];
+        return data as FEIssue[];
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+
+  }, [issuesResultObj]);
 
   return (
     <div className="p-4">
@@ -108,12 +125,23 @@ export const ProjectDetailPage = () => {
         projectPriorities={FE_PROJECT_PRIORITIES}
         projectStatuses={FE_PROJECT_STATUSES}
       />
+      <div className="my-6">
+        {
+          projectIssues.length
+            ? projectIssues.map(issue => <IssueSummaryCard key={`issue-${issue._id}`} issue={issue} />)
+            : <NoResultCard
+              primaryText="No Issues"
+              secondaryText="Looks like no issues have been added to this project yet"
+            />
+        }
+      </div>
       {project && (
         <NewIssueModal
           onCloseModal={() => setShowAddIssue(false)}
           visible={showAddIssue}
           onCreateIssue={issueData => {
             console.log('onCreateIssue with data: ', issueData);
+            addIssueTrigger(issueData);
           }}
           project={{ objectId: project._id, projectName: project.projectName }}
           onManageAttachments={() => {}}

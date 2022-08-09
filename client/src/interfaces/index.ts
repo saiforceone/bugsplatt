@@ -79,6 +79,13 @@ export interface FEProjectSearchCriteria {
   projectType?: string;
 }
 
+export interface FEIssueSearchCriteria {
+  assignedTo?: string;
+  associatedProject?: string;
+  createdBy?: string;
+  status?: string;
+}
+
 export interface FECommonData {
   _id: string;
   createdAt: string;
