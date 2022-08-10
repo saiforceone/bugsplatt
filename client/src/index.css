@@ -15,7 +15,7 @@
 }
 
 .default-row {
-  @apply flex content-center;
+  @apply flex content-center flex-wrap;
 }
 
 .center-center {

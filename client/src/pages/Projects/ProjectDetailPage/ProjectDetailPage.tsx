@@ -144,7 +144,10 @@ export const ProjectDetailPage = () => {
       <ProjectIssueFilter
         issueCount={projectIssues.length}
         onFilterIssues={(opts) => {
-          issuesTrigger(opts);
+          if (project) {
+            const filterOpts = {...opts, associatedProject: project._id}
+            issuesTrigger(filterOpts);
+          }
         }}
         onNewIssue={() => setShowAddIssue(true)}
         projectPriorities={FE_PROJECT_PRIORITIES}

@@ -5,6 +5,8 @@ import { Tag } from '../Tag/Tag';
 export interface ProjectCardProps {
   projectName: string;
   teamName: string;
+  projectType: string;
+  createdBy: string;
   progressDetail: ProgressDetailProps;
   onClick?: () => void;
 }
@@ -12,6 +14,8 @@ export interface ProjectCardProps {
 export const ProjectCard = ({
   projectName = 'Project #1',
   teamName = 'SuperAwesome',
+  projectType = 'web-app',
+  createdBy,
   progressDetail = {
     label: 'Issues',
     currentValue: 12,
@@ -22,7 +26,11 @@ export const ProjectCard = ({
   return (
     <div className='project-card--container' onClick={onClick}>
       <h2 className='project-card--project-name'>{projectName}</h2>
-      <Tag labelText={teamName} size='small' />
+      <div className='default-row'>
+        <Tag extraCss='mb-1 mr-1' labelText={teamName} size='small' />
+        <Tag extraCss='mb-1 mr-1' labelText={projectType} size='small' />
+        <Tag extraCss='mb-1' labelText={createdBy} size='small' />
+      </div>
       <ProgressDetail {...progressDetail} />
     </div>
   )

@@ -150,3 +150,8 @@ export interface FEComment extends FECommonData {
   content: string;
   createdBy: FECommonUserData;
 }
+
+export interface FEDateRange {
+  startDate?: string;
+  endDate?: string;
+}

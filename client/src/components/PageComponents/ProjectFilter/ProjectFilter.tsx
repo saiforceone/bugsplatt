@@ -1,6 +1,12 @@
 import { FC, useCallback, useState } from "react";
-import {FEProjectSearchCriteria, SelectableOption} from "../../../interfaces";
+import { HiRefresh } from "react-icons/hi";
+import {
+  FEDateRange,
+  FEProjectSearchCriteria,
+  SelectableOption,
+} from "../../../interfaces";
 import { DefaultButton } from "../../BaseComponents/DefaultButton/DefaultButton";
+import { DateRangeSelectModal } from "../../Modals/DateRangeSelectModal/DateRangeSelectModal";
 import { ModalHeaderProps } from "../../Modals/ModalHeader/ModalHeader";
 import { SelectableOptionModal } from "../../Modals/SelectableOptionModal/SelectableOptionModal";
 import { ProjectFilterOption } from "../ProjectFilterOption/ProjectFilterOption";
@@ -13,7 +19,13 @@ interface ProjectFilterProps {
   projectTypes: SelectableOption[];
 }
 
-type ModalTargetType = "user" | "team" | "project-type" | "date-range" | "project-priorities" | "project-statuses";
+type ModalTargetType =
+  | "user"
+  | "team"
+  | "project-type"
+  | "date-range"
+  | "project-priorities"
+  | "project-statuses";
 
 const DefaultHeaderProps: ModalHeaderProps = {
   title: "Default Title",
@@ -25,7 +37,6 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
   users = [],
   teams = [],
   projectTypes = [],
-
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState<SelectableOption>();
@@ -37,6 +48,9 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
   const [modalOptions, setModalOptions] = useState<SelectableOption[]>([]);
   const [selectedTarget, setSelectedTarget] =
     useState<ModalTargetType | undefined>(undefined);
+
+  const [dateSelModalVisible, setDateSelModalVisible] = useState(false);
+  const [dateRange, setDateRange] = useState<FEDateRange>();
 
   // placeholder
   const onShowModal = useCallback(
@@ -114,11 +128,10 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
 
   const onApplyFilter = useCallback(() => {
     onFilter({
-      createdBy: selectedUser?.value,
       associatedTeam: selectedTeam?.value,
-      projectType: selectedProjType?.value
+      projectType: selectedProjType?.value,
     });
-  }, [selectedUser, selectedTeam, selectedProjType])
+  }, [selectedTeam, selectedProjType]);
 
   const onResetAllOptions = useCallback(() => {
     setSelectedUser(undefined);
@@ -154,12 +167,28 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
         <ProjectFilterOption
           extraCss="mr-1"
           label="Date"
-          resetAction={() => {}}
+          onClick={() => setDateSelModalVisible(true)}
+          resetAction={() => {}} 
+          // TODO: Update Project filter option component to handle date range or make a new component 
         />
       </div>
       <div className="default-actions-container">
-        <DefaultButton active extraCss="mr-2" label="Apply" onClick={onApplyFilter} />
-        <DefaultButton active label="Reset" onClick={onResetAllOptions} />
+        <DefaultButton
+          active
+          extraCss="mr-2"
+          label="Apply"
+          onClick={onApplyFilter}
+        />
+        <DefaultButton
+          active
+          label="Reset"
+          onClick={() => {
+            onResetAllOptions();
+            setSelectedProjType(undefined);
+            setSelectedTeam(undefined);
+            onFilter({});
+          }}
+        />
       </div>
       <SelectableOptionModal
         onSelectOption={(opt) => {
@@ -168,6 +197,30 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
         modalHeaderProps={modalHeaderProps}
         options={modalOptions}
         visible={modalVisible}
+      />
+      <DateRangeSelectModal
+        modalHeaderProps={{
+          extraActions: (
+            <>
+              <DefaultButton
+                active
+                buttonSize="small"
+                icon={<HiRefresh className="h-5 w-5 text-white" />}
+                label="Reset"
+                onClick={() => {}}
+              />
+            </>
+          ),
+          title: "Choose Date Range",
+          onClose: () => {
+            setDateSelModalVisible(false);
+          },
+        }}
+        onUpdate={(rangeData) => {
+          console.log(rangeData);
+          setDateRange(rangeData);
+        }}
+        visible={dateSelModalVisible}
       />
     </div>
   );

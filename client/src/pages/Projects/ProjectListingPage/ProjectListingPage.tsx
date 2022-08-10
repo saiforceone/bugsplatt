@@ -132,6 +132,8 @@ export const ProjectListingPage = () => {
                 key={`project-${proj._id}`}
                 onClick={() => setSelectedProjRef(proj._id)}
                 projectName={proj.projectName}
+                projectType={proj.projectType}
+                createdBy={`${proj.createdBy.firstName} ${proj.createdBy.lastName}`}
                 teamName={proj.associatedTeam.teamName}
                 progressDetail={{
                   label: "Issues",

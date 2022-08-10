@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { HiX } from "react-icons/hi";
-import { SelectableOption } from "../../../interfaces";
+import { FEDateRange, SelectableOption } from "../../../interfaces";
 import { IconButton } from "../../BaseComponents/IconButton/IconButton";
 import "./ProjectFilterOption.css";
 

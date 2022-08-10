@@ -100,7 +100,11 @@ export default class ProjectRouter extends BaseRouter {
         try {
           // const limit = req.query.limit ? req.query.limit : '';
 
+          // TODO pull starting and ending date from query string 
+
           const filterObj: {[key: string]: any} = lodashPick(req.query, PROJECT_FILTER_FIELDS);
+
+          // filterObj['createdAt'] = {$gt: startingDate, $lte: endingDate};
 
           const data = await this._projectModel
             .find(filterObj)
