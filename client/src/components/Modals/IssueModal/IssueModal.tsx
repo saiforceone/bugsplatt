@@ -3,7 +3,7 @@ import {
   HiCalendar,
   HiChat,
   HiPlusCircle,
-  HiRefresh,
+  HiRefresh, HiCheck,
 } from "react-icons/hi";
 import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +13,14 @@ import "./issueModal.css";
 import { Tag } from "../../BaseComponents/Tag/Tag";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
 import { useAddCommentMutation, useLazyGetCommentsQuery } from "../../../data/rtkApis/commentApi";
-import {FEComment, FEIssue} from "../../../interfaces";
+import {FEComment, FEIssue, SelectableOption} from "../../../interfaces";
 import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
 import { AddCommentModal } from "../AddCommentModal/AddCommentModal";
 import {ProgressLoader} from '../../BaseComponents/ProgressLoader/ProgressLoader';
+import {Select} from '../../BaseComponents/Select/Select';
+import {useUpdateIssueMutation} from '../../../data/rtkApis/issueApi';
+import {FE_ISSUE_STATUSES} from '../../../constants/appConstants';
+import {toast} from 'react-toastify';
 
 export interface IssueModalProps {
   issue: FEIssue;
@@ -34,6 +38,12 @@ export const IssueModal: FC<IssueModalProps> = ({
   const [showAddComment, setShowAddComment] = useState(false);
   const [addCommentTrigger, addCommentResult] = useAddCommentMutation();
   const [commentsTrigger, commentsResultObj] = useLazyGetCommentsQuery();
+  const [updateIssueTrigger, updateIssueResult] = useUpdateIssueMutation();
+  const [issueStatus, setIssueStatus] = useState<string>('');
+
+  useEffect(() => {
+    setIssueStatus(issue.status);
+  }, [issue]);
 
   const refreshComments = useCallback(() => {
     commentsTrigger(issue._id);
@@ -55,6 +65,13 @@ export const IssueModal: FC<IssueModalProps> = ({
   const loadingComments = useMemo(() => {
     return commentsResultObj.isFetching;
   }, [commentsResultObj]);
+
+  useEffect(() => {
+    const {data} = updateIssueResult as {[key: string]: any};
+    if (!!data) {
+      toast("Updated issue status...");
+    }
+  }, [updateIssueResult]);
 
   return (
     <ModalWrapper
@@ -101,6 +118,29 @@ export const IssueModal: FC<IssueModalProps> = ({
         <div className="my-6">
           <h3 className="issue-modal--section-heading">Issue Details</h3>
           <p className="issue-modal--description">{issue.description ? issue.description : "Issue details are not available"}</p>
+        </div>
+        <div className="my-4 modal--row items-center">
+          <Select
+            labelText="Change Issue Status"
+            id="issueStatus"
+            onChange={e => setIssueStatus(e.target.value)}
+            options={FE_ISSUE_STATUSES}
+            value={issueStatus}
+          />
+          {
+            updateIssueResult.isLoading
+            ? <ProgressLoader visible={true} />
+            : <DefaultButton
+              active={!updateIssueResult.isLoading}
+              extraCss="ml-2"
+              icon={<HiCheck className="h-5 w-5 text-white" />}
+              label="Apply"
+              onClick={() => {
+                if (!issueStatus) return;
+                updateIssueTrigger({status: issueStatus, _id: issue._id});
+              }}
+            />
+          }
         </div>
         <div className="issue-modal--comment-heading">
           <div className="modal--row">

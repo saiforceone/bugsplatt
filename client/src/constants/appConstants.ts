@@ -41,6 +41,20 @@ export const FE_PROJECT_STATUSES: SelectOption[] = [
   }
 ];
 
+export const FE_ISSUE_STATUSES: SelectOption[] = [
+  {
+    ...EMPTY_SELECT_OPT
+  },
+  {
+    label: 'Active',
+    value: 'active'
+  },
+  {
+    label: 'Closed',
+    value: 'closed'
+  }
+]
+
 export const FE_PROJECT_PRIORITIES: SelectOption[] = [
   {
     ...EMPTY_SELECT_OPT

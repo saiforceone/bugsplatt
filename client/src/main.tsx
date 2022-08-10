@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { Provider } from "react-redux";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 import App from "./App";
 import { store } from "./data/store";
 import "./index.css";
@@ -19,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       >
         <AuthProvider>
           <App />
+          <ToastContainer />
         </AuthProvider>
       </Auth0Provider>
     </Provider>
