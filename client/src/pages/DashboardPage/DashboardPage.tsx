@@ -31,7 +31,7 @@ export const DashboardPage = () => {
 
   useEffect(() => {
     projectsTrigger({});
-    issuesTrigger();
+    issuesTrigger({});
   }, []);
 
   // TODO: Update useLazyGetProjectsQuery to take an optional limit query param
@@ -101,12 +101,13 @@ export const DashboardPage = () => {
                   maxValue: project.issues.length,
                 }}
                 projectName={project.projectName}
+                projectType={project.projectType}
                 teamName={project.associatedTeam.teamName}
                 onClick={() => {
                   setSelectedProj(project);
                   setProjModalVisible(true);
                 }}
-              />
+               createdBy={project.createdBy.firstName}/>
             ))}
           </div>
         ) : (
@@ -123,7 +124,7 @@ export const DashboardPage = () => {
                 extraCss="mr-2"
                 icon={<HiRefresh className="default-icon" />}
                 label="Refresh"
-                onClick={() => issuesTrigger()}
+                onClick={() => issuesTrigger({})}
               />
               <DefaultButton
                 active

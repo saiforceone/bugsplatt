@@ -21,6 +21,7 @@ import {
 import { ProjectFilter } from "../../../components/PageComponents/ProjectFilter/ProjectFilter";
 import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
 import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
+import ProjectUtils from '../../../utils/ProjectUtils';
 
 export const ProjectListingPage = () => {
   const navigate = useNavigate();
@@ -106,9 +107,9 @@ export const ProjectListingPage = () => {
         title={`${projects.length} Project(s) found`}
         actions={
           <>
-            <DefaultButton 
+            <DefaultButton
               active
-              label="Refresh Projects" 
+              label="Refresh Projects"
               icon={
                 <HiRefresh className="default-icon" />
               }
@@ -155,7 +156,7 @@ export const ProjectListingPage = () => {
           }}
           issueDetails={{
             label: "Issues",
-            currentValue: 0,
+            currentValue: ProjectUtils.getClosedIssuesForProjCount(selectedProject),
             maxValue: selectedProject.issues.length,
           }}
           onGoToProject={() => navigate(`/app/projects/${selectedProject._id}`)}

@@ -18,6 +18,8 @@ import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES} from '../../../constants/app
 import {useAddIssueMutation, useLazyGetIssuesQuery} from '../../../data/rtkApis/issueApi';
 import {IssueSummaryCard} from '../../../components/BaseComponents/IssueSummaryCard/IssueSummaryCard';
 import {IssueModal} from '../../../components/Modals/IssueModal/IssueModal';
+import {ManageProjectTagsModal} from '../../../components/Modals/ManageProjectTagsModal/ManageProjectTagsModal';
+import {NewProjectModal} from '../../../components/Modals/NewProjectModal/NewProjectModal';
 
 // TODO: Complete layout and functionality implementation
 export const ProjectDetailPage = () => {
@@ -31,6 +33,8 @@ export const ProjectDetailPage = () => {
   const [addIssueTrigger, addIssueResultObj] = useAddIssueMutation();
   const [issuesTrigger, issuesResultObj] = useLazyGetIssuesQuery();
   const [selectedIssueRef, setSelectedIssueRef] = useState('');
+  const [showManageTags, setShowManageTags] = useState(false);
+  const [showProjEditModalVisible, setShowProjEditModalVisible] = useState(false);
 
   useEffect(() => {
     const { id } = params;
@@ -119,12 +123,13 @@ export const ProjectDetailPage = () => {
               active
               icon={<HiCog className="default-icon" />}
               label="Manage Tags"
+              onClick={() => setShowManageTags(true)}
             />
           </>
         }
         title="Project Tags"
       />
-      <div className="py-6">
+      <div className="py-6 default-row">
         {project?.tags.length ? (
           project?.tags.map((tag) => (
             <Tag
@@ -184,6 +189,21 @@ export const ProjectDetailPage = () => {
           projectAssignees={[]}
           projectPriorities={FE_PROJECT_PRIORITIES}
         />
+      )}
+      {project && (
+        <ManageProjectTagsModal
+          projectId={project._id}
+          projectName={project.projectName}
+          projectTags={project.tags}
+          modalHeaderProps={{
+            onClose: () => setShowManageTags(false),
+            title: ''
+          }}
+          visible={showManageTags}
+        />
+      )}
+      {project && (
+        <div></div>
       )}
       {
         selectedIssue && (

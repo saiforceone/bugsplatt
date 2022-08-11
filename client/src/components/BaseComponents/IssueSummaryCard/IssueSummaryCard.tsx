@@ -1,14 +1,18 @@
 import { FC } from "react";
-import { HiCalendar } from "react-icons/hi";
+import {HiCalendar, HiCheckCircle, HiChevronDoubleUp, HiOutlineCheck} from "react-icons/hi";
 import "./issueSummaryCard.css";
 import { Tag } from "../Tag/Tag";
 import { FEIssue } from "../../../interfaces";
 import { DATE_FORMATS, FormattingUtils } from "../../../utils/FormattingUtils";
+import {MdRadioButtonChecked, MdRadioButtonUnchecked} from 'react-icons/all';
+import ProjectUtils from '../../../utils/ProjectUtils';
 
 export interface IssueSummaryCardProps {
   issue: FEIssue;
   onClick?: () => void;
 }
+
+const statusClasses = "self-center mr-2"
 
 export const IssueSummaryCard: FC<IssueSummaryCardProps> = ({
   issue,
@@ -27,6 +31,8 @@ export const IssueSummaryCard: FC<IssueSummaryCardProps> = ({
           }
           size="small"
         />
+        <Tag extraCss="ml-2" icon={<HiChevronDoubleUp className="self-center mr-2" />} labelText={`${ProjectUtils.getLabelForIssuePriority(issue.priority)}`} size="small" />
+        <Tag extraCss="ml-2" icon={issue.status === 'active' ? <MdRadioButtonUnchecked className={statusClasses}/> : <MdRadioButtonChecked className={statusClasses} />} labelText={`Status: ${issue.status}`} size="small"/>
       </div>
       <p className="issue-summary--description">{issue.description}</p>
     </div>
