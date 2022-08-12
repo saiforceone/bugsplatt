@@ -37,7 +37,7 @@ export const FE_PROJECT_STATUSES: SelectOption[] = [
   },
   {
     label: 'Closed',
-    value: 'close'
+    value: 'closed'
   }
 ];
 

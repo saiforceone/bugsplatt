@@ -149,6 +149,7 @@ export const ProjectDetailPage = () => {
       <ProjectIssueFilter
         issueCount={projectIssues.length}
         onFilterIssues={(opts) => {
+          console.log('on filter with opts: ', opts);
           if (project) {
             const filterOpts = {...opts, associatedProject: project._id}
             issuesTrigger(filterOpts);
@@ -200,6 +201,10 @@ export const ProjectDetailPage = () => {
             title: ''
           }}
           visible={showManageTags}
+          execPostAction={() => {
+            setShowManageTags(false);
+            projTrigger(project._id)
+          }}
         />
       )}
       {project && (

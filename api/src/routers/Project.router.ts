@@ -1,11 +1,6 @@
 import { Model } from "mongoose";
 import { pick as lodashPick } from "lodash";
 import BaseRouter, {
-  POPULATE_ASSIGNED_TO,
-  POPULATE_ASSOC_CREATED_BY,
-  POPULATE_ASSOC_PROJ,
-  POPULATE_ASSOC_TEAM,
-  POPULATE_ASSOC_WATCHED_BY,
   ROUTER_RESPONSE_CODES,
   ROUTER_RESPONSE_MESSAGES,
 } from "./Base.router";
@@ -100,11 +95,16 @@ export default class ProjectRouter extends BaseRouter {
         try {
           // const limit = req.query.limit ? req.query.limit : '';
 
-          // TODO pull starting and ending date from query string 
+          const startDate = req.query.startDate ? String(req.query.startDate).trim() : undefined;
+          const endDate = req.query.endDate ? String(req.query.endDate).trim() : undefined;
 
           const filterObj: {[key: string]: any} = lodashPick(req.query, PROJECT_FILTER_FIELDS);
+          
+          const dateFilter: {[key: string]: any} = {}
+          if (startDate) dateFilter['$gt'] = new Date(startDate);
+          if (endDate) dateFilter['$lte'] = new Date(endDate);
 
-          // filterObj['createdAt'] = {$gt: startingDate, $lte: endingDate};
+          if (Object.keys(dateFilter).length) filterObj['createdAt'] = dateFilter;
 
           const data = await this._projectModel
             .find(filterObj)

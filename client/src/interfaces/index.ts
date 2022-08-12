@@ -5,6 +5,7 @@ export interface UserComment {
 export interface SelectableOption {
   label: string;
   value: string;
+  valueObj?: {[key: string]: string}
 }
 export interface ProjectPriority {
   label: string;
@@ -77,6 +78,8 @@ export interface FEProjectSearchCriteria {
   createdBy?: string;
   associatedTeam?: string;
   projectType?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface FEIssueSearchCriteria {

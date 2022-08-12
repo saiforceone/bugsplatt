@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {ModalWrapper} from '../ModalWrapper/ModalWrapper';
 import {IStandardModal} from '../modal.interfaces';
 import {TextInput} from '../../BaseComponents/TextInput/TextInput';
@@ -13,6 +13,7 @@ interface ManageProjectTagsModalProps extends IStandardModal {
   projectId: string;
   projectName: string;
   projectTags: string[];
+  execPostAction: () => void;
 }
 
 export const ManageProjectTagsModal: FC<ManageProjectTagsModalProps> = (
@@ -21,7 +22,8 @@ export const ManageProjectTagsModal: FC<ManageProjectTagsModalProps> = (
     projectName,
     projectTags,
     visible,
-    modalHeaderProps
+    modalHeaderProps,
+    execPostAction
   }
 ) => {
 
@@ -44,6 +46,12 @@ export const ManageProjectTagsModal: FC<ManageProjectTagsModalProps> = (
     _tags.splice(tagIndex, 1);
     setTags(_tags);
   }, [projectTags, tags]);
+
+  useEffect(() => {
+    if (updateProjResult.isSuccess) {
+      execPostAction();
+    }
+  }, [updateProjResult]);
 
   return (
     <ModalWrapper

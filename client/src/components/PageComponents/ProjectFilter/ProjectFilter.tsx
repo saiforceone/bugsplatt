@@ -130,14 +130,17 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
     onFilter({
       associatedTeam: selectedTeam?.value,
       projectType: selectedProjType?.value,
+      startDate: dateRange?.startDate,
+      endDate: dateRange?.endDate
     });
-  }, [selectedTeam, selectedProjType]);
+  }, [selectedTeam, selectedProjType, dateRange]);
 
   const onResetAllOptions = useCallback(() => {
     setSelectedUser(undefined);
     setSelectedProjType(undefined);
     setSelectedTarget(undefined);
     setSelectedTeam(undefined);
+    setDateRange(undefined);
   }, []);
 
   return (
@@ -170,6 +173,7 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
           onClick={() => setDateSelModalVisible(true)}
           resetAction={() => {}} 
           // TODO: Update Project filter option component to handle date range or make a new component 
+          // value={}
         />
       </div>
       <div className="default-actions-container">
