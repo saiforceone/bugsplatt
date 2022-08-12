@@ -84,6 +84,7 @@ export const ProjectListingPage = () => {
   }, [projects, selectedProjRef]);
 
   const onApplyFilter = useCallback((filterObj?: FEProjectSearchCriteria) => {
+    console.log('onApplyFilter with filterObj: ', filterObj);
     filterObj ? projTrigger(filterObj) : projTrigger({});
   }, []);
 
@@ -139,7 +140,7 @@ export const ProjectListingPage = () => {
                 progressDetail={{
                   label: "Issues",
                   maxValue: proj.issues.length,
-                  currentValue: 0,
+                  currentValue: ProjectUtils.getClosedIssuesForProjCount(proj),
                 }}
               />
             ))}

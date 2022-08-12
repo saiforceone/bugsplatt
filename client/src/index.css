@@ -11,7 +11,7 @@
 }
 
 .default-tag--icon {
-  @apply self-center mr-1 text-white;
+  @apply self-center mr-2 text-white;
 }
 
 .default-row {

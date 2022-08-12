@@ -1,3 +1,4 @@
+import React from 'react';
 import './defaultButton.css';
 
 export interface DefaultButtonProps {

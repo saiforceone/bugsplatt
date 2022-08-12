@@ -1,6 +1,6 @@
-import {ChangeEvent, FC, useCallback, useState} from "react";
+import {ChangeEvent, FC, ReactElement, useCallback, useEffect, useState} from "react";
 import {HiCheckCircle} from "react-icons/hi";
-import {NewProjectData, ProjectType, SelectOption} from "../../../interfaces";
+import {FEProject, NewProjectData, ProjectType, SelectOption} from "../../../interfaces";
 import {DefaultButton} from "../../BaseComponents/DefaultButton/DefaultButton";
 import {Select} from "../../BaseComponents/Select/Select";
 import {TextArea} from "../../BaseComponents/TextArea/TextArea";
@@ -17,6 +17,8 @@ export interface NewProjectModalProps {
   visible: boolean;
   projectTypes: ProjectType[];
   teams: SelectOption[];
+  project?: FEProject;
+  overrideActions?: ReactElement;
 }
 
 const emptyProjectData: NewProjectData = {
@@ -34,8 +36,26 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
   projectTypes,
   teams = [],
   visible,
+  project,
+  overrideActions
 }) => {
   const [projectData, setProjectData] = useState(emptyProjectData);
+  const [isNewProject, setIsNewProject] = useState(true);
+
+  useEffect(() => {
+    if (project) {
+      // construct the project data from the current project
+      const _data: NewProjectData = {
+        associatedTeam: project.associatedTeam._id,
+        colorCode: project.colorCode,
+        projectType: project.projectType,
+        description: project.description,
+        projectName: project.projectName
+      }
+      setProjectData(_data);
+      setIsNewProject(false);
+    }
+  }, []);
 
   const onExecCreateProject = useCallback(() => {
     // TODO validation / error handling
@@ -58,7 +78,8 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
     <ModalWrapper
       visible={visible}
       modalHeaderProps={{
-        title: "New Project",
+        extraActions: overrideActions,
+        title: isNewProject ? "New Project" : "Edit Project",
         onClose: onCloseModal,
       }}
     >
@@ -128,7 +149,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
           {actionInProgress ? <ProgressLoader visible={actionInProgress}/> :
             <DefaultButton
               active={!actionInProgress}
-              label="Create Project"
+              label={isNewProject ? "Create Project" : "Update Project"}
               onClick={onExecCreateProject}
               icon={<HiCheckCircle className="default-tag--icon"/>}
             />

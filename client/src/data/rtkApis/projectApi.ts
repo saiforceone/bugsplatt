@@ -23,9 +23,9 @@ export const projectApi = api.injectEndpoints({
         }
       }
     }),
-    updateProject: builder.mutation<FEProject, Partial<FEProject> & Pick<FEProject, "_id">>({
+    updateProject: builder.mutation<NewProjectData, Partial<NewProjectData> & Pick<FEProject, "_id">>({
       query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
-      transformResponse: (response: {data: FEProject}, meta, arg) => response.data,
+      // transformResponse: (response: {data: FEProject}, meta, arg) => response.data,
       invalidatesTags: ['Projects'],
     }),
     deleteProject: builder.mutation<{ success: boolean; _id: string}, string>({

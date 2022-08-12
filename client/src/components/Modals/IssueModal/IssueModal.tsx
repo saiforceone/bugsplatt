@@ -26,12 +26,14 @@ export interface IssueModalProps {
   issue: FEIssue;
   visible: boolean;
   onCloseAction: () => void;
+  execPostAction: () => void;
 }
 
 export const IssueModal: FC<IssueModalProps> = ({
   issue,
   visible = true,
   onCloseAction,
+  execPostAction
 }) => {
 
   const navigate = useNavigate();
@@ -65,6 +67,13 @@ export const IssueModal: FC<IssueModalProps> = ({
   const loadingComments = useMemo(() => {
     return commentsResultObj.isFetching;
   }, [commentsResultObj]);
+
+  useEffect(() => {
+    const {isSuccess} = updateIssueResult;
+    if (isSuccess) {
+      execPostAction();
+    }
+  }, [updateIssueResult]);
 
   useEffect(() => {
     const {data} = updateIssueResult as {[key: string]: any};

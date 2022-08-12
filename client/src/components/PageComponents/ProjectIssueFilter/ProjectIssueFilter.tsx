@@ -46,7 +46,7 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
         priority: selectedPriority?.value,
         status: selectedStatus?.value,
       });
-    }, [selectedPriority, selectedStatus]);
+    }, [selectedPriority, selectedStatus, modalOptions, selectedTarget]);
 
     const onSelectOption = useCallback((option: SelectableOption) => {
       switch (selectedTarget) {
@@ -91,8 +91,8 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
     setSelectedStatus(undefined);
     setSelectedTarget(undefined);
     setModalOptions([]);
-    onApplyFiler();
-  }, [selectedPriority, selectedStatus]);
+    onFilterIssues({});
+  }, [selectedPriority, selectedStatus, selectedTarget, modalOptions]);
 
   return (
     <div className="project-issue-filter">

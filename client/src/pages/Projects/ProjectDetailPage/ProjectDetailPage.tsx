@@ -1,25 +1,26 @@
 import {useEffect, useMemo, useState} from "react";
-import { HiArrowLeft, HiCog } from "react-icons/hi";
-import { useParams, useNavigate } from "react-router-dom";
-import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
-import { IconButton } from "../../../components/BaseComponents/IconButton/IconButton";
-import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
-import { Tag } from "../../../components/BaseComponents/Tag/Tag";
-import { NewIssueModal } from "../../../components/Modals/NewIssueModal/NewIssueModal";
-import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
-import { ProjectIssueFilter } from "../../../components/PageComponents/ProjectIssueFilter/ProjectIssueFilter";
-import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
+import {HiArrowLeft, HiCog, HiTrash} from "react-icons/hi";
+import {useParams, useNavigate} from "react-router-dom";
+import {DefaultButton} from "../../../components/BaseComponents/DefaultButton/DefaultButton";
+import {IconButton} from "../../../components/BaseComponents/IconButton/IconButton";
+import {NoResultCard} from "../../../components/BaseComponents/NoResultCard/NoResultCard";
+import {Tag} from "../../../components/BaseComponents/Tag/Tag";
+import {NewIssueModal} from "../../../components/Modals/NewIssueModal/NewIssueModal";
+import {PageHeader} from "../../../components/Navigation/PageHeader/PageHeader";
+import {ProjectIssueFilter} from "../../../components/PageComponents/ProjectIssueFilter/ProjectIssueFilter";
+import {SectionHeader} from "../../../components/PageComponents/SectionHeader/SectionHeader";
 import {
   useLazyGetProjectWithIdQuery,
   useUpdateProjectMutation,
 } from "../../../data/rtkApis/projectApi";
-import {FEIssue, FEProject} from "../../../interfaces";
-import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES} from '../../../constants/appConstants';
+import {FEIssue, FEProject, FETeam, SelectableOption} from "../../../interfaces";
+import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES, FE_PROJECT_TYPES} from '../../../constants/appConstants';
 import {useAddIssueMutation, useLazyGetIssuesQuery} from '../../../data/rtkApis/issueApi';
 import {IssueSummaryCard} from '../../../components/BaseComponents/IssueSummaryCard/IssueSummaryCard';
 import {IssueModal} from '../../../components/Modals/IssueModal/IssueModal';
 import {ManageProjectTagsModal} from '../../../components/Modals/ManageProjectTagsModal/ManageProjectTagsModal';
 import {NewProjectModal} from '../../../components/Modals/NewProjectModal/NewProjectModal';
+import {useLazyGetTeamsQuery} from '../../../data/rtkApis/teamApi';
 
 // TODO: Complete layout and functionality implementation
 export const ProjectDetailPage = () => {
@@ -35,16 +36,18 @@ export const ProjectDetailPage = () => {
   const [selectedIssueRef, setSelectedIssueRef] = useState('');
   const [showManageTags, setShowManageTags] = useState(false);
   const [showProjEditModalVisible, setShowProjEditModalVisible] = useState(false);
+  const [teamsTrigger, teamsResultObj] = useLazyGetTeamsQuery();
 
   useEffect(() => {
-    const { id } = params;
+    const {id} = params;
     if (id) {
       projTrigger(id);
+      teamsTrigger();
     }
   }, [params]);
 
   useEffect(() => {
-    const {data} = projResultObj as {[key: string]: any};
+    const {data} = projResultObj as { [key: string]: any };
     if (data) {
 
       try {
@@ -71,9 +74,22 @@ export const ProjectDetailPage = () => {
 
   }, [issuesResultObj]);
 
+  const availableTeams: SelectableOption[] = useMemo(() => {
+    try {
+      const {data: {data}} = teamsResultObj as { [key: string]: any };
+      if (data) {
+        if (!Array.isArray(data)) return [];
+        return (data as FETeam[]).map(team => ({label: team.teamName, value: team._id}));
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }, [teamsResultObj]);
+
   useEffect(() => {
     try {
-      const {data: {data, success}} = addIssueResultObj as {[key: string]: any};
+      const {data: {data, success}} = addIssueResultObj as { [key: string]: any };
       if (data) {
         console.log('data after save op: ', data);
         if (success && project) {
@@ -87,7 +103,16 @@ export const ProjectDetailPage = () => {
 
   }, [addIssueResultObj, project]);
 
-  const selectedIssue: FEIssue|undefined = useMemo(() => {
+  useEffect(() => {
+    if (updateResultObj.isSuccess) {
+      if (project) {
+        projTrigger(project._id);
+        setShowProjEditModalVisible(false);
+      }
+    }
+  }, [updateResultObj]);
+
+  const selectedIssue: FEIssue | undefined = useMemo(() => {
     if (!selectedIssueRef) return undefined;
     return projectIssues.find(el => el._id === selectedIssueRef);
   }, [selectedIssueRef, projectIssues]);
@@ -98,13 +123,13 @@ export const ProjectDetailPage = () => {
         backActionElement={
           <IconButton
             active
-            icon={<HiArrowLeft className="default-icon self-center" />}
+            icon={<HiArrowLeft className="default-icon self-center"/>}
             onClick={() => navigate(-1)}
           />
         }
         rightActions={
           <>
-            <DefaultButton active label="Manage Project" />
+            <DefaultButton active label="Manage Project" onClick={() => setShowProjEditModalVisible(true)}/>
           </>
         }
         title={`Project: ${project ? project.projectName : "Unavailable"}`}
@@ -121,7 +146,7 @@ export const ProjectDetailPage = () => {
           <>
             <DefaultButton
               active
-              icon={<HiCog className="default-icon" />}
+              icon={<HiCog className="default-icon"/>}
               label="Manage Tags"
               onClick={() => setShowManageTags(true)}
             />
@@ -184,9 +209,11 @@ export const ProjectDetailPage = () => {
             console.log('onCreateIssue with data: ', issueData);
             addIssueTrigger(issueData);
           }}
-          project={{ objectId: project._id, projectName: project.projectName }}
-          onManageAttachments={() => {}}
-          onManageWatchers={() => {}}
+          project={{objectId: project._id, projectName: project.projectName}}
+          onManageAttachments={() => {
+          }}
+          onManageWatchers={() => {
+          }}
           projectAssignees={[]}
           projectPriorities={FE_PROJECT_PRIORITIES}
         />
@@ -208,7 +235,22 @@ export const ProjectDetailPage = () => {
         />
       )}
       {project && (
-        <div></div>
+        <NewProjectModal
+          actionInProgress={updateResultObj.isLoading}
+          onCloseModal={() => setShowProjEditModalVisible(false)}
+          onCreateProject={(projData) => {
+            updateProjTrigger({_id: project._id, ...projData});
+          }}
+          overrideActions={<>
+            <DefaultButton
+              active buttonSize="small" extraCss="bg-red-600" icon={<HiTrash className="default-tag--icon"/>}
+              label="Delete Project"
+            />
+          </>}
+          project={project}
+          teams={availableTeams}
+          visible={showProjEditModalVisible} projectTypes={FE_PROJECT_TYPES}
+        />
       )}
       {
         selectedIssue && (
@@ -216,6 +258,10 @@ export const ProjectDetailPage = () => {
             issue={selectedIssue}
             visible={!!selectedIssue}
             onCloseAction={() => {
+              setSelectedIssueRef('');
+            }}
+            execPostAction={() => {
+              issuesTrigger({});
               setSelectedIssueRef('');
             }}
           />

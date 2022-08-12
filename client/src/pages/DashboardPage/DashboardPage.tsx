@@ -59,7 +59,7 @@ export const DashboardPage = () => {
 
   const onNavigateToProject = useCallback(() => {
     if (!selectedProj) return;
-    const targetPath = `/projects/${selectedProj._id}`;
+    const targetPath = `/app/projects/${selectedProj._id}`;
     navigate(targetPath);
   }, [selectedProj]);
 
@@ -183,6 +183,9 @@ export const DashboardPage = () => {
             setSelectedIssue(undefined);
           }}
           visible={issueModalVisible}
+          execPostAction={() => {
+            issuesTrigger({});
+          }}
         />
       )}
     </div>
