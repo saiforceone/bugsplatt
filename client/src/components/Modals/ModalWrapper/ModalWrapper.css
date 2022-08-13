@@ -7,7 +7,7 @@
 }
 
 .modal-wrapper--inner {
-  @apply relative w-auto my-8 mx-auto max-w-4xl;
+  @apply relative w-auto my-8 mx-auto max-w-2xl;
 }
 
 .modal-wrapper--content-wrapper {

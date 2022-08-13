@@ -1,5 +1,6 @@
 import './ModalWrapper.css';
 import { ModalHeader, ModalHeaderProps } from '../ModalHeader/ModalHeader';
+import React from 'react';
 
 export interface ModalWrapperProps {
   modalHeaderProps: ModalHeaderProps;

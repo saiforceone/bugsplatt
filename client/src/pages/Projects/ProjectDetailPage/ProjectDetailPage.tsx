@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {HiArrowLeft, HiCog, HiTrash} from "react-icons/hi";
 import {useParams, useNavigate} from "react-router-dom";
+import {toast as toastMessage} from 'react-toastify';
 import {DefaultButton} from "../../../components/BaseComponents/DefaultButton/DefaultButton";
 import {IconButton} from "../../../components/BaseComponents/IconButton/IconButton";
 import {NoResultCard} from "../../../components/BaseComponents/NoResultCard/NoResultCard";
@@ -10,6 +11,7 @@ import {PageHeader} from "../../../components/Navigation/PageHeader/PageHeader";
 import {ProjectIssueFilter} from "../../../components/PageComponents/ProjectIssueFilter/ProjectIssueFilter";
 import {SectionHeader} from "../../../components/PageComponents/SectionHeader/SectionHeader";
 import {
+  useDeleteProjectMutation,
   useLazyGetProjectWithIdQuery,
   useUpdateProjectMutation,
 } from "../../../data/rtkApis/projectApi";
@@ -21,22 +23,27 @@ import {IssueModal} from '../../../components/Modals/IssueModal/IssueModal';
 import {ManageProjectTagsModal} from '../../../components/Modals/ManageProjectTagsModal/ManageProjectTagsModal';
 import {NewProjectModal} from '../../../components/Modals/NewProjectModal/NewProjectModal';
 import {useLazyGetTeamsQuery} from '../../../data/rtkApis/teamApi';
+import {ActionDialogModal} from '../../../components/Modals/ActionDialogModal/ActionDialogModal';
 
 // TODO: Complete layout and functionality implementation
 export const ProjectDetailPage = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [project, setProject] = useState<FEProject | undefined>();
-  const [showAddIssue, setShowAddIssue] = useState(false);
+  // Triggers
   const [projTrigger, projResultObj] = useLazyGetProjectWithIdQuery();
   const [updateProjTrigger, updateResultObj] = useUpdateProjectMutation();
   const [addIssueTrigger, addIssueResultObj] = useAddIssueMutation();
   const [issuesTrigger, issuesResultObj] = useLazyGetIssuesQuery();
+  const [teamsTrigger, teamsResultObj] = useLazyGetTeamsQuery();
+  const [delProjTrigger, delProjResult] = useDeleteProjectMutation();
+  // State
+  const [project, setProject] = useState<FEProject | undefined>();
+  const [showAddIssue, setShowAddIssue] = useState(false);
   const [selectedIssueRef, setSelectedIssueRef] = useState('');
   const [showManageTags, setShowManageTags] = useState(false);
   const [showProjEditModalVisible, setShowProjEditModalVisible] = useState(false);
-  const [teamsTrigger, teamsResultObj] = useLazyGetTeamsQuery();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   useEffect(() => {
     const {id} = params;
@@ -116,6 +123,13 @@ export const ProjectDetailPage = () => {
     if (!selectedIssueRef) return undefined;
     return projectIssues.find(el => el._id === selectedIssueRef);
   }, [selectedIssueRef, projectIssues]);
+
+  useEffect(() => {
+    if (delProjResult.isSuccess) {
+      toastMessage("Project was deleted successfully.")
+      navigate(-1);
+    }
+  }, [delProjResult]);
 
   return (
     <div className="p-4">
@@ -245,6 +259,7 @@ export const ProjectDetailPage = () => {
             <DefaultButton
               active buttonSize="small" extraCss="bg-red-600" icon={<HiTrash className="default-tag--icon"/>}
               label="Delete Project"
+              onClick={() => setShowDeleteDialog(true)}
             />
           </>}
           project={project}
@@ -267,6 +282,27 @@ export const ProjectDetailPage = () => {
           />
         )
       }
+      {project && (
+        <ActionDialogModal
+          actionInProgress={delProjResult.isLoading}
+          dialogActions={<>
+            <DefaultButton
+              active={!delProjResult.isLoading} extraCss="mr-2 bg-slate-700" icon={<HiArrowLeft className="mr-2"/>} label="Cancel"
+              onClick={() => setShowDeleteDialog(false)}
+            />
+            <DefaultButton
+              active={!delProjResult.isLoading} icon={<HiTrash className="default-tag--icon"/>} extraCss="bg-red-600" label="Delete Project"
+              onClick={() => delProjTrigger(project._id)}
+            />
+          </>}
+          dialogContent={`You are about to delete the project: ${project.projectName}, this will delete linked issues and is permanent. Would you like to continue?`}
+          modalHeaderProps={{
+            title: `Delete Project: ${project.projectName}?`,
+            onClose: () => setShowDeleteDialog(false),
+          }}
+          visible={showDeleteDialog}
+        />
+      )}
     </div>
   );
 };

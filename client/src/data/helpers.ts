@@ -11,7 +11,7 @@ export const prepareHeaders = (headers: Headers, {getState}) => {
   if (token) {
     headers.set('authorization', `Bearer ${token}`);
   }
-  
+
   return headers;
 };
 
@@ -56,6 +56,6 @@ export const buildCommonUpdateQuery = ({_id, ...patch}: {_id: string;}, targetEn
 });
 
 export const buildCommonDeleteQuery = (_id: string, targetEndpoint: string): FetchArgs => ({
-  url: `${apiBase}/${targetEndpoint}/${_id}`,
+  url: `${targetEndpoint}/${_id}`,
   method: 'DELETE',
 });
