@@ -1,12 +1,12 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { NewIssueModal } from "./NewIssueModal";
+import { IssueFormModal } from "./IssueFormModal";
 
 export default {
-  title: 'Modals/NewIssueModal',
-  component: NewIssueModal
-} as ComponentMeta<typeof NewIssueModal>
+  title: 'Modals/IssueFormModal',
+  component: IssueFormModal
+} as ComponentMeta<typeof IssueFormModal>
 
-const Template: ComponentStory<typeof NewIssueModal> = args => <NewIssueModal {...args} />
+const Template: ComponentStory<typeof IssueFormModal> = args => <IssueFormModal {...args} />
 
 export const Primary = Template.bind({});
 

@@ -1,22 +1,20 @@
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, FC, useCallback, useEffect, useState} from "react";
 import "../Modals.css";
-import "./newIssueModal.css";
+import "./IssueFormModal.css";
 import {
   HiCheckCircle,
-  HiDocumentAdd,
   HiEye,
   HiInformationCircle,
   HiX,
-  HiXCircle,
 } from "react-icons/hi";
 
 import {
+  FEIssue,
   NewIssueData,
   NewIssueProject,
   ProjectAssignee,
   ProjectPriority,
 } from "../../../interfaces";
-import { IconButton } from "../../BaseComponents/IconButton/IconButton";
 import { Tag } from "../../BaseComponents/Tag/Tag";
 import { TextInput } from "../../BaseComponents/TextInput/TextInput";
 import { TextArea } from "../../BaseComponents/TextArea/TextArea";
@@ -26,16 +24,17 @@ import { Calendar } from "../../BaseComponents/Calendar/Calendar";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
 import { FileAttachmentCard } from "../../BaseComponents/FileAttachmentCard/FileAttachmentCard";
 import { NoResultCard } from "../../BaseComponents/NoResultCard/NoResultCard";
-import { FormattingUtils } from "../../../utils/FormattingUtils";
+import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
 import { HiddenFileInput } from "../../BaseComponents/HiddenFileInput/HiddenFileInput";
 import {ProgressLoader} from '../../BaseComponents/ProgressLoader/ProgressLoader';
+import {IStandardModal} from '../modal.interfaces';
 
-export interface NewIssueModalProps {
+export interface IssueFormModalProps extends IStandardModal {
   actionInProgress: boolean;
-  onCloseModal: () => void;
+  execAction: (data: NewIssueData) => void;
+  issue?: FEIssue;
   onManageWatchers: () => void;
   onManageAttachments: () => void;
-  onCreateIssue: (data: NewIssueData) => void;
   project: NewIssueProject;
   projectAssignees: ProjectAssignee[];
   projectPriorities: ProjectPriority[];
@@ -50,20 +49,43 @@ const INITIAL_ISSUE_DATA: NewIssueData = {
   priority: '',
 }
 
-export const NewIssueModal = ({
+// Refactoring this component to support editing an existing issue or creating a new one
+// - rename onCreateIssue to execAction
+// - add prop that can indicate if the issue is new or use the presence of issue
+// - rename props
+// - rename component to IssueFormModal
+
+export const IssueFormModal: FC<IssueFormModalProps> = ({
   actionInProgress,
-  onCloseModal,
-  onCreateIssue,
+  execAction,
+  issue,
+  modalHeaderProps,
   onManageWatchers,
   visible,
   project,
   projectAssignees,
   projectPriorities,
-}: NewIssueModalProps): JSX.Element => {
+}) => {
 
   const [issueData, setIssueData] = useState<NewIssueData>(() => ({...INITIAL_ISSUE_DATA}));
   const [tagText, setTagText] = useState("");
   const [fileBlobs, setFileBlobs] = useState<File[]>([]);
+
+  useEffect(() => {
+    if (issue) {
+      const _issueData: NewIssueData = {
+        tags: [...issue.tags],
+        associatedProject: issue.associatedProject._id,
+        priority: issue.priority,
+        title: issue.title,
+        expectedCloseDate: issue.expectedCloseDate
+          ? FormattingUtils.formatDate(issue.expectedCloseDate, DATE_FORMATS['SHORT_DATE'])
+          : '',
+        description: issue.description
+      }
+      setIssueData(_issueData);
+    }
+  }, [issue]);
 
   useEffect(() => {
     setIssueData(prevState => ({...prevState, associatedProject: project.objectId}));
@@ -83,7 +105,7 @@ export const NewIssueModal = ({
     _tags.push(tagText);
     setTagText('');
     setIssueData(prevState => ({...prevState, tags: _tags}));
-  }, [tagText, issueData.tags]);
+  }, [tagText, issueData]);
 
   const onRemoveTag = useCallback(
     (tagIndex: number) => {
@@ -108,10 +130,7 @@ export const NewIssueModal = ({
 
   return (
     <ModalWrapper
-      modalHeaderProps={{
-        onClose: onCloseModal,
-        title: "Create New Issue",
-      }}
+      modalHeaderProps={{...modalHeaderProps, title: issue ? `Edit Issue: ${issue.title}` : 'New Issue'}}
       visible={visible}
     >
       <div className="">
@@ -219,14 +238,14 @@ export const NewIssueModal = ({
               </div>
             )}
           </div>
-          <div className="modal--row justify-center">
+          <div className="modal--row justify-center mt-3">
             {actionInProgress ? (<ProgressLoader visible={actionInProgress} />) : <DefaultButton
               active
-              label="Create Issue"
+              label={!issue ? "Create Issue" : "Update Issue"}
               buttonSize="medium"
               icon={<HiCheckCircle className="default--icon mt-1" />}
               onClick={() => {
-                onCreateIssue(issueData);
+                execAction(issueData);
                 setIssueData(INITIAL_ISSUE_DATA);
               }}
             />}

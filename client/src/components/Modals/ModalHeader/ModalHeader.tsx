@@ -8,7 +8,7 @@ export interface ModalHeaderProps {
   icon?: React.ReactElement;
   onClose: () => void;
   subtitle?: string;
-  title: string;
+  title?: string;
 }
 
 export const ModalHeader: FC<ModalHeaderProps> = ({

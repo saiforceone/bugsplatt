@@ -22,9 +22,9 @@ export const issueApi = api.injectEndpoints({
         params: {...arg}
       })
     }),
-    updateIssue: builder.mutation<FEIssue, Partial<FEIssue> & Pick<FEIssue, '_id'>>({
+    updateIssue: builder.mutation<NewIssueData, Partial<NewIssueData> & Pick<FEIssue, '_id'>>({
       query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
-      transformResponse: (response: {data: FEIssue}, meta, arg) => response.data,
+      // transformResponse: (response: {data: FEIssue}, meta, arg) => response.data,
       invalidatesTags: ['Issues'],
     }),
     deleteIssue: builder.mutation<{ success: boolean; _id: string}, string>({

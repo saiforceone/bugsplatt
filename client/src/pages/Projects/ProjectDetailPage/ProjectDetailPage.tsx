@@ -6,7 +6,7 @@ import {DefaultButton} from "../../../components/BaseComponents/DefaultButton/De
 import {IconButton} from "../../../components/BaseComponents/IconButton/IconButton";
 import {NoResultCard} from "../../../components/BaseComponents/NoResultCard/NoResultCard";
 import {Tag} from "../../../components/BaseComponents/Tag/Tag";
-import {NewIssueModal} from "../../../components/Modals/NewIssueModal/NewIssueModal";
+import {IssueFormModal} from "../../../components/Modals/IssueFormModal/IssueFormModal";
 import {PageHeader} from "../../../components/Navigation/PageHeader/PageHeader";
 import {ProjectIssueFilter} from "../../../components/PageComponents/ProjectIssueFilter/ProjectIssueFilter";
 import {SectionHeader} from "../../../components/PageComponents/SectionHeader/SectionHeader";
@@ -216,12 +216,11 @@ export const ProjectDetailPage = () => {
         }
       </div>
       {project && (
-        <NewIssueModal
+        <IssueFormModal
           actionInProgress={addIssueResultObj.isLoading}
-          onCloseModal={() => setShowAddIssue(false)}
+          modalHeaderProps={{ onClose: () => setShowAddIssue(false)}}
           visible={showAddIssue}
-          onCreateIssue={issueData => {
-            console.log('onCreateIssue with data: ', issueData);
+          execAction={issueData => {
             addIssueTrigger(issueData);
           }}
           project={{objectId: project._id, projectName: project.projectName}}

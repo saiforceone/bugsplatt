@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { toast as toastify } from "react-toastify";
+import {useEffect, useMemo, useState} from "react";
+import {useParams, useNavigate} from "react-router-dom";
+import {toast as toastify} from "react-toastify";
 import {
   useLazyGetIssueWithIdQuery,
   useDeleteIssueMutation,
@@ -10,26 +10,29 @@ import {
   useLazyGetCommentsQuery,
   useAddCommentMutation,
 } from "../../../data/rtkApis/commentApi";
-import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
-import { FEComment, FEIssue } from "../../../interfaces";
-import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
-import { Tag } from "../../../components/BaseComponents/Tag/Tag";
-import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
-import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
+import {PageHeader} from "../../../components/Navigation/PageHeader/PageHeader";
+import {FEComment, FEIssue} from "../../../interfaces";
+import {NoResultCard} from "../../../components/BaseComponents/NoResultCard/NoResultCard";
+import {Tag} from "../../../components/BaseComponents/Tag/Tag";
+import {SectionHeader} from "../../../components/PageComponents/SectionHeader/SectionHeader";
+import {DefaultButton} from "../../../components/BaseComponents/DefaultButton/DefaultButton";
 import {
-  HiArrowLeft,
+  HiArrowLeft, HiChevronDoubleUp,
   HiCog,
   HiPencilAlt,
   HiPlus,
   HiRefresh,
   HiTrash,
 } from "react-icons/hi";
-import { Comment } from "../../../components/BaseComponents/Comment/Comment";
-import { DATE_FORMATS, FormattingUtils } from "../../../utils/FormattingUtils";
-import { AddCommentModal } from "../../../components/Modals/AddCommentModal/AddCommentModal";
-import { IconButton } from "../../../components/BaseComponents/IconButton/IconButton";
-import { ActionDialogModal } from "../../../components/Modals/ActionDialogModal/ActionDialogModal";
-import { ManageTagsModal } from "../../../components/Modals/ManageTagsModal/ManageTagsModal";
+import {Comment} from "../../../components/BaseComponents/Comment/Comment";
+import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
+import {AddCommentModal} from "../../../components/Modals/AddCommentModal/AddCommentModal";
+import {IconButton} from "../../../components/BaseComponents/IconButton/IconButton";
+import {ActionDialogModal} from "../../../components/Modals/ActionDialogModal/ActionDialogModal";
+import {ManageTagsModal} from "../../../components/Modals/ManageTagsModal/ManageTagsModal";
+import {IssueFormModal} from '../../../components/Modals/IssueFormModal/IssueFormModal';
+import {FE_PROJECT_PRIORITIES} from '../../../constants/appConstants';
+import ProjectUtils from '../../../utils/ProjectUtils';
 
 export const IssueDetailPage = () => {
   // Hooks setup
@@ -47,10 +50,11 @@ export const IssueDetailPage = () => {
   const [issue, setIssue] = useState<FEIssue | undefined>();
   const [showAddComment, setShowAddComment] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEditIssue, setShowEditIssue] = useState(false);
   const [showManageTags, setShowManageTags] = useState(false);
 
   useEffect(() => {
-    const { id } = params;
+    const {id} = params;
     if (id) {
       issueTrigger(id);
       commentsTrigger(id);
@@ -58,7 +62,7 @@ export const IssueDetailPage = () => {
   }, [params]);
 
   useEffect(() => {
-    const { data } = issueResultObj as { [key: string]: any };
+    const {data} = issueResultObj as { [key: string]: any };
     if (data) {
       const issueData = data["data"] as FEIssue;
       setIssue(issueData);
@@ -74,7 +78,7 @@ export const IssueDetailPage = () => {
   const comments: FEComment[] = useMemo(() => {
     try {
       const {
-        data: { data },
+        data: {data},
       } = commentsResultObj as { [key: string]: any };
       if (!Array.isArray(data)) return [];
       return data as FEComment[];
@@ -96,6 +100,7 @@ export const IssueDetailPage = () => {
       if (issue) {
         issueTrigger(issue._id);
         setShowManageTags(false);
+        setShowEditIssue(false);
         toastify('Issue updated!');
       }
     }
@@ -110,7 +115,7 @@ export const IssueDetailPage = () => {
               <IconButton
                 active
                 buttonSize="small"
-                icon={<HiArrowLeft className="default-icon self-center" />}
+                icon={<HiArrowLeft className="default-icon self-center"/>}
                 onClick={() => navigate(-1)}
               />
             }
@@ -118,19 +123,22 @@ export const IssueDetailPage = () => {
               <>
                 <DefaultButton
                   active
-                  icon={<HiPencilAlt className="default-tag--icon" />}
+                  icon={<HiPencilAlt className="default-tag--icon"/>}
                   label="Edit Issue"
+                  onClick={() => setShowEditIssue(true)}
                 />
                 <DefaultButton
                   active
                   extraCss="ml-3 bg-red-600"
-                  icon={<HiTrash className="default-tag--icon" />}
+                  icon={<HiTrash className="default-tag--icon"/>}
                   label="Delete Issue"
                   onClick={() => setShowDeleteConfirm(true)}
                 />
               </>
             }
             title={`Issue: ${issue.title}`}
+            titleLabel={<Tag extraCss="ml-2 self-center" icon={<HiChevronDoubleUp className="default-tag--icon"/>}
+                             labelText={ProjectUtils.getLabelForIssuePriority(issue.priority)} size="small"/>}
           />
           <p>{issue.description}</p>
           <SectionHeader
@@ -138,7 +146,7 @@ export const IssueDetailPage = () => {
               <>
                 <DefaultButton
                   active
-                  icon={<HiCog className="default-tag--icon" />}
+                  icon={<HiCog className="default-tag--icon"/>}
                   label="Manage Tags"
                   onClick={() => setShowManageTags(true)}
                 />
@@ -159,7 +167,7 @@ export const IssueDetailPage = () => {
                 ))}
               </div>
             ) : (
-              <NoResultCard primaryText="No tags found" />
+              <NoResultCard primaryText="No tags found"/>
             )}
           </div>
           <SectionHeader
@@ -168,13 +176,13 @@ export const IssueDetailPage = () => {
                 <DefaultButton
                   active
                   extraCss="mr-2"
-                  icon={<HiPlus className="default-tag--icon" />}
+                  icon={<HiPlus className="default-tag--icon"/>}
                   label="Add Comment"
                   onClick={() => setShowAddComment(true)}
                 />
                 <DefaultButton
                   active
-                  icon={<HiRefresh className="default-tag--icon" />}
+                  icon={<HiRefresh className="default-tag--icon"/>}
                   label="Refresh Comments"
                   onClick={() => commentsTrigger(issue._id)}
                 />
@@ -197,9 +205,25 @@ export const IssueDetailPage = () => {
                 ))}
               </>
             ) : (
-              <NoResultCard primaryText="No comments found" />
+              <NoResultCard primaryText="No comments found"/>
             )}
           </div>
+
+          <IssueFormModal
+            actionInProgress={updateIssueResultObj.isLoading}
+            execAction={issueData => {
+              updateIssueTrigger({...issueData, _id: issue._id})
+            }}
+            onManageWatchers={() => {
+            }}
+            issue={issue}
+            onManageAttachments={() => {
+            }}
+            project={{objectId: issue.associatedProject._id, projectName: issue.associatedProject.projectName}}
+            projectAssignees={[]} projectPriorities={FE_PROJECT_PRIORITIES}
+            visible={showEditIssue}
+            modalHeaderProps={{onClose: () => setShowEditIssue(false)}}
+          />
 
           <AddCommentModal
             issueName={issue.title}
@@ -219,14 +243,14 @@ export const IssueDetailPage = () => {
               <>
                 <DefaultButton
                   active
-                  icon={<HiArrowLeft className="default-tag--icon" />}
+                  icon={<HiArrowLeft className="default-tag--icon"/>}
                   label="No"
                   onClick={() => setShowDeleteConfirm(false)}
                 />
                 <DefaultButton
                   active
                   extraCss="ml-2 bg-red-600"
-                  icon={<HiTrash className="default-tag--icon" />}
+                  icon={<HiTrash className="default-tag--icon"/>}
                   label="Delete Issue"
                   onClick={() => {
                     delIssueTrigger(issue._id);

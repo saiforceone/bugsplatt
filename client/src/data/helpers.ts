@@ -5,6 +5,7 @@ import { FetchArgs } from "@reduxjs/toolkit/dist/query";
 import { API_ENDPOINTS } from "../constants/apiConstants";
 const apiBase = API_ENDPOINTS.API_BASE;
 
+// @ts-ignore
 export const prepareHeaders = (headers: Headers, {getState}) => {
   const token = (getState() as RootState).auth.authToken;
   console.log('token from api.ts: ', token);
