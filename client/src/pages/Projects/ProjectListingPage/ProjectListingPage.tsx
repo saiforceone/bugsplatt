@@ -62,9 +62,11 @@ export const ProjectListingPage = () => {
       } = addProjResultObj as { [key: string]: any };
       if (success) {
         projTrigger({});
+        setShowNewProjModal(false);
       }
     } catch (e) {}
   }, [addProjResultObj.data]);
+
 
   const projects: FEProject[] = useMemo(() => {
     try {

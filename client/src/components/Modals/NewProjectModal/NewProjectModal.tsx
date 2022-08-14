@@ -39,7 +39,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
   project,
   overrideActions
 }) => {
-  const [projectData, setProjectData] = useState(emptyProjectData);
+  const [projectData, setProjectData] = useState(() => emptyProjectData);
   const [isNewProject, setIsNewProject] = useState(true);
 
   useEffect(() => {
@@ -60,6 +60,7 @@ export const NewProjectModal: FC<NewProjectModalProps> = ({
   const onExecCreateProject = useCallback(() => {
     // TODO validation / error handling
     onCreateProject(projectData);
+    setProjectData({...emptyProjectData});
   }, [projectData]);
 
   const onUpdateProjectData = useCallback(
