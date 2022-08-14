@@ -20,7 +20,7 @@ import {FE_PROJECT_PRIORITIES, FE_PROJECT_STATUSES, FE_PROJECT_TYPES} from '../.
 import {useAddIssueMutation, useLazyGetIssuesQuery} from '../../../data/rtkApis/issueApi';
 import {IssueSummaryCard} from '../../../components/BaseComponents/IssueSummaryCard/IssueSummaryCard';
 import {IssueModal} from '../../../components/Modals/IssueModal/IssueModal';
-import {ManageProjectTagsModal} from '../../../components/Modals/ManageProjectTagsModal/ManageProjectTagsModal';
+import {ManageTagsModal} from '../../../components/Modals/ManageTagsModal/ManageTagsModal';
 import {NewProjectModal} from '../../../components/Modals/NewProjectModal/NewProjectModal';
 import {useLazyGetTeamsQuery} from '../../../data/rtkApis/teamApi';
 import {ActionDialogModal} from '../../../components/Modals/ActionDialogModal/ActionDialogModal';
@@ -115,6 +115,7 @@ export const ProjectDetailPage = () => {
       if (project) {
         projTrigger(project._id);
         setShowProjEditModalVisible(false);
+        setShowManageTags(false);
       }
     }
   }, [updateResultObj]);
@@ -233,18 +234,17 @@ export const ProjectDetailPage = () => {
         />
       )}
       {project && (
-        <ManageProjectTagsModal
-          projectId={project._id}
-          projectName={project.projectName}
-          projectTags={project.tags}
+        <ManageTagsModal
+          actionInProgress={updateResultObj.isLoading}
+          resourceName={project.projectName}
+          resourceTags={project.tags}
           modalHeaderProps={{
             onClose: () => setShowManageTags(false),
             title: ''
           }}
           visible={showManageTags}
-          execPostAction={() => {
-            setShowManageTags(false);
-            projTrigger(project._id)
+          execAction={(tagList) => {
+            updateProjTrigger({tags: tagList, _id: project._id})
           }}
         />
       )}

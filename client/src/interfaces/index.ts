@@ -47,6 +47,7 @@ export interface NewProjectData {
   projectName: string;
   projectType: string;
   associatedTeam: string;
+  tags?: string[]
 }
 
 export interface NewIssueData {

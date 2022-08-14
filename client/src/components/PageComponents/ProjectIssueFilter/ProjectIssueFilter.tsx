@@ -12,7 +12,7 @@ interface ProjectIssueFilterProps {
   projectStatuses: SelectableOption[];
   issueCount: number;
   onFilterIssues: (data: FEIssueSearchCriteria) => void;
-  onNewIssue: () => void;
+  onNewIssue?: () => void;
 }
 
 type ModalTargetType = "proj-priorities" | "proj-statuses";
@@ -128,13 +128,13 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
           icon={<HiRefresh className="default-tag--icon" />}
           onClick={onResetAction}
         />
-        <DefaultButton
+        {typeof onNewIssue === 'function' && <DefaultButton
           active
           buttonSize="small"
           label="New Issue"
           icon={<HiPlus className="default-tag--icon" />}
           onClick={onNewIssue}
-        />
+        />}
       </div>
       <SelectableOptionModal
         modalHeaderProps={modalHeaderProps}

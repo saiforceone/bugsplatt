@@ -36,7 +36,7 @@ function App() {
                   <Route element={<ProjectListingPage />} path="projects" />
                   <Route element={<ProjectDetailPage />} path="projects/:id" />
                   <Route element={<IssueListPage />} path="issues" />
-                  <Route element={<IssueDetailPage />} path="issue/:id" />
+                  <Route element={<IssueDetailPage />} path="issues/:id" />
                   <Route element={<TeamListPage />} path="teams" />
                   <Route element={<TeamDetailPage />} path="teams/:id" />
                   <Route element={<HelpPage />} path="help" />

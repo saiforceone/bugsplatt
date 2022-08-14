@@ -27,13 +27,15 @@ export interface IssueModalProps {
   visible: boolean;
   onCloseAction: () => void;
   execPostAction: () => void;
+  overrideNavigate?: () => void;
 }
 
 export const IssueModal: FC<IssueModalProps> = ({
   issue,
   visible = true,
   onCloseAction,
-  execPostAction
+  execPostAction,
+  overrideNavigate
 }) => {
 
   const navigate = useNavigate();
@@ -91,7 +93,7 @@ export const IssueModal: FC<IssueModalProps> = ({
             buttonSize="small"
             icon={<HiCog className="h-5 w-5 text-white" />}
             label="Manage Issue"
-            onClick={() => navigateToIssue()}
+            onClick={typeof overrideNavigate === 'function' ? () => overrideNavigate() :  () => navigateToIssue()}
           />
         </>,
         onClose: onCloseAction,
