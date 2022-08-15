@@ -33,6 +33,7 @@ import {ManageTagsModal} from "../../../components/Modals/ManageTagsModal/Manage
 import {IssueFormModal} from '../../../components/Modals/IssueFormModal/IssueFormModal';
 import {FE_PROJECT_PRIORITIES} from '../../../constants/appConstants';
 import ProjectUtils from '../../../utils/ProjectUtils';
+import {ProgressLoader} from '../../../components/BaseComponents/ProgressLoader/ProgressLoader';
 
 export const IssueDetailPage = () => {
   // Hooks setup
@@ -189,12 +190,14 @@ export const IssueDetailPage = () => {
               </>
             }
             title="Comments"
+            titleElementExtra={commentsResultObj.isFetching ? <ProgressLoader visible={true} /> : undefined}
           />
           <div className="my-3">
             {comments.length ? (
               <>
                 {comments.map((comment) => (
                   <Comment
+                    key={`comment-${comment._id}`}
                     commentAuthor={`${comment.createdBy.firstName} ${comment.createdBy.lastName}`}
                     commentText={comment.content}
                     commentDate={FormattingUtils.formatDate(

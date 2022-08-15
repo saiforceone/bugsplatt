@@ -3,7 +3,7 @@ import {
   HiCalendar,
   HiChat,
   HiPlusCircle,
-  HiRefresh, HiCheck,
+  HiRefresh, HiCheck, HiFolder, HiChevronDoubleUp,
 } from "react-icons/hi";
 import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
@@ -105,11 +105,13 @@ export const IssueModal: FC<IssueModalProps> = ({
         <div className="issue-modal--tag-row">
           <Tag
             extraCss="issue-modal--tag"
+            icon={<HiFolder className="default-tag--icon" />}
             labelText={issue.associatedProject ? issue.associatedProject.projectName : 'Not Set'}
             size="small"
           />
           <Tag
             extraCss="issue-modal--tag"
+            icon={<HiChevronDoubleUp className="default-tag--icon" />}
             labelText={`Priority: ${issue.priority}`}
             size="small"
           />

@@ -22,9 +22,10 @@ export const IssueSummaryCard: FC<IssueSummaryCardProps> = (
 ) => {
   return (
     <div className="issue-summary--container" onClick={onClick}>
-      <div className="issue-summary--top-row">
-        <h3 className="issue-summary--heading">{issue.title}</h3>
+      <div className="issue-summary--top-row flex-wrap">
+        <h3 className="issue-summary--heading font-medium">{issue.title}</h3>
         <Tag
+          extraCss="mb-2"
           icon={<HiCalendar className="default-tag--icon"/>}
           labelText={
             issue.expectedCloseDate
@@ -34,15 +35,15 @@ export const IssueSummaryCard: FC<IssueSummaryCardProps> = (
           size="small"
         />
         <Tag
-          extraCss="ml-2" icon={<HiChevronDoubleUp className="self-center mr-2"/>}
+          extraCss="mb-2 ml-2" icon={<HiChevronDoubleUp className="self-center mr-2"/>}
           labelText={`${ProjectUtils.getLabelForIssuePriority(issue.priority)}`} size="small"
         />
         <Tag
-          extraCss="ml-2" icon={<HiFolder className="self-center mr-2"/>}
+          extraCss="mb-2 ml-2" icon={<HiFolder className="self-center mr-2"/>}
           labelText={issue.associatedProject.projectName} size="small"
         />
         <Tag
-          extraCss="ml-2" icon={issue.status === 'active' ? <MdRadioButtonUnchecked className={statusClasses}/> :
+          extraCss="mb-2 ml-2" icon={issue.status === 'active' ? <MdRadioButtonUnchecked className={statusClasses}/> :
           <MdRadioButtonChecked className={statusClasses}/>} labelText={`Status: ${issue.status}`} size="small"
         />
       </div>

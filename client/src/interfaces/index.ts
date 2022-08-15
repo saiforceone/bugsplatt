@@ -57,6 +57,7 @@ export interface NewIssueData {
   priority: string;
   tags: string[];
   title: string;
+  status?: string;
 }
 
 export interface APIResponse {

@@ -1,7 +1,8 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import './SectionHeader.css';
 
 interface SectionHeaderProps {
+  titleElementExtra?: React.ReactNode;
   title: string;
   subtitle?: string;
   actions?: React.ReactNode
@@ -9,13 +10,17 @@ interface SectionHeaderProps {
 
 export const SectionHeader: FC<SectionHeaderProps> = ({
   title,
+  titleElementExtra,
   subtitle,
   actions
 }) => {
   return (
     <div className="section-header">
       <div className="section-header--content">
-        <h2 className="section-header--title">{title}</h2>
+        <div className="default-row">
+          <h2 className="section-header--title">{title}</h2>
+          {titleElementExtra}
+        </div>
         {subtitle && (<p className="section-header--subtitle">{subtitle}</p>)}
       </div>
       {actions && (
