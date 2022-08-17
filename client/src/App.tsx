@@ -9,6 +9,8 @@ import { IssueListPage } from "./pages/Issues/IssueListPage/IssueListPage";
 import { LandingPage } from "./pages/LandingPage/LandingPage";
 import { ProjectDetailPage } from "./pages/Projects/ProjectDetailPage/ProjectDetailPage";
 import { ProjectListingPage } from "./pages/Projects/ProjectListingPage/ProjectListingPage";
+import { ReportedProblemDetailPage } from "./pages/ReportedProblem/ReportedProblemDetailPage/ReportedProblemDetailPage";
+import { ReportedProblemListing } from "./pages/ReportedProblem/ReportedProblemListingPage/ReportedProblemListing";
 import { TeamDetailPage } from "./pages/Teams/TeamDetailPage/TeamDetailPage";
 import { TeamListPage } from "./pages/Teams/TeamListPage/TeamListPage";
 
@@ -30,6 +32,8 @@ function App() {
                   <Link to="/app/teams">Teams</Link>
                   <br />
                   <Link to="/app/help">Help & Support</Link>
+                  <br />
+                  <Link to="/app/reported-problems">Reported Problems</Link>
                 </div>
                 <Routes>
                   <Route element={<DashboardPage />} path="" />
@@ -40,6 +44,8 @@ function App() {
                   <Route element={<TeamListPage />} path="teams" />
                   <Route element={<TeamDetailPage />} path="teams/:id" />
                   <Route element={<HelpPage />} path="help" />
+                  <Route element={<ReportedProblemListing />} path="reported-problems" />
+                  <Route element={<ReportedProblemDetailPage />} path="reported-problems/:id" />
                 </Routes>
               </>
             </IsAuthenticated>
