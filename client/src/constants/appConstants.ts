@@ -76,3 +76,21 @@ export const FE_PROJECT_PRIORITIES: SelectOption[] = [
     value: 'omg-wtf'
   }
 ];
+
+export const FE_REPORTED_PROBLEM_TYPES: SelectOption[] = [
+  {
+    ...EMPTY_SELECT_OPT
+  },
+  {
+    label: 'General',
+    value: 'general'
+  },
+  {
+    label: 'Login & Account Related',
+    value: 'accounts-login'
+  },
+  {
+    label: 'Other Problems',
+    value: 'other-unspecified'
+  }
+]

@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
   ISSUES: '/issues',
   PROJECTS: '/projects',
   REACTIONS: '/reactions',
+  REPORTED_PROBLEMS: '/reported-problems',
   TEAMS: '/teams',
   USERS: '/users'
 }

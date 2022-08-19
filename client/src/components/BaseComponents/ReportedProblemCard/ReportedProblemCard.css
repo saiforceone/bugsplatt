@@ -1,0 +1,17 @@
+@import '../../../index.css';
+
+.reported-prob {
+  @apply bg-slate-100 flex mb-2 p-2 rounded;
+}
+
+.reported-prob__icon {
+  @apply h-10 w-10 ml-2 self-center;
+}
+
+.reported-prob__content-container {
+  @apply ml-4;
+}
+
+.reported-prob__text {
+  @apply mt-2 text-lg text-slate-700;
+}

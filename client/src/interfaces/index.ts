@@ -60,6 +60,11 @@ export interface NewIssueData {
   status?: string;
 }
 
+export interface NewReportedProbData {
+  problemType: string;
+  content: string;
+}
+
 export interface APIResponse {
   data: object[] | object;
   error: string;
@@ -92,13 +97,19 @@ export interface FEIssueSearchCriteria {
   status?: string;
 }
 
+export interface FEReportedProbSearchCriteria {
+  createdBy?: string;
+  problemStatus?: string;
+  problemType?: string;
+}
+
 export interface FECommonData {
   _id: string;
   createdAt: string;
   updatedAt: string;
 }
 
-interface FECommonUserData {
+export interface FECommonUserData {
   _id: string;
   accountId: string;
   createdAt: string;
@@ -159,4 +170,11 @@ export interface FEComment extends FECommonData {
 export interface FEDateRange {
   startDate?: string;
   endDate?: string;
+}
+
+export interface FEReportedProblem extends FECommonData {
+  createdBy: FECommonUserData,
+  content: string;
+  problemStatus: string;
+  problemType: string;
 }

@@ -3,9 +3,11 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { api } from "./rtkApis/api";
 
 import authSlice from "./slices/authSlice";
+import currentUserSlice from "./slices/currentUserSlice";
 
 const rootReducer = combineReducers({
   auth: authSlice,
+  currentUser: currentUserSlice,
   [api.reducerPath]: api.reducer
 });
 
