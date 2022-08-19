@@ -7,6 +7,8 @@ import { Select } from "../../BaseComponents/Select/Select";
 import { TextArea } from "../../BaseComponents/TextArea/TextArea";
 import { IStandardModal } from "../modal.interfaces";
 import { ModalWrapper } from "../ModalWrapper/ModalWrapper";
+import {Tag} from '../../BaseComponents/Tag/Tag';
+import {HiUserCircle} from 'react-icons/hi';
 
 const EMPTY_PROBLEM: NewReportedProbData = {
   problemType: "",
@@ -14,7 +16,6 @@ const EMPTY_PROBLEM: NewReportedProbData = {
 };
 
 interface ReportedProblemFormModalProps extends IStandardModal {
-  teamName: string;
   userName: string;
   actionInProgress: boolean;
   onSubmit: (data: NewReportedProbData) => void;
@@ -24,6 +25,7 @@ export const ReportedProblemFormModal: FC<ReportedProblemFormModalProps> = ({
   actionInProgress,
   modalHeaderProps,
   onSubmit,
+  userName,
   visible,
 }) => {
   // State
@@ -66,6 +68,9 @@ export const ReportedProblemFormModal: FC<ReportedProblemFormModalProps> = ({
       visible={visible}
     >
       <div className="modal--container">
+        <div className="modal--row">
+          <Tag icon={<HiUserCircle className="default-tag--icon"/>} labelText={userName} size="small"/>
+        </div>
         <Select
           id="problemType"
           name="problemType"

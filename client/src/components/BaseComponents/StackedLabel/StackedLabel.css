@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.stacked-label {
+  @apply flex flex-1 mb-2 p-2;
+}
+
+.stacked-label--label {
+  @apply font-semibold mb-1.5 text-sm text-slate-500 uppercase;
+}
+
+.stacked-label--content {
+  @apply text-lg text-slate-800;
+}

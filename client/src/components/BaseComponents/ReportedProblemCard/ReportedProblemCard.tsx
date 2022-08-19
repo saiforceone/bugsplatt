@@ -22,11 +22,13 @@ export const ReportedProblemCard: FC<ReportedProblemCardProps> = ({
 }) => {
   return (
     <div className="reported-prob" onClick={onClick}>
-      {problem.problemStatus === "open" ? (
-        <MdRadioButtonUnchecked className="reported-prob__icon" />
-      ) : (
-        <MdRadioButtonChecked className="reported-prob__icon" />
-      )}
+      <div className="reported-prob__icon-container">
+        {problem.problemStatus === "open" ? (
+          <MdRadioButtonUnchecked className="reported-prob__icon" />
+        ) : (
+          <MdRadioButtonChecked className="reported-prob__icon" />
+        )}
+      </div>
       <div className="reported-prob__content-container">
         <div className="default-row">
           <Tag

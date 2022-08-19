@@ -1,7 +1,11 @@
 @import '../../../index.css';
 
 .reported-prob {
-  @apply bg-slate-100 flex mb-2 p-2 rounded;
+  @apply bg-slate-100 flex mt-4 p-2 rounded;
+}
+
+.reported-prob__icon-container {
+  @apply flex justify-items-center;
 }
 
 .reported-prob__icon {

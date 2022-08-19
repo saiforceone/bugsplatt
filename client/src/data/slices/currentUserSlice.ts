@@ -4,10 +4,12 @@ import { FECommonUserData } from "../../interfaces";
 
 interface CurrentUserState {
   currentUser?: FECommonUserData;
+  isFetching: boolean;
 }
 
 const initialState: CurrentUserState = {
-  currentUser: undefined
+  currentUser: undefined,
+  isFetching: false
 }
 
 export const currentUserSlice = createSlice({
@@ -16,10 +18,13 @@ export const currentUserSlice = createSlice({
   reducers: {
     setCurrentUser: (state, action: PayloadAction<FECommonUserData>) => {
       state.currentUser = action.payload;
+    },
+    setIsFetching: (state, action: PayloadAction<boolean>) => {
+      state.isFetching = action.payload;
     }
   }
 });
 
-export const { setCurrentUser } = currentUserSlice.actions;
+export const { setCurrentUser, setIsFetching } = currentUserSlice.actions;
 
 export default currentUserSlice.reducer;

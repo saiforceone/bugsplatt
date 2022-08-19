@@ -1,3 +1,5 @@
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 
 import "./App.css";
@@ -14,9 +16,20 @@ import { ReportedProblemListing } from "./pages/ReportedProblem/ReportedProblemL
 import { TeamDetailPage } from "./pages/Teams/TeamDetailPage/TeamDetailPage";
 import { TeamListPage } from "./pages/Teams/TeamListPage/TeamListPage";
 import { CurrentUserProvider } from "./Providers/CurrentUserProvider";
+import {useAuth} from './hooks/useAuth';
+import {fetchCurrentUserAction} from './data/actions/currentUserActions';
 
 // TODO Fetch the current user using the token
 function App() {
+  const authToken = useAuth();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (authToken.token) {
+      console.log('on app getting auth token...');
+      fetchCurrentUserAction(dispatch, authToken.token).then();
+    }
+  }, [authToken.token]);
+
   return (
     <CurrentUserProvider>
       <BrowserRouter>

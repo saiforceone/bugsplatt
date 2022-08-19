@@ -48,6 +48,25 @@ export default class APIUtils {
 
   // Read / GET
 
+  static async execFetch(endpoint: string, authToken: string): Promise<APIResponse> {
+    const result = this.responseObjFactory();
+    try {
+      const headers = this.buildHeaders(authToken);
+      const {
+        data: {data, error, success}
+      } = await axios.get(endpoint, {headers});
+
+      result.data = data;
+      result.error = error;
+      result.success = success;
+
+      return result;
+    } catch (e) {
+      result.error = (e as Error).message;
+      return result;
+    }
+  }
+
   static async fetchItemById(
     endpoint: string,
     authToken: string,
