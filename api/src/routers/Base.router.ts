@@ -15,6 +15,7 @@ export const ROUTER_RESPONSE_CODES: {[key: string]: number} = {
   RESOURCE_DELETED: 200,
   RESOURCE_FOUND: 200,
   RESOURCE_NOT_FOUND: 404,
+  RESOURCE_UPDATED: 200,
   EXCEPTION: 500,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
@@ -96,7 +97,7 @@ abstract class BaseRouter {
   /**
    * @protected
    * @method createResource
-   * @param {Array<RequestHandler>} middleware 
+   * @param {Array<RequestHandler>} middleware
    * @description Route handler for creating a new resource
    * @returns {Array<RequestHandler>}
    */
@@ -105,7 +106,7 @@ abstract class BaseRouter {
       const response = this.getDefaultResponse();
       try {
         const data = req.body;
-        
+
         response.data = await this._controller.createDocument(data) as object;
         response.success = !!response.data;
 
@@ -136,7 +137,7 @@ abstract class BaseRouter {
         return res.status(ROUTER_RESPONSE_CODES.RESOURCE_FOUND).json(response);
       } catch (e) {
         response.error = (e as Error).message;
-        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response); 
+        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
       }
     }];
   }
@@ -159,7 +160,7 @@ abstract class BaseRouter {
         response.success = data.length > 0;
 
         return res.status(
-          response.success 
+          response.success
           ? ROUTER_RESPONSE_CODES.RESOURCE_FOUND
           : ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND
           ).json(response);
@@ -184,7 +185,7 @@ abstract class BaseRouter {
       try {
         const resourceId: string = req.params.id;
         const data = req.body;
-        
+
         response.data = await this._controller.updateDocument(resourceId, data) as object;
         response.success = !!response.data;
 
@@ -201,7 +202,7 @@ abstract class BaseRouter {
   /**
    * @protected
    * @method deleteResource
-   * @param {Array<RequestHandler>} middleware 
+   * @param {Array<RequestHandler>} middleware
    * @description Route handler for deleting a resource
    */
   protected deleteResource(middleware: Array<RequestHandler> = []): RequestHandler[] {
