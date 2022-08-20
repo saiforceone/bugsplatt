@@ -93,4 +93,18 @@ export const FE_REPORTED_PROBLEM_TYPES: SelectOption[] = [
     label: 'Other Problems',
     value: 'other-unspecified'
   }
+];
+
+export const FE_REPORTED_PROBLEM_STATUSES: SelectOption[] = [
+  {
+    ...EMPTY_SELECT_OPT
+  },
+  {
+    label: 'Open',
+    value: 'open'
+  },
+  {
+    label: 'Closed',
+    value: 'closed'
+  }
 ]

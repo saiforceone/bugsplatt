@@ -178,3 +178,10 @@ export interface FEReportedProblem extends FECommonData {
   problemStatus: string;
   problemType: string;
 }
+
+export interface IStandardFilter {
+  actionInProgress: boolean;
+  count: number;
+  onExecFilter: <T>(data: T) => void;
+  onExecNew?: () => void;
+}

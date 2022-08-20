@@ -1,0 +1,10 @@
+@import '../../index.css';
+
+.common-filter {
+  @apply align-middle flex flex-1 justify-between my-2;
+}
+
+.common-filter__count {
+  @apply font-medium self-center text-2xl text-slate-700;
+}
+

@@ -13,6 +13,8 @@ import {
   ReportedProblemDetailModal
 } from '../../../components/Modals/ReportedProblemDetailModal/ReportedProblemDetailModal';
 import {useCurrentUser} from '../../../hooks/useCurrentUser';
+import {ReportedProblemFilter} from '../../../components/PageComponents/ReportedProblemFilter/ReportedProblemFilter';
+import {FE_REPORTED_PROBLEM_STATUSES, FE_REPORTED_PROBLEM_TYPES} from '../../../constants/appConstants';
 
 export const ReportedProblemListing = () => {
 
@@ -70,13 +72,14 @@ export const ReportedProblemListing = () => {
         }
         title="Reported Problems"
       />
-      <SectionHeader
-        actions={
-          <>
-            <DefaultButton active label="Refresh" onClick={() => problemsTrigger({})}/>
-          </>
-        }
-        title={`${reportedProblems.length} Problem${reportedProblems.length !== 1 ? 's' : ''} found`}
+      <ReportedProblemFilter
+        problemStatusOptions={FE_REPORTED_PROBLEM_STATUSES}
+        problemTypeOptions={FE_REPORTED_PROBLEM_TYPES}
+        actionInProgress={problemsResultObj.isLoading}
+        count={reportedProblems.length}
+        onExecFilter={(data) => {
+          problemsTrigger(data);
+        }}
       />
       <div>
         {reportedProblems.length ? (<>
@@ -101,7 +104,6 @@ export const ReportedProblemListing = () => {
         }}
         userName={currentUser.currentUser ? `${currentUser.currentUser.firstName}` : 'Unknown'}
         visible={probModalVisible}
-
       />
       {selectedProblem && (
         <ReportedProblemDetailModal

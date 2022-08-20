@@ -1,0 +1,5 @@
+@import '../../../index.css';
+
+.reported-prob-filter {
+  @apply align-middle flex flex-1 justify-between my-2;
+}
