@@ -137,6 +137,11 @@ export interface FEProject extends FECommonData {
   issues: FEIssue[];
 }
 
+export interface FEHelpContent extends FECommonData {
+  title: string;
+  content: string;
+}
+
 export interface FETeam extends FECommonData {
   managedBy: string;
   teamName: string;

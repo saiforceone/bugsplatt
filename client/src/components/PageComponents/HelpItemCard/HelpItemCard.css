@@ -1,0 +1,13 @@
+@import '../../../index.css';
+
+.help-item-card {
+  @apply bg-slate-100 mt-4 p-2 rounded;
+}
+
+.help-item-card__title {
+  @apply text-2xl text-slate-700;
+}
+
+.help-item-card__content {
+  @apply mt-2 text-lg;
+}
