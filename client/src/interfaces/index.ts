@@ -41,6 +41,13 @@ export interface AppNotification {
   notificationType: "default" | "error" | "info" | "success" | "warning";
 }
 
+export interface NewTeamData {
+  teamName: string;
+  teamDescription: string;
+  teamImage?: string;
+  teamImageData?: Blob;
+}
+
 export interface NewProjectData {
   colorCode?: string;
   description: string;
