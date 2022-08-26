@@ -10,6 +10,11 @@ export const teamApi = api.injectEndpoints({
     addTeam: builder.mutation<NewTeamData, Partial<NewTeamData>>({
       query: (body) => buildCommonAddQuery(body, targetEndpoint)
     }),
+    getTeamById: builder.query<FETeam, string>({
+      query: (id) => ({
+        url: `${targetEndpoint}/${id}`
+      })
+    }),
     getTeams: builder.query<FETeam, void>({
       query: () => ({
         url: `${targetEndpoint}`
@@ -21,5 +26,7 @@ export const teamApi = api.injectEndpoints({
 export const {
   useGetTeamsQuery,
   useLazyGetTeamsQuery,
+  useGetTeamByIdQuery,
+  useLazyGetTeamByIdQuery,
   useAddTeamMutation,
 } = teamApi;

@@ -38,6 +38,10 @@ export const TeamFormModal: FC<TeamFormModalProps> = (
     }
   }, [visible]);
 
+  useEffect(() => {
+    // TODO: SET TEAM DATA BASED ON VALUE FROM PROP
+  }, [team]);
+
   const onChangeFormData = useCallback((e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
     setTeamData(prev => ({...prev, [e.target.name]: e.target.value}));
   }, [teamData]);

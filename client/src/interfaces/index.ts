@@ -150,11 +150,11 @@ export interface FEHelpContent extends FECommonData {
 }
 
 export interface FETeam extends FECommonData {
-  managedBy: string;
+  managedBy: FECommonUserData;
   teamName: string;
   teamDescription: string;
   teamImage?: string;
-  teamMembers: string[];
+  teamMembers: FECommonUserData[];
 }
 
 export interface FEIssue extends FECommonData {

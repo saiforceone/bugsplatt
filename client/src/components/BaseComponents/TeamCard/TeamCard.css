@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .team-card {
-  @apply rounded bg-slate-50 p-2;
+  @apply rounded bg-slate-50 mb-2 p-2;
 }
 
 .team-card--team-name {
