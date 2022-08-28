@@ -46,6 +46,7 @@ export interface NewTeamData {
   teamDescription: string;
   teamImage?: string;
   teamImageData?: Blob;
+  teamMembers?: string[];
 }
 
 export interface NewProjectData {

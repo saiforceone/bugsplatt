@@ -11,31 +11,44 @@ import {
   HiUserGroup,
 } from "react-icons/hi";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
 import { IconButton } from "../../../components/BaseComponents/IconButton/IconButton";
 import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
 import { Tag } from "../../../components/BaseComponents/Tag/Tag";
 import { TeamUserCard } from "../../../components/BaseComponents/TeamUserCard/TeamUserCard";
 import { TextInput } from "../../../components/BaseComponents/TextInput/TextInput";
+import { ActionDialogModal } from "../../../components/Modals/ActionDialogModal/ActionDialogModal";
 import { TeamFormModal } from "../../../components/Modals/TeamFormModal/TeamFormModal";
 import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
 import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
-import { useLazyGetTeamByIdQuery } from "../../../data/rtkApis/teamApi";
+import {
+  useDeleteTeamMutation,
+  useLazyGetTeamByIdQuery,
+  useUpdateTeamMutation,
+} from "../../../data/rtkApis/teamApi";
 import { useCurrentUser } from "../../../hooks/useCurrentUser";
-import { FETeam } from "../../../interfaces";
+import { FECommonUserData, FETeam } from "../../../interfaces";
 import { DATE_FORMATS, FormattingUtils } from "../../../utils/FormattingUtils";
+import { TeamInviteModal } from "../../../components/BaseComponents/TeamInviteModal/TeamInviteModal";
 
 export const TeamDetailPage = () => {
   // state
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
   const [team, setTeam] = useState<FETeam | undefined>();
   const [filterText, setFilterText] = useState("");
+  const [selectedUser, setSelectedUser] =
+    useState<FECommonUserData | undefined>();
 
   // hooks
   const navigate = useNavigate();
   const params = useParams();
   const { currentUser } = useCurrentUser();
   const [teamTrigger, teamResultObj] = useLazyGetTeamByIdQuery();
+  const [updateTeamTrigger, updateTeamResultObj] = useUpdateTeamMutation();
+  const [deleteTeamTrigger, deleteTeamResultObj] = useDeleteTeamMutation();
 
   useEffect(() => {
     const { id } = params;
@@ -59,6 +72,22 @@ export const TeamDetailPage = () => {
       }
     }
   }, [teamResultObj]);
+
+  useEffect(() => {
+    if (updateTeamResultObj.isSuccess && team) {
+      teamTrigger(team._id);
+      setShowEditModal(false);
+      setShowInviteModal(false);
+      setSelectedUser(undefined);
+    }
+  }, [updateTeamResultObj, team]);
+
+  useEffect(() => {
+    if (deleteTeamResultObj.isSuccess) {
+      toast("The team was deleted successfully! Redirecting...");
+      navigate("/app/teams");
+    }
+  }, [deleteTeamResultObj]);
 
   return (
     <div className="p-4">
@@ -86,6 +115,7 @@ export const TeamDetailPage = () => {
                   extraCss="bg-red-600 ml-3"
                   icon={<HiTrash className="default-tag--icon" />}
                   label="Delete Team"
+                  onClick={() => setShowDeleteModal(true)}
                 />
               </>
             }
@@ -132,53 +162,141 @@ export const TeamDetailPage = () => {
                   active
                   icon={<HiMail className="default-tag--icon" />}
                   label="Invite"
+                  onClick={() => setShowInviteModal(true)}
                 />
               </>
             }
           />
           <div className="my-2">
             {team.teamMembers.length ? (
-              team.teamMembers.map((member) => (
-                <TeamUserCard
-                  actions={
-                    <>
-                      {currentUser?._id === member._id ? (
-                        <Tag
-                          extraCss="bg-slate-400 cursor-not-allowed"
-                          icon={<HiBan className="default-tag--icon" />}
-                          labelText="This is you"
-                          size="small"
-                        />
-                      ) : (
-                        <DefaultButton
-                          active
-                          icon={<HiCog className="default-tag--icon" />}
-                          label="Manage"
-                        />
-                      )}
-                    </>
-                  }
-                  key={`team-memeber-${member._id}`}
-                  user={member}
-                />
-              ))
+              team.teamMembers
+                .filter(
+                  (member) =>
+                    member.firstName.includes(filterText) ||
+                    member.lastName.includes(filterText)
+                )
+                .map((member) => (
+                  <TeamUserCard
+                    actions={
+                      <>
+                        {currentUser?._id === member._id ? (
+                          <Tag
+                            extraCss="bg-slate-400 cursor-not-allowed"
+                            icon={<HiBan className="default-tag--icon" />}
+                            labelText="This is you"
+                            size="small"
+                          />
+                        ) : (
+                          <DefaultButton
+                            active
+                            icon={<HiCog className="default-tag--icon" />}
+                            label="Remove"
+                            onClick={() => {
+                              setSelectedUser(member);
+                            }}
+                          />
+                        )}
+                      </>
+                    }
+                    key={`team-memeber-${member._id}`}
+                    user={member}
+                  />
+                ))
             ) : (
               <NoResultCard />
             )}
           </div>
-          <TeamFormModal 
-            actionInProgress={false}
+          <TeamFormModal
+            actionInProgress={updateTeamResultObj.isLoading}
             modalHeaderProps={{
               title: `Edit Team: ${team.teamName}`,
-              onClose: () => setShowEditModal(false)
+              onClose: () => setShowEditModal(false),
             }}
-            onExecAction={teamData => {
-              console.log('on exec action with data: ', teamData);
+            onExecAction={(teamData) => {
+              updateTeamTrigger({ ...teamData, _id: team._id });
             }}
             team={team}
             visible={showEditModal}
           />
-          {/* TODO: Add invite modal after modifying it */}
+          <ActionDialogModal
+            actionInProgress={deleteTeamResultObj.isLoading}
+            dialogActions={
+              <>
+                <DefaultButton
+                  active
+                  extraCss="mr-2 bg-slate-700"
+                  icon={<HiArrowLeft className="default-tag--icon" />}
+                  label="No"
+                  onClick={() => setShowDeleteModal(false)}
+                />
+                <DefaultButton
+                  active
+                  extraCss="bg-red-700"
+                  icon={<HiTrash className="default-tag--icon" />}
+                  label="Delete"
+                  onClick={() => deleteTeamTrigger(team._id)}
+                />
+              </>
+            }
+            dialogContent={`You are about to delete the team: ${team.teamName}. This action is permanent and cannot be undone. Would you like to continue?`}
+            modalHeaderProps={{
+              title: `Delete Team: ${team.teamName}`,
+              onClose: () => setShowDeleteModal(false),
+            }}
+            visible={showDeleteModal}
+          />
+          {selectedUser && (
+            <ActionDialogModal
+              modalHeaderProps={{
+                title: `Remove user: ${selectedUser.firstName} ${selectedUser.lastName}`,
+                onClose: () => setSelectedUser(undefined),
+              }}
+              actionInProgress={updateTeamResultObj.isLoading}
+              dialogActions={
+                <>
+                  <DefaultButton
+                    active
+                    extraCss="bg-slate-700 mr-2"
+                    icon={<HiArrowLeft className="default-tag--icon" />}
+                    label="No"
+                    onClick={() => setSelectedUser(undefined)}
+                  />
+                  <DefaultButton
+                    active
+                    extraCss="bg-red-800"
+                    icon={<HiTrash className="default-tag--icon" />}
+                    label="Yes"
+                    onClick={() => {
+                      const teamMembers = team.teamMembers
+                        .filter((user) => user._id !== selectedUser._id)
+                        .map((user) => user._id);
+                      updateTeamTrigger({ teamMembers, _id: team._id });
+                    }}
+                  />
+                </>
+              }
+              dialogContent={`You are about to remove the user: [${selectedUser.firstName}] from this team. Would you like to continue?`}
+              visible={!!selectedUser}
+            />
+          )}
+          <TeamInviteModal
+            actionInProgress={updateTeamResultObj.isLoading}
+            modalHeaderProps={{
+              onClose: () => setShowInviteModal(false),
+            }}
+            onExecAction={(usersToInvite) => {
+              console.log("handle users to invite: ", usersToInvite);
+              // prepare to send data for update
+              if (currentUser) {
+                let teamMembers = usersToInvite.map((user) => user._id);
+                teamMembers.splice(0, 0, currentUser._id);
+                console.log("team members: ", teamMembers);
+                updateTeamTrigger({ teamMembers, _id: team._id });
+              }
+            }}
+            team={team}
+            visible={showInviteModal}
+          />
         </>
       ) : (
         <div>{/* TODO: Fill in with empty / 404-content component */}</div>

@@ -74,6 +74,7 @@ export default class TeamRouter extends BaseRouter {
             associatedProject: proj._id,
           });
           console.log(`${this.getName()} deleteRelatedIssue result: `, issueDeleteResult);
+          proj.remove();
         }
         // NOTE END
 

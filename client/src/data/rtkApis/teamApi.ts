@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "../../constants/apiConstants";
 import { api } from "./api";
 import {FETeam, NewTeamData} from "../../interfaces";
-import {buildCommonAddQuery} from '../helpers';
+import {buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery} from '../helpers';
 
 const targetEndpoint = `${API_ENDPOINTS.TEAMS}`;
 
@@ -19,6 +19,13 @@ export const teamApi = api.injectEndpoints({
       query: () => ({
         url: `${targetEndpoint}`
       })
+    }),
+    // TODO: ADD UPDATE AND DELETE MUTATIONS
+    updateTeam: builder.mutation<NewTeamData, Partial<NewTeamData> & Pick<FETeam, '_id'>>({
+      query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
+    }),
+    deleteTeam: builder.mutation<{success: Boolean, _id: string}, string>({
+      query: (_id) => buildCommonDeleteQuery(_id, targetEndpoint),
     })
   })
 });
@@ -29,4 +36,6 @@ export const {
   useGetTeamByIdQuery,
   useLazyGetTeamByIdQuery,
   useAddTeamMutation,
+  useUpdateTeamMutation,
+  useDeleteTeamMutation
 } = teamApi;
