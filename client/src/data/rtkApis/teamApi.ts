@@ -20,7 +20,6 @@ export const teamApi = api.injectEndpoints({
         url: `${targetEndpoint}`
       })
     }),
-    // TODO: ADD UPDATE AND DELETE MUTATIONS
     updateTeam: builder.mutation<NewTeamData, Partial<NewTeamData> & Pick<FETeam, '_id'>>({
       query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
     }),

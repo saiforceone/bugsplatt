@@ -8,6 +8,7 @@ import ProjectRouter from "../routers/Project.router";
 import ReactionRouter from "../routers/Reaction.router";
 import ReportedProblemRouter from "../routers/ReportedProblem.router";
 import TeamRouter from '../routers/Team.router';
+import TeamInviteRouter from "../routers/TeamInvite.router";
 import UserProfileRouter from "../routers/UserProfile.router";
 
 export const configureRoutes = (app: Express, basePath: string = '/api') => {
@@ -25,6 +26,8 @@ export const configureRoutes = (app: Express, basePath: string = '/api') => {
   app.use(reportedProblemRouter.getRoutes());
   const teamRouter = new TeamRouter(`${basePath}/teams`);
   app.use(teamRouter.getRoutes());
+  const teamInviteRouter = new TeamInviteRouter(`${basePath}/team-invites`);
+  app.use(teamInviteRouter.getRoutes());
   const userProfileRouter = new UserProfileRouter(`${basePath}/users`);
   app.use(userProfileRouter.getRoutes());
 }
