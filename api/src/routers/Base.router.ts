@@ -58,8 +58,9 @@ abstract class BaseRouter {
   /**
    * @constructor
    * @param {string} basePath sets the base path for the router
+   * @param controller
    */
-  constructor(basePath: string = '/', controller: BaseController) {
+  protected constructor(basePath: string = '/', controller: BaseController) {
     this._basePath = basePath;
     this._router = Router();
     this._controller = controller;

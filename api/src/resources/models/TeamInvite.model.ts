@@ -5,10 +5,10 @@ import { ITeamInvite } from "../interfaces/TeamInvite.interface";
 const INVITE_STATUSES = ['pending', 'accepted', 'declined'];
 
 const TeamInviteSchema = new Schema<ITeamInvite>({
-  team: {required: true, ref: 'Team', type: Schema.Types.ObjectId},
-  invitedBy: {required: true, ref: 'UserProfile', type: Schema.Types.ObjectId},
+  team: {required: true, ref: 'Team', type: Schema.Types.ObjectId, autopopulate: true},
+  invitedBy: {required: true, ref: 'UserProfile', type: Schema.Types.ObjectId, autopopulate: true},
   inviteStatus: {required: true, trim: true, type: String, default: 'pending', enum: INVITE_STATUSES},
-  invitedUser: {required: true, ref: 'UserProfile', type: Schema.Types.ObjectId}
+  invitedUser: {required: true, ref: 'UserProfile', type: Schema.Types.ObjectId, autopopulate: true}
 }, {
   timestamps: true
 });

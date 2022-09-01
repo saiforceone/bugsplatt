@@ -198,3 +198,17 @@ export interface IStandardFilter {
   onExecFilter: <T>(data: T) => void;
   onExecNew?: () => void;
 }
+
+export interface FETeamInvite extends FECommonData {
+  team: FETeam;
+  inviteStatus: string;
+  invitedBy: FECommonUserData;
+  invitedUser: FECommonUserData;
+}
+
+export interface NewTeamInviteData {
+  users: {
+    team: string;
+    invitedUser: string;
+  }[]
+}

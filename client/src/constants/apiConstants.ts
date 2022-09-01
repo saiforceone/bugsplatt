@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   PROJECTS: '/projects',
   REACTIONS: '/reactions',
   REPORTED_PROBLEMS: '/reported-problems',
+  TEAM_INVITES: '/team-invites',
   TEAMS: '/teams',
   USERS: '/users'
 }

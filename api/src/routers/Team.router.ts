@@ -140,7 +140,7 @@ export default class TeamRouter extends BaseRouter {
               `${this.getName()} deleteRelatedIssue result: `,
               issueDeleteResult
             );
-            proj.remove();
+            await proj.remove();
           }
           // NOTE END
 

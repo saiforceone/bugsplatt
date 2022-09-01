@@ -15,7 +15,7 @@ abstract class BaseController {
    */
   protected _model: Model<any>;
 
-  constructor(model: Model<any>) {
+  protected constructor(model: Model<any>) {
     this._model = model;
     console.log(`⚡ [Server]: {Controller} :: ${this.constructor.name} initialized...`);
   }
@@ -37,6 +37,17 @@ abstract class BaseController {
     return this._model.create(data);
   }
 
+  /**
+   * @public
+   * @method createDocuments
+   * @param data
+   * @description Given data as a list, attempts to insert multiple docuemnts
+   * @return {Promise<IBase[]>}
+   */
+  public async createDocuments(data: Partial<IBase>[]): Promise<IBase[]> {
+    return this._model.insertMany(data);
+  }
+
   // Read
 
   /**
@@ -55,7 +66,7 @@ abstract class BaseController {
    * @method getDocumentWithQuery
    * @param {object} queryObject Defines the object to filter by
    * @description Given a query object, attempts to retrieve the first matching document
-   * @returns 
+   * @returns
    */
   public async getDocumentWithQuery(queryObject: object) {
     return this._model.findOne(queryObject);

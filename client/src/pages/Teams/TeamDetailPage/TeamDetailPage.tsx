@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import {
   HiArrowLeft,
   HiBan,
@@ -10,27 +10,28 @@ import {
   HiUserCircle,
   HiUserGroup,
 } from "react-icons/hi";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
-import { IconButton } from "../../../components/BaseComponents/IconButton/IconButton";
-import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
-import { Tag } from "../../../components/BaseComponents/Tag/Tag";
-import { TeamUserCard } from "../../../components/BaseComponents/TeamUserCard/TeamUserCard";
-import { TextInput } from "../../../components/BaseComponents/TextInput/TextInput";
-import { ActionDialogModal } from "../../../components/Modals/ActionDialogModal/ActionDialogModal";
-import { TeamFormModal } from "../../../components/Modals/TeamFormModal/TeamFormModal";
-import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
-import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
+import {useNavigate, useParams} from "react-router-dom";
+import {toast} from "react-toastify";
+import {DefaultButton} from "../../../components/BaseComponents/DefaultButton/DefaultButton";
+import {IconButton} from "../../../components/BaseComponents/IconButton/IconButton";
+import {NoResultCard} from "../../../components/BaseComponents/NoResultCard/NoResultCard";
+import {Tag} from "../../../components/BaseComponents/Tag/Tag";
+import {TeamUserCard} from "../../../components/BaseComponents/TeamUserCard/TeamUserCard";
+import {TextInput} from "../../../components/BaseComponents/TextInput/TextInput";
+import {ActionDialogModal} from "../../../components/Modals/ActionDialogModal/ActionDialogModal";
+import {TeamFormModal} from "../../../components/Modals/TeamFormModal/TeamFormModal";
+import {PageHeader} from "../../../components/Navigation/PageHeader/PageHeader";
+import {SectionHeader} from "../../../components/PageComponents/SectionHeader/SectionHeader";
 import {
   useDeleteTeamMutation,
   useLazyGetTeamByIdQuery,
   useUpdateTeamMutation,
 } from "../../../data/rtkApis/teamApi";
-import { useCurrentUser } from "../../../hooks/useCurrentUser";
-import { FECommonUserData, FETeam } from "../../../interfaces";
-import { DATE_FORMATS, FormattingUtils } from "../../../utils/FormattingUtils";
-import { TeamInviteModal } from "../../../components/BaseComponents/TeamInviteModal/TeamInviteModal";
+import {useCreateInviteMutation, useLazyGetInvitesForTeamQuery} from '../../../data/rtkApis/teamInviteApi';
+import {useCurrentUser} from "../../../hooks/useCurrentUser";
+import {FECommonUserData, FETeam, FETeamInvite} from "../../../interfaces";
+import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
+import {TeamInviteModal} from "../../../components/BaseComponents/TeamInviteModal/TeamInviteModal";
 
 export const TeamDetailPage = () => {
   // state
@@ -45,23 +46,26 @@ export const TeamDetailPage = () => {
   // hooks
   const navigate = useNavigate();
   const params = useParams();
-  const { currentUser } = useCurrentUser();
+  const {currentUser} = useCurrentUser();
   const [teamTrigger, teamResultObj] = useLazyGetTeamByIdQuery();
   const [updateTeamTrigger, updateTeamResultObj] = useUpdateTeamMutation();
   const [deleteTeamTrigger, deleteTeamResultObj] = useDeleteTeamMutation();
+  const [inviteUsersTrigger, inviteUsersResultObj] = useCreateInviteMutation();
+  const [invitesTrigger, invitesResultObj] = useLazyGetInvitesForTeamQuery()
 
   useEffect(() => {
-    const { id } = params;
+    const {id} = params;
     if (id) {
       teamTrigger(id);
+      invitesTrigger(id);
     }
   }, [params]);
 
   useEffect(() => {
-    const { data } = teamResultObj as { [key: string]: any };
+    const {data} = teamResultObj as { [key: string]: any };
     if (teamResultObj.isSuccess) {
       try {
-        const { data: teamApiData } = data;
+        const {data: teamApiData} = data;
         setTeam(teamApiData as FETeam);
       } catch (e) {
         console.log(
@@ -89,6 +93,18 @@ export const TeamDetailPage = () => {
     }
   }, [deleteTeamResultObj]);
 
+  const inviteList: FECommonUserData[] = useMemo(() => {
+    try {
+      const {data: {data}} = invitesResultObj as { [key: string]: any };
+      console.log('data for invites: ', data);
+      return (data as FETeamInvite[])
+        .map(invite => invite.invitedUser)
+        .filter(invite => invite.firstName.includes(filterText) || invite.lastName.includes(filterText));
+    } catch (e) {
+      return [];
+    }
+  }, [invitesResultObj, filterText]);
+
   return (
     <div className="p-4">
       {team ? (
@@ -98,7 +114,7 @@ export const TeamDetailPage = () => {
               <IconButton
                 active
                 buttonSize="small"
-                icon={<HiArrowLeft className="default-tag--icon" />}
+                icon={<HiArrowLeft className="default-tag--icon"/>}
                 onClick={() => navigate(-1)}
               />
             }
@@ -106,14 +122,14 @@ export const TeamDetailPage = () => {
               <>
                 <DefaultButton
                   active
-                  icon={<HiPencilAlt className="default-tag--icon" />}
+                  icon={<HiPencilAlt className="default-tag--icon"/>}
                   label="Edit Team"
                   onClick={() => setShowEditModal(true)}
                 />
                 <DefaultButton
                   active
                   extraCss="bg-red-600 ml-3"
-                  icon={<HiTrash className="default-tag--icon" />}
+                  icon={<HiTrash className="default-tag--icon"/>}
                   label="Delete Team"
                   onClick={() => setShowDeleteModal(true)}
                 />
@@ -125,13 +141,13 @@ export const TeamDetailPage = () => {
           <div className="my-4 default-row">
             <Tag
               extraCss="mr-2 mb-2"
-              icon={<HiUserGroup className="default-tag--icon" />}
+              icon={<HiUserGroup className="default-tag--icon"/>}
               labelText={`No of users: ${team.teamMembers.length}`}
               size="small"
             />
             <Tag
               extraCss="mr-2 mb-2"
-              icon={<HiCalendar className="default-tag--icon" />}
+              icon={<HiCalendar className="default-tag--icon"/>}
               labelText={`${FormattingUtils.formatDate(
                 team.createdAt,
                 DATE_FORMATS["MEDIUM_DATE_TIME"]
@@ -140,7 +156,7 @@ export const TeamDetailPage = () => {
             />
             <Tag
               extraCss="mb-2"
-              icon={<HiUserCircle className="default-tag--icon" />}
+              icon={<HiUserCircle className="default-tag--icon"/>}
               labelText={`${team.managedBy.firstName} ${team.managedBy.lastName}`}
               size="small"
             />
@@ -160,7 +176,7 @@ export const TeamDetailPage = () => {
               <>
                 <DefaultButton
                   active
-                  icon={<HiMail className="default-tag--icon" />}
+                  icon={<HiMail className="default-tag--icon"/>}
                   label="Invite"
                   onClick={() => setShowInviteModal(true)}
                 />
@@ -182,14 +198,14 @@ export const TeamDetailPage = () => {
                         {currentUser?._id === member._id ? (
                           <Tag
                             extraCss="bg-slate-400 cursor-not-allowed"
-                            icon={<HiBan className="default-tag--icon" />}
+                            icon={<HiBan className="default-tag--icon"/>}
                             labelText="This is you"
                             size="small"
                           />
                         ) : (
                           <DefaultButton
                             active
-                            icon={<HiCog className="default-tag--icon" />}
+                            icon={<HiCog className="default-tag--icon"/>}
                             label="Remove"
                             onClick={() => {
                               setSelectedUser(member);
@@ -203,7 +219,25 @@ export const TeamDetailPage = () => {
                   />
                 ))
             ) : (
-              <NoResultCard />
+              <NoResultCard/>
+            )}
+            {inviteList.map(invited => <TeamUserCard
+                user={invited}
+                actions={<>
+                  <Tag
+                    extraCss="bg-amber-600 self-center"
+                    icon={<HiMail className="default-tag--icon"/>}
+                    labelText="Invited" size="small"
+                  />
+                  <DefaultButton
+                    active
+                    buttonSize="small"
+                    extraCss="ml-2"
+                    icon={<HiCog className="default-tag--icon" />}
+                    label="Manage"
+                  />
+                </>}
+              />
             )}
           </div>
           <TeamFormModal
@@ -213,7 +247,7 @@ export const TeamDetailPage = () => {
               onClose: () => setShowEditModal(false),
             }}
             onExecAction={(teamData) => {
-              updateTeamTrigger({ ...teamData, _id: team._id });
+              updateTeamTrigger({...teamData, _id: team._id});
             }}
             team={team}
             visible={showEditModal}
@@ -225,14 +259,14 @@ export const TeamDetailPage = () => {
                 <DefaultButton
                   active
                   extraCss="mr-2 bg-slate-700"
-                  icon={<HiArrowLeft className="default-tag--icon" />}
+                  icon={<HiArrowLeft className="default-tag--icon"/>}
                   label="No"
                   onClick={() => setShowDeleteModal(false)}
                 />
                 <DefaultButton
                   active
                   extraCss="bg-red-700"
-                  icon={<HiTrash className="default-tag--icon" />}
+                  icon={<HiTrash className="default-tag--icon"/>}
                   label="Delete"
                   onClick={() => deleteTeamTrigger(team._id)}
                 />
@@ -257,20 +291,20 @@ export const TeamDetailPage = () => {
                   <DefaultButton
                     active
                     extraCss="bg-slate-700 mr-2"
-                    icon={<HiArrowLeft className="default-tag--icon" />}
+                    icon={<HiArrowLeft className="default-tag--icon"/>}
                     label="No"
                     onClick={() => setSelectedUser(undefined)}
                   />
                   <DefaultButton
                     active
                     extraCss="bg-red-800"
-                    icon={<HiTrash className="default-tag--icon" />}
+                    icon={<HiTrash className="default-tag--icon"/>}
                     label="Yes"
                     onClick={() => {
                       const teamMembers = team.teamMembers
                         .filter((user) => user._id !== selectedUser._id)
                         .map((user) => user._id);
-                      updateTeamTrigger({ teamMembers, _id: team._id });
+                      updateTeamTrigger({teamMembers, _id: team._id});
                     }}
                   />
                 </>
@@ -287,12 +321,9 @@ export const TeamDetailPage = () => {
             onExecAction={(usersToInvite) => {
               console.log("handle users to invite: ", usersToInvite);
               // prepare to send data for update
-              if (currentUser) {
-                let teamMembers = usersToInvite.map((user) => user._id);
-                teamMembers.splice(0, 0, currentUser._id);
-                console.log("team members: ", teamMembers);
-                updateTeamTrigger({ teamMembers, _id: team._id });
-              }
+              let users = usersToInvite.map((user) => ({invitedUser: user._id, team: team._id}));
+              console.log("team members: ", users);
+              inviteUsersTrigger({users});
             }}
             team={team}
             visible={showInviteModal}

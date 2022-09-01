@@ -1,13 +1,13 @@
-import { Model, Types } from "mongoose";
+import {Model, Types} from "mongoose";
 import BaseRouter, {
   ROUTER_RESPONSE_CODES,
   ROUTER_RESPONSE_MESSAGES,
 } from "./Base.router";
 import TeamInviteController from "../resources/controllers/TeamInvite.controller";
 import TeamModel from "../resources/models/Team.model";
-import { ITeam } from "../resources/interfaces/Team.interface";
-import { Request, RequestHandler, Response, Router } from "express";
-import { ITeamInvite } from "../resources/interfaces/TeamInvite.interface";
+import {ITeam} from "../resources/interfaces/Team.interface";
+import e, {Request, RequestHandler, Response, Router} from "express";
+import {ITeamInvite} from "../resources/interfaces/TeamInvite.interface";
 
 export default class TeamInviteRouter extends BaseRouter {
   private _TeamModel: Model<ITeam>;
@@ -16,6 +16,28 @@ export default class TeamInviteRouter extends BaseRouter {
     const teamInviteController = new TeamInviteController();
     super(basePath, teamInviteController);
     this._TeamModel = TeamModel;
+  }
+
+  protected createResource(middleware: Array<e.RequestHandler> = []): e.RequestHandler[] {
+    return [
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const {users} = req.body;
+          const usersToInvite = (users as ITeamInvite[]).map(user => ({...user, invitedBy: req._user!._id}));
+          const savedInvites = await this._controller.createDocuments(usersToInvite);
+          console.log('TeamInvite.router invite: ', savedInvites);
+          response.data = savedInvites;
+          response.success = savedInvites.length > 0;
+          return res.status(
+            response.success ? ROUTER_RESPONSE_CODES['RESOURCE_CREATED'] : ROUTER_RESPONSE_CODES['BAD_REQUEST']
+          ).json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES['EXCEPTION']).json(response);
+        }
+      }
+    ]
   }
 
   // TODO: UPDATE OR REMOVE getResource
@@ -49,6 +71,33 @@ export default class TeamInviteRouter extends BaseRouter {
     ];
   }
 
+  private getInvitesForTeam(): RequestHandler[] {
+    return [
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const teamId: string = req.query.teamId ? String(req.query.teamId).trim() : '';
+          if (!teamId) {
+            response.error = ROUTER_RESPONSE_MESSAGES["RES_NOT_FOUND"];
+            return res.status(ROUTER_RESPONSE_CODES["BAD_REQUEST"]).json(response);
+          }
+          const filterObj = {
+            team: teamId
+          }
+          const invites = await this._controller.getDocuments(filterObj) as ITeamInvite[];
+          response.data = invites;
+          response.success = invites.length > 0;
+          return res.status(
+            response.success ? ROUTER_RESPONSE_CODES["RESOURCE_FOUND"] : ROUTER_RESPONSE_CODES["RESOURCE_NOT_FOUND"]
+          ).json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES["EXCEPTION"]).json(response);
+        }
+      }
+    ]
+  }
+
   private acceptInvite(): RequestHandler[] {
     return [
       async (req: Request, res: Response) => {
@@ -72,7 +121,7 @@ export default class TeamInviteRouter extends BaseRouter {
           const updatedTeam = await this._TeamModel.findByIdAndUpdate(
             invite.team,
             {
-              $addToSet: { teamMembers: new Types.ObjectId(req._user!._id) },
+              $addToSet: {teamMembers: new Types.ObjectId(req._user!._id)},
             }
           );
 
@@ -105,7 +154,10 @@ export default class TeamInviteRouter extends BaseRouter {
   public getRoutes(): Router {
     this._router
       .route(`${this._basePath}/accept-invite/:id`)
-      .post(this.acceptInvite);
+      .post(this.acceptInvite());
+    this._router
+      .route(`${this._basePath}/invites-for-team`)
+      .get(this.getInvitesForTeam());
     return super.getRoutes();
   }
 }
