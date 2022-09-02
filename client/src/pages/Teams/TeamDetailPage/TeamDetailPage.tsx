@@ -27,7 +27,7 @@ import {
   useLazyGetTeamByIdQuery,
   useUpdateTeamMutation,
 } from "../../../data/rtkApis/teamApi";
-import {useCreateInviteMutation, useLazyGetInvitesForTeamQuery} from '../../../data/rtkApis/teamInviteApi';
+import {useCreateInviteMutation, useDeleteInviteMutation, useLazyGetInvitesForTeamQuery} from '../../../data/rtkApis/teamInviteApi';
 import {useCurrentUser} from "../../../hooks/useCurrentUser";
 import {FECommonUserData, FETeam, FETeamInvite} from "../../../interfaces";
 import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
@@ -42,6 +42,7 @@ export const TeamDetailPage = () => {
   const [filterText, setFilterText] = useState("");
   const [selectedUser, setSelectedUser] =
     useState<FECommonUserData | undefined>();
+  const [selectedInvite, setSelectedInvite] = useState<FETeamInvite | undefined>();
 
   // hooks
   const navigate = useNavigate();
@@ -51,7 +52,8 @@ export const TeamDetailPage = () => {
   const [updateTeamTrigger, updateTeamResultObj] = useUpdateTeamMutation();
   const [deleteTeamTrigger, deleteTeamResultObj] = useDeleteTeamMutation();
   const [inviteUsersTrigger, inviteUsersResultObj] = useCreateInviteMutation();
-  const [invitesTrigger, invitesResultObj] = useLazyGetInvitesForTeamQuery()
+  const [invitesTrigger, invitesResultObj] = useLazyGetInvitesForTeamQuery();
+  const [deleteInviteTrigger, deleteInviteResultObj] = useDeleteInviteMutation();
 
   useEffect(() => {
     const {id} = params;
@@ -93,17 +95,32 @@ export const TeamDetailPage = () => {
     }
   }, [deleteTeamResultObj]);
 
-  const inviteList: FECommonUserData[] = useMemo(() => {
+  const inviteList: FETeamInvite[]  = useMemo(() => {
     try {
       const {data: {data}} = invitesResultObj as { [key: string]: any };
       console.log('data for invites: ', data);
       return (data as FETeamInvite[])
-        .map(invite => invite.invitedUser)
-        .filter(invite => invite.firstName.includes(filterText) || invite.lastName.includes(filterText));
+        .filter(invite => invite.invitedUser.firstName.includes(filterText) || invite.invitedUser.lastName.includes(filterText));
     } catch (e) {
       return [];
     }
   }, [invitesResultObj, filterText]);
+
+  useEffect(() => {
+    if (inviteUsersResultObj.isSuccess && team) {
+      setShowInviteModal(false);
+      teamTrigger(team._id);
+      invitesTrigger(team._id)
+    }
+  }, [inviteUsersResultObj, team]);
+
+  useEffect(() => {
+    if (deleteInviteResultObj.isSuccess && team) {
+      teamTrigger(team._id);
+      invitesTrigger(team._id);
+      setSelectedInvite(undefined);
+    }
+  }, [deleteInviteResultObj, team]);
 
   return (
     <div className="p-4">
@@ -221,8 +238,8 @@ export const TeamDetailPage = () => {
             ) : (
               <NoResultCard/>
             )}
-            {inviteList.map(invited => <TeamUserCard
-                user={invited}
+            {inviteList.map(invite => <TeamUserCard
+                user={invite.invitedUser}
                 actions={<>
                   <Tag
                     extraCss="bg-amber-600 self-center"
@@ -235,6 +252,7 @@ export const TeamDetailPage = () => {
                     extraCss="ml-2"
                     icon={<HiCog className="default-tag--icon" />}
                     label="Manage"
+                    onClick={() => setSelectedInvite(invite)}
                   />
                 </>}
               />
@@ -311,6 +329,37 @@ export const TeamDetailPage = () => {
               }
               dialogContent={`You are about to remove the user: [${selectedUser.firstName}] from this team. Would you like to continue?`}
               visible={!!selectedUser}
+            />
+          )}
+          {selectedInvite && (
+            <ActionDialogModal
+              modalHeaderProps={{
+                title: `Remove invite for: ${selectedInvite.invitedUser.firstName} ${selectedInvite.invitedUser.lastName}`,
+                onClose: () => setSelectedInvite(undefined),
+              }}
+              actionInProgress={deleteInviteResultObj.isLoading}
+              dialogActions={
+                <>
+                  <DefaultButton
+                    active
+                    extraCss="bg-slate-700 mr-2"
+                    icon={<HiArrowLeft className="default-tag--icon" />}
+                    label="No"
+                    onClick={() => setSelectedInvite(undefined)}
+                  />
+                  <DefaultButton
+                    active
+                    extraCss="bg-red-800"
+                    icon={<HiTrash className="default-tag--icon" />}
+                    label="Yes"
+                    onClick={() => {
+                      deleteInviteTrigger(selectedInvite._id);
+                    }}
+                  />
+                </>
+              }
+              dialogContent={`You are about to remove the invite for [${selectedInvite.invitedUser.firstName} ${selectedInvite.invitedUser.lastName}]. Would you like to continue?`}
+              visible={!!selectedInvite}
             />
           )}
           <TeamInviteModal

@@ -12,6 +12,8 @@ import ProjectModel from "../resources/models/Project.model";
 import { IProject } from "../resources/interfaces/Project.interface";
 import { IUserProfile } from "../resources/interfaces/UserProfile.interface";
 import UserProfileModel from "../resources/models/UserProfile.model";
+import { ITeamInvite } from "../resources/interfaces/TeamInvite.interface";
+import TeamInviteModel from "../resources/models/TeamInvite.model";
 
 /**
  * @class TeamRouter
@@ -21,6 +23,7 @@ import UserProfileModel from "../resources/models/UserProfile.model";
 export default class TeamRouter extends BaseRouter {
   private _issueModel: Model<IIssue>;
   private _projectModel: Model<IProject>;
+  private _teamInviteModel: Model<ITeamInvite>;
   private _userProfileModel: Model<IUserProfile>;
 
   constructor(basePath: string = "/teams") {
@@ -28,6 +31,7 @@ export default class TeamRouter extends BaseRouter {
     super(basePath, teamController);
     this._issueModel = IssueModel;
     this._projectModel = ProjectModel;
+    this._teamInviteModel = TeamInviteModel;
     this._userProfileModel = UserProfileModel;
   }
 
@@ -78,18 +82,22 @@ export default class TeamRouter extends BaseRouter {
               .json(response);
           }
 
+          // get the invites for the current team then exclude them
+          const existingInvites = await this._teamInviteModel.find({team: team._id});
+
+          console.log('existing invites: ', existingInvites);
+          const alreadyInvited = existingInvites.map(invited => invited.invitedUser._id);
+
           const filterObj = {
-            _id: { $nin: [req._user!._id, ...team.teamMembers] },
+            _id: { $nin: [req._user!._id, ...team.teamMembers, ...alreadyInvited] },
           };
 
           response.data = await this._userProfileModel.find(filterObj);
-          response.success = (response.data as IUserProfile[]).length > 0;
+          response.success = true;
 
           return res
             .status(
-              response.success
-                ? ROUTER_RESPONSE_CODES["RESOURCE_FOUND"]
-                : ROUTER_RESPONSE_CODES["RESOURCE_NOT_FOUND"]
+              ROUTER_RESPONSE_CODES["RESOURCE_FOUND"]
             )
             .json(response);
         } catch (e) {

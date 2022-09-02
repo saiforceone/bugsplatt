@@ -2,11 +2,10 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import {
   HiCheckCircle,
   HiMail,
-  HiOutlineCheck,
   HiTrash,
   HiUserGroup,
 } from "react-icons/hi";
-import { useLazyGetAvailableUsersQuery } from "../../../data/rtkApis/userProfileApi";
+import { useLazyGetAvailableUsersQuery } from "../../../data/rtkApis/teamApi";
 import { FECommonUserData, FETeam } from "../../../interfaces";
 import { IStandardModal } from "../../Modals/modal.interfaces";
 import { ModalWrapper } from "../../Modals/ModalWrapper/ModalWrapper";
@@ -42,10 +41,10 @@ export const TeamInviteModal: FC<TeamInviteModalProps> = ({
   const [selectedUsers, setSelectedUsers] = useState<FECommonUserData[]>([]);
 
   // Hooks
-  const [usersTrigger, usersResultObj] = useLazyGetAvailableUsersQuery();
+  const [availableUsersTrigger, availableUsersResultObj] = useLazyGetAvailableUsersQuery();
 
   useEffect(() => {
-    if (visible) usersTrigger();
+    if (visible) availableUsersTrigger(team._id);
     if (!visible) setSelectedUsers([]);
   }, [visible]);
 
@@ -68,7 +67,7 @@ export const TeamInviteModal: FC<TeamInviteModalProps> = ({
     try {
       const {
         data: { data },
-      } = usersResultObj as { [key: string]: any };
+      } = availableUsersResultObj as { [key: string]: any };
       return (data as FECommonUserData[]).filter(
         (el) =>
           el.firstName.includes(filterText) || el.lastName.includes(filterText)
@@ -76,7 +75,7 @@ export const TeamInviteModal: FC<TeamInviteModalProps> = ({
     } catch (e) {
       return [];
     }
-  }, [filterText, usersResultObj]);
+  }, [filterText, availableUsersResultObj]);
 
   return (
     <ModalWrapper

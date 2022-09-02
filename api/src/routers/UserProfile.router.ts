@@ -97,6 +97,7 @@ export default class UserProfileRouter extends BaseRouter {
     ];
   }
 
+  /** @deprecated */
   private getAvailableUsers(): RequestHandler[] {
     return [
       async (req: Request, res: Response) => {

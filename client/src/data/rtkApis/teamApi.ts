@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from "../../constants/apiConstants";
 import { api } from "./api";
-import {FETeam, NewTeamData} from "../../interfaces";
+import {FECommonUserData, FETeam, NewTeamData} from "../../interfaces";
 import {buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery} from '../helpers';
 
 const targetEndpoint = `${API_ENDPOINTS.TEAMS}`;
@@ -9,6 +9,11 @@ export const teamApi = api.injectEndpoints({
   endpoints: (builder) => ({
     addTeam: builder.mutation<NewTeamData, Partial<NewTeamData>>({
       query: (body) => buildCommonAddQuery(body, targetEndpoint)
+    }),
+    getAvailableUsers: builder.query<FECommonUserData, string>({
+      query: (id) => ({
+        url: `${targetEndpoint}/${id}/available-users`
+      })
     }),
     getTeamById: builder.query<FETeam, string>({
       query: (id) => ({
@@ -36,5 +41,6 @@ export const {
   useLazyGetTeamByIdQuery,
   useAddTeamMutation,
   useUpdateTeamMutation,
-  useDeleteTeamMutation
+  useDeleteTeamMutation,
+  useLazyGetAvailableUsersQuery
 } = teamApi;

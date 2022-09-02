@@ -1,6 +1,6 @@
 import {api} from './api';
 import {API_ENDPOINTS} from '../../constants/apiConstants';
-import {buildCommonAddQuery, buildCommonUpdateQuery} from '../helpers';
+import {buildCommonAddQuery, buildCommonDeleteQuery, buildCommonUpdateQuery} from '../helpers';
 import {FETeamInvite, NewTeamInviteData} from '../../interfaces';
 
 const targetEndpoint = API_ENDPOINTS.TEAM_INVITES;
@@ -35,6 +35,9 @@ export const teamInviteApi = api.injectEndpoints({
           action: 'decline-invite'
         }
       })
+    }),
+    deleteInvite: builder.mutation<{ success: boolean; _id: string}, string>({
+      query: (_id) => buildCommonDeleteQuery(_id, targetEndpoint),
     })
   }),
 });
@@ -46,5 +49,6 @@ export const {
   useGetInvitesQuery,
   useLazyGetInvitesQuery,
   useGetInvitesForTeamQuery,
-  useLazyGetInvitesForTeamQuery
+  useLazyGetInvitesForTeamQuery,
+  useDeleteInviteMutation,
 } = teamInviteApi;
