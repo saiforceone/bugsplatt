@@ -41,6 +41,8 @@ function App() {
               <IsAuthenticated>
                 <>
                   <div>
+                    <Link to="/app">Dashboard</Link>
+                    <br />
                     <Link to="/app/projects">Projects</Link>
                     <br />
                     <Link to="/app/issues">Issues</Link>

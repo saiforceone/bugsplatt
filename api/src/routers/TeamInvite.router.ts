@@ -65,6 +65,7 @@ export default class TeamInviteRouter extends BaseRouter {
         try {
           const filterObj = {
             invitedUser: req._user!._id,
+            inviteStatus: {$ne: 'accepted'}
           };
 
           response.data = (await this._controller.getDocuments(
@@ -103,6 +104,7 @@ export default class TeamInviteRouter extends BaseRouter {
           }
           const filterObj = {
             team: teamId,
+            inviteStatus: {$ne: 'accepted'}
           };
           const invites = (await this._controller.getDocuments(
             filterObj
@@ -121,6 +123,8 @@ export default class TeamInviteRouter extends BaseRouter {
       },
     ];
   }
+
+  // inviteAction: accept | decline
 
   private acceptInvite(): RequestHandler[] {
     return [
@@ -204,8 +208,8 @@ export default class TeamInviteRouter extends BaseRouter {
 
   public getRoutes(): Router {
     this._router
-      .route(`${this._basePath}/accept-invite/:id`)
-      .post(this.acceptInvite());
+      .route(`${this._basePath}/:id/accept-invite`) // TODO: refactor to manage-invite and update method as needed
+      .put(this.acceptInvite());
     this._router
       .route(`${this._basePath}/invites-for-team`)
       .get(this.getInvitesForTeam());

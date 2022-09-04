@@ -83,7 +83,7 @@ export default class TeamRouter extends BaseRouter {
           }
 
           // get the invites for the current team then exclude them
-          const existingInvites = await this._teamInviteModel.find({team: team._id});
+          const existingInvites = await this._teamInviteModel.find({team: team._id, inviteStatus: {$ne: 'accepted'}});
 
           console.log('existing invites: ', existingInvites);
           const alreadyInvited = existingInvites.map(invited => invited.invitedUser._id);

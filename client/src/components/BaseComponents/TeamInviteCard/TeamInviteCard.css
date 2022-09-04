@@ -1,0 +1,9 @@
+@import "../../../index.css";
+
+.team-invite-card {
+  @apply flex flex-1 rounded mb-2 p-2 bg-slate-100;
+}
+
+.tic-title {
+  @apply text-lg text-gray-800 font-semibold;
+}
