@@ -10,6 +10,8 @@ import { IProject } from "../resources/interfaces/Project.interface";
 import { IIssue } from "../resources/interfaces/Issue.interface";
 import Issue from "../resources/models/Issue.model";
 import ProjectModel from "../resources/models/Project.model";
+import TeamModel from "../resources/models/Team.model";
+import { ITeam } from "../resources/interfaces/Team.interface";
 
 
 const PROJECT_FILTER_FIELDS = ['projectType', 'associatedTeam', 'createdBy'];
@@ -22,12 +24,14 @@ const PROJECT_FILTER_FIELDS = ['projectType', 'associatedTeam', 'createdBy'];
 export default class ProjectRouter extends BaseRouter {
   private _issueModel: Model<IIssue>;
   private _projectModel: Model<IProject>;
+  private _teamModel: Model<ITeam>;
 
   constructor(basePath: string = "/projects") {
     const projectController = new ProjectController();
     super(basePath, projectController);
     this._issueModel = Issue;
     this._projectModel = ProjectModel;
+    this._teamModel = TeamModel;
   }
 
   private async getIssuesForProject(projectId: string): Promise<IIssue[]> {
@@ -100,6 +104,13 @@ export default class ProjectRouter extends BaseRouter {
 
           const filterObj: {[key: string]: any} = lodashPick(req.query, PROJECT_FILTER_FIELDS);
           
+          // Filter for current user
+          const userTeams = await this._teamModel.find({
+            $or: [{teamMembers: {$in: [req._user!._id]}}, {managedBy: req._user!._id}]
+          });
+          console.log('userTeams: ', userTeams);
+          filterObj['associatedTeam'] = {$in: userTeams};
+
           const dateFilter: {[key: string]: any} = {}
           if (startDate) dateFilter['$gt'] = new Date(startDate);
           if (endDate) dateFilter['$lte'] = new Date(endDate);

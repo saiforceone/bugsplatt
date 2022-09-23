@@ -49,7 +49,16 @@ export const DashboardPage = () => {
   useEffect(() => {
     projectsTrigger({});
     issuesTrigger({});
+    refetch();
   }, []);
+
+  useEffect(() => {
+    if (acceptInviteResultObj.isSuccess) {
+      setSelectedInvite(undefined);
+      projectsTrigger({});
+      refetch();
+    }
+  }, [acceptInviteResultObj]);
 
   const teamInvites: FETeamInvite[] = useMemo(() => {
     if (!invitesData) return [];

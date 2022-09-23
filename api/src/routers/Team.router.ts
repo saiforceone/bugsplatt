@@ -108,6 +108,33 @@ export default class TeamRouter extends BaseRouter {
     ];
   }
 
+  private leaveTeam(): RequestHandler[] {
+    return [
+      async (req: Request, res: Response) => {
+        const response = this.getDefaultResponse();
+        try {
+          const teamId: string = req.params.id;
+
+          // get the team
+          const team = await this._controller.getModel().findOne({
+            _id: teamId,
+            teamMembers: {$in: [req._user!._id]}
+          }) as ITeam;
+
+          team.teamMembers = team.teamMembers.filter(member => member._id.toHexString() !== req._user!._id.toString());
+          
+          await team.save();
+
+          response.success = true;
+          return res.status(ROUTER_RESPONSE_CODES["RESOURCE_UPDATED"]).json(response);
+        } catch (e) {
+          response.error = (e as Error).message;
+          return res.status(ROUTER_RESPONSE_CODES["EXCEPTION"]).json(response);
+        }
+      }
+    ]
+  }
+
   protected deleteResource(
     middleware: RequestHandler[] = []
   ): RequestHandler[] {
@@ -170,6 +197,9 @@ export default class TeamRouter extends BaseRouter {
     this._router
       .route(`${this._basePath}/:id/available-users`)
       .get(this.getAvailableUsers());
+    this._router
+      .route(`${this._basePath}/:id/leave-team`)
+      .post(this.leaveTeam());
     return super.getRoutes();
   }
 }

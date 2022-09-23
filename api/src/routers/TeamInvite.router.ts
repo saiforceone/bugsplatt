@@ -65,7 +65,7 @@ export default class TeamInviteRouter extends BaseRouter {
         try {
           const filterObj = {
             invitedUser: req._user!._id,
-            inviteStatus: {$ne: 'accepted'}
+            inviteStatus: { $ne: 'accepted' }
           };
 
           response.data = (await this._controller.getDocuments(
@@ -74,11 +74,7 @@ export default class TeamInviteRouter extends BaseRouter {
           response.success = (response.data as ITeamInvite[]).length > 0;
 
           return res
-            .status(
-              response.success
-                ? ROUTER_RESPONSE_CODES["RESOURCE_FOUND"]
-                : ROUTER_RESPONSE_CODES["RESOURCE_NOT_FOUND"]
-            )
+            .status(ROUTER_RESPONSE_CODES["RESOURCE_FOUND"])
             .json(response);
         } catch (e) {
           response.error = (e as Error).message;
@@ -104,7 +100,7 @@ export default class TeamInviteRouter extends BaseRouter {
           }
           const filterObj = {
             team: teamId,
-            inviteStatus: {$ne: 'accepted'}
+            inviteStatus: { $ne: 'accepted' }
           };
           const invites = (await this._controller.getDocuments(
             filterObj
