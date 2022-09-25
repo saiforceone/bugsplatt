@@ -10,6 +10,7 @@ import {
   HiUserCircle,
   HiUserGroup,
 } from "react-icons/hi";
+import {GiExitDoor} from "react-icons/all";
 import {useNavigate, useParams} from "react-router-dom";
 import {toast} from "react-toastify";
 import {DefaultButton} from "../../../components/BaseComponents/DefaultButton/DefaultButton";
@@ -26,12 +27,18 @@ import {
   useDeleteTeamMutation,
   useLazyGetTeamByIdQuery,
   useUpdateTeamMutation,
+  useLeaveTeamMutation,
 } from "../../../data/rtkApis/teamApi";
-import {useCreateInviteMutation, useDeleteInviteMutation, useLazyGetInvitesForTeamQuery} from '../../../data/rtkApis/teamInviteApi';
+import {
+  useCreateInviteMutation,
+  useDeleteInviteMutation,
+  useLazyGetInvitesForTeamQuery
+} from '../../../data/rtkApis/teamInviteApi';
 import {useCurrentUser} from "../../../hooks/useCurrentUser";
 import {FECommonUserData, FETeam, FETeamInvite} from "../../../interfaces";
 import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
 import {TeamInviteModal} from "../../../components/BaseComponents/TeamInviteModal/TeamInviteModal";
+
 
 export const TeamDetailPage = () => {
   // state
@@ -43,6 +50,7 @@ export const TeamDetailPage = () => {
   const [selectedUser, setSelectedUser] =
     useState<FECommonUserData | undefined>();
   const [selectedInvite, setSelectedInvite] = useState<FETeamInvite | undefined>();
+  const [showLeaveTeamPrompt, setShowLeaveTeamPrompt] = useState(false);
 
   // hooks
   const navigate = useNavigate();
@@ -54,6 +62,7 @@ export const TeamDetailPage = () => {
   const [inviteUsersTrigger, inviteUsersResultObj] = useCreateInviteMutation();
   const [invitesTrigger, invitesResultObj] = useLazyGetInvitesForTeamQuery();
   const [deleteInviteTrigger, deleteInviteResultObj] = useDeleteInviteMutation();
+  const [leaveTeamTrigger, leaveTeamResultObj] = useLeaveTeamMutation();
 
   useEffect(() => {
     const {id} = params;
@@ -95,7 +104,7 @@ export const TeamDetailPage = () => {
     }
   }, [deleteTeamResultObj]);
 
-  const inviteList: FETeamInvite[]  = useMemo(() => {
+  const inviteList: FETeamInvite[] = useMemo(() => {
     try {
       const {data: {data}} = invitesResultObj as { [key: string]: any };
       console.log('data for invites: ', data);
@@ -121,6 +130,14 @@ export const TeamDetailPage = () => {
       setSelectedInvite(undefined);
     }
   }, [deleteInviteResultObj, team]);
+
+  useEffect(() => {
+    if (leaveTeamResultObj.isSuccess) {
+      setShowLeaveTeamPrompt(false);
+      toast('You have left the team! Redirecting...');
+      navigate('/app/teams', {replace: true});
+    }
+  }, [team, leaveTeamResultObj]);
 
   return (
     <div className="p-4">
@@ -213,12 +230,21 @@ export const TeamDetailPage = () => {
                     actions={
                       <>
                         {currentUser?._id === member._id ? (
-                          <Tag
-                            extraCss="bg-slate-400 cursor-not-allowed"
-                            icon={<HiBan className="default-tag--icon"/>}
-                            labelText="This is you"
-                            size="small"
-                          />
+                          <>
+                            <Tag
+                              extraCss="bg-slate-400 cursor-not-allowed"
+                              icon={<HiBan className="default-tag--icon"/>}
+                              labelText="This is you"
+                              size="small"
+                            />
+                            <DefaultButton
+                              active
+                              extraCss="ml-2 bg-red-800"
+                              icon={<GiExitDoor className="default-tag--icon"/>}
+                              label="Leave Team"
+                              onClick={() => setShowLeaveTeamPrompt(true)}
+                            />
+                          </>
                         ) : (
                           <DefaultButton
                             active
@@ -231,7 +257,7 @@ export const TeamDetailPage = () => {
                         )}
                       </>
                     }
-                    key={`team-memeber-${member._id}`}
+                    key={`team-member-${member._id}`}
                     user={member}
                   />
                 ))
@@ -250,7 +276,7 @@ export const TeamDetailPage = () => {
                     active
                     buttonSize="small"
                     extraCss="ml-2"
-                    icon={<HiCog className="default-tag--icon" />}
+                    icon={<HiCog className="default-tag--icon"/>}
                     label="Manage"
                     onClick={() => setSelectedInvite(invite)}
                   />
@@ -269,6 +295,33 @@ export const TeamDetailPage = () => {
             }}
             team={team}
             visible={showEditModal}
+          />
+          <ActionDialogModal
+            actionInProgress={leaveTeamResultObj.isLoading}
+            dialogActions={
+              <>
+                <DefaultButton
+                  active
+                  extraCss="mr-2 bg-slate-700"
+                  label="No"
+                  onClick={() => setShowLeaveTeamPrompt(false)}
+                />
+                <DefaultButton
+                  active extraCss="bg-red-700"
+                  icon={<GiExitDoor className="default-tag--icon" />}
+                  label="Yes"
+                  onClick={() => {
+                    leaveTeamTrigger({_id: team._id});
+                  }}
+                />
+              </>
+            }
+            dialogContent={`You are about to leave the team: ${team.teamName}. You will need an invite to rejoin and see projects and issue. Would you like to continue?`}
+            modalHeaderProps={{
+              onClose: () => setShowLeaveTeamPrompt(false),
+              title: `Leave Team?`,
+            }}
+            visible={showLeaveTeamPrompt}
           />
           <ActionDialogModal
             actionInProgress={deleteTeamResultObj.isLoading}
@@ -343,14 +396,14 @@ export const TeamDetailPage = () => {
                   <DefaultButton
                     active
                     extraCss="bg-slate-700 mr-2"
-                    icon={<HiArrowLeft className="default-tag--icon" />}
+                    icon={<HiArrowLeft className="default-tag--icon"/>}
                     label="No"
                     onClick={() => setSelectedInvite(undefined)}
                   />
                   <DefaultButton
                     active
                     extraCss="bg-red-800"
-                    icon={<HiTrash className="default-tag--icon" />}
+                    icon={<HiTrash className="default-tag--icon"/>}
                     label="Yes"
                     onClick={() => {
                       deleteInviteTrigger(selectedInvite._id);
