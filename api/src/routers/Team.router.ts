@@ -1,19 +1,20 @@
-import { Request, RequestHandler, Response, Router } from "express";
-import { Model } from "mongoose";
-import BaseRouter, {
-  ROUTER_RESPONSE_CODES,
-  ROUTER_RESPONSE_MESSAGES,
-} from "./Base.router";
+import {Request, RequestHandler, Response, Router} from "express";
+import {pick as lodashPick} from "lodash";
+import {Model} from "mongoose";
+import BaseRouter, {ROUTER_RESPONSE_CODES, ROUTER_RESPONSE_MESSAGES,} from "./Base.router";
 import TeamController from "../resources/controllers/Team.controller";
-import { ITeam } from "../resources/interfaces/Team.interface";
+import {ITeam} from "../resources/interfaces/Team.interface";
 import IssueModel from "../resources/models/Issue.model";
-import { IIssue } from "../resources/interfaces/Issue.interface";
+import {IIssue} from "../resources/interfaces/Issue.interface";
 import ProjectModel from "../resources/models/Project.model";
-import { IProject } from "../resources/interfaces/Project.interface";
-import { IUserProfile } from "../resources/interfaces/UserProfile.interface";
+import {IProject} from "../resources/interfaces/Project.interface";
+import {IUserProfile} from "../resources/interfaces/UserProfile.interface";
 import UserProfileModel from "../resources/models/UserProfile.model";
-import { ITeamInvite } from "../resources/interfaces/TeamInvite.interface";
+import {ITeamInvite} from "../resources/interfaces/TeamInvite.interface";
 import TeamInviteModel from "../resources/models/TeamInvite.model";
+import {IBase} from "../resources/interfaces/Base.interface";
+
+const UPDATE_FIELDS = ['teamName', 'teamDescription', 'teamImage'];
 
 /**
  * @class TeamRouter
@@ -64,6 +65,23 @@ export default class TeamRouter extends BaseRouter {
     ];
   }
 
+  protected getResources(middleware: Array<RequestHandler> = []): RequestHandler[] {
+    return [async (req: Request, res: Response) => {
+      const response = this.getDefaultResponse();
+      try {
+        const filterObj = {
+          $or: [{managedBy: req._user!._id}, {teamMembers: {$in: [req._user!._id]}}]
+        }
+        response.data = await this._controller.getDocuments(filterObj);
+        response.success = true;
+        return res.status(ROUTER_RESPONSE_CODES.RESOURCE_FOUND).json(response);
+      } catch (e) {
+        response.error = (e as Error).message;
+        return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
+      }
+    }];
+  }
+
   private getAvailableUsers(): RequestHandler[] {
     return [
       async (req: Request, res: Response) => {
@@ -83,13 +101,13 @@ export default class TeamRouter extends BaseRouter {
           }
 
           // get the invites for the current team then exclude them
-          const existingInvites = await this._teamInviteModel.find({team: team._id, inviteStatus: {$ne: 'accepted'}});
+          const existingInvites = await this._teamInviteModel.find({team: team._id, inviteStatus: {$ne: 'accepted'}}) as ITeamInvite[];
 
           console.log('existing invites: ', existingInvites);
           const alreadyInvited = existingInvites.map(invited => invited.invitedUser._id);
 
           const filterObj = {
-            _id: { $nin: [req._user!._id, ...team.teamMembers, ...alreadyInvited] },
+            _id: { $nin: [req._user!._id, ...team.teamMembers, ...alreadyInvited, team.managedBy] },
           };
 
           response.data = await this._userProfileModel.find(filterObj);
@@ -135,6 +153,70 @@ export default class TeamRouter extends BaseRouter {
     ]
   }
 
+  private removeUserFromTeam(): RequestHandler[] {
+    return [async (req: Request, res: Response) => {
+      const response = this.getDefaultResponse();
+      try {
+        const teamId: string = req.params.id ? String(req.params.id).trim() : '';
+
+        const team = await this._controller.getDocumentById(teamId) as ITeam;
+
+        if (!team) {
+          response.error = ROUTER_RESPONSE_MESSAGES["RES_NOT_FOUND"];
+          return res.status(ROUTER_RESPONSE_CODES["BAD_REQUEST"]).json(response);
+        }
+
+        if (team.managedBy._id.toHexString() !== req._user!._id.toString()) {
+          response.error = "Not allowed";
+          return res.status(ROUTER_RESPONSE_CODES["BAD_REQUEST"]).json(response);
+        }
+
+        const {user} = req.body;
+
+        const userToRemoveIndex = team.teamMembers.findIndex(member => member._id.toString() === user);
+
+        if (userToRemoveIndex < 0) {
+          response.error = 'Not found';
+          return res.status(ROUTER_RESPONSE_CODES["BAD_REQUEST"]).json(response);
+        }
+
+        team.teamMembers.splice(userToRemoveIndex, 1);
+
+        await team.save();
+
+        response.success = true;
+        return res.status(ROUTER_RESPONSE_CODES["RESOURCE_UPDATED"]).json(response);
+      } catch (e) {
+        response.error = (e as Error).message;
+        return res.status(ROUTER_RESPONSE_CODES["EXCEPTION"]).json(response);
+      }
+    }];
+  }
+
+  protected updateResource(middleware: RequestHandler[] = []): RequestHandler[] {
+    return [...middleware, async (req: Request, res: Response) => {
+      const response = this.getDefaultResponse();
+      try {
+        const teamId = req.params.id ? String(req.params.id).trim() : '';
+        // only picks fields that should be used to updating
+        const data: {[key: string]: any} = lodashPick(req.body, UPDATE_FIELDS);
+        const teamToUpdate = await this._controller.updateDocument(teamId, data as IBase) as ITeam;
+
+        if (!teamToUpdate) {
+          response.error = "Not found";
+          return res.status(ROUTER_RESPONSE_CODES["EXCEPTION"]).json(response);
+        }
+
+        response.data = teamToUpdate;
+        response.success = true;
+        return res.status(ROUTER_RESPONSE_CODES["RESOURCE_UPDATED"]).json(response);
+      } catch (e) {
+        response.error = (e as Error).message;
+        return res.status(ROUTER_RESPONSE_CODES["EXCEPTION"]).json(response);
+      }
+    }];
+  }
+
   protected deleteResource(
     middleware: RequestHandler[] = []
   ): RequestHandler[] {
@@ -152,13 +234,11 @@ export default class TeamRouter extends BaseRouter {
           })) as ITeam;
 
           if (!teamResource) {
-            response.error = ROUTER_RESPONSE_MESSAGES.RES_NOT_FOUND;
+            response.error = 'Not allowed';
             return res
-              .status(ROUTER_RESPONSE_CODES.RES_NOT_FOUND)
+              .status(ROUTER_RESPONSE_CODES.RESOURCE_NOT_FOUND)
               .json(response);
           }
-
-          // NOTE start: Current implementation may not work as expected as we don't have properly linked resources
 
           // retrieve the related projects
           const relatedProjects = (await this._projectModel.find({
@@ -200,6 +280,9 @@ export default class TeamRouter extends BaseRouter {
     this._router
       .route(`${this._basePath}/:id/leave-team`)
       .post(this.leaveTeam());
+    this._router
+      .route(`${this._basePath}/:id/remove-user`)
+      .patch(this.removeUserFromTeam());
     return super.getRoutes();
   }
 }

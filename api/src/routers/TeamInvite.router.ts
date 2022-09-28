@@ -31,10 +31,28 @@ export default class TeamInviteRouter extends BaseRouter {
         const response = this.getDefaultResponse();
         try {
           const { users } = req.body;
-          const usersToInvite = (users as ITeamInvite[]).map((user) => ({
+          // TODO simplify this for excluding user that manages the team
+          const filteredUsers = [];
+          // exclude the user that manages the team from the list
+          // check each team and the associated manage
+          for (const user of (users as ITeamInvite[])) {
+            const team = await this._TeamModel.findById(user.team) as ITeam;
+            if (team) {
+              if (team.managedBy._id.toHexString() !== user.invitedUser.toString()) {
+                filteredUsers.push(user)
+              }
+            }
+          }
+
+          const usersToInvite = filteredUsers.map((user) => ({
             ...user,
             invitedBy: req._user!._id,
           }));
+
+          if (!usersToInvite.length) {
+            response.error = "No users to invite";
+            return res.status(ROUTER_RESPONSE_CODES.BAD_REQUEST).json(response);
+          }
           const savedInvites = await this._controller.createDocuments(
             usersToInvite
           );

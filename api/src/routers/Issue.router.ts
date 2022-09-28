@@ -6,6 +6,10 @@ import IssueController from "../resources/controllers/Issue.controller";
 import { IIssue } from "../resources/interfaces/Issue.interface";
 import CommentModel from "../resources/models/Comment.model";
 import { IComment } from "../resources/interfaces/Comment.interface";
+import ProjectModel from "../resources/models/Project.model";
+import {IProject} from "../resources/interfaces/Project.interface";
+import TeamModel from "../resources/models/Team.model";
+import {ITeam} from "../resources/interfaces/Team.interface";
 
 const ISSUE_FILTER_FIELDS = ['createdBy', 'associatedProject', 'status', 'priority'];
 
@@ -17,11 +21,15 @@ const ISSUE_FILTER_FIELDS = ['createdBy', 'associatedProject', 'status', 'priori
 export default class IssueRouter extends BaseRouter {
   
   private _commentModel: Model<IComment>;
+  private _projectModel: Model<IProject>;
+  private _teamModel: Model<ITeam>;
 
   constructor(basePath = "/comments") {
     const issueController = new IssueController();
     super(basePath, issueController);
     this._commentModel = CommentModel;
+    this._projectModel = ProjectModel;
+    this._teamModel = TeamModel;
   }
 
   protected createResource(
@@ -79,6 +87,23 @@ export default class IssueRouter extends BaseRouter {
       const response = this.getDefaultResponse();
       try {
         const filterObj: {[key: string]: any} = lodashPick(req.query, ISSUE_FILTER_FIELDS);
+        // get teams the user belongs to or manages
+        const userTeams = await this._teamModel.find({
+          $or: [{managedBy: req._user!._id}, {teamMembers: {$in: [req._user!._id]}}],
+        }) as ITeam[];
+
+        if (!userTeams.length) {
+          response.success = true;
+          return res.json(response);
+        }
+
+        // filter the issues based on project
+        const assocProjects = await this._projectModel.find({
+          associatedTeam: {$in: [userTeams.map(team => team._id)]}
+        }) as IProject[];
+
+        filterObj['associatedProject'] = {$in: [assocProjects.map(project => project._id)]}
+
         const data = await this._controller.getModel().find(filterObj) as IIssue[];
 
         response.data = data;
@@ -114,7 +139,7 @@ export default class IssueRouter extends BaseRouter {
           associatedIssue: issueToDelete._id
         });
 
-        console.log(`Delete related comments for issue: ${issueToDelete.title} and reuslt: ${deleteCommentsResult}`);
+        console.log(`Delete related comments for issue: ${issueToDelete.title} and result: ${deleteCommentsResult}`);
 
         const deleteIssueResult = await issueToDelete.remove();
 
