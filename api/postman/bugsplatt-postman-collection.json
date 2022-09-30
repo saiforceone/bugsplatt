@@ -1,606 +1,654 @@
 {
-	"version": 1,
-	"collections": [
+	"info": {
+		"_postman_id": "ef734bc0-dff2-4f9e-ad95-0b0cb8c1fb8c",
+		"name": "BugSplatt",
+		"description": "Contains BugSplatt API tests (scripted and unscripted)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
 		{
-			"id": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-			"uid": "0-9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-			"name": "BugSplatt",
-			"description": "Contains BugSplatt API tests (scripted and unscripted)",
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{authToken}}"
-					}
-				]
-			},
-			"events": [
+			"name": "UserProfiles",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"id": "2d6f07e6-0bd6-4851-aa76-38e05567613f",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "30ed6ac7-b8f0-40a1-ab2d-0cbd73a5d187",
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			],
-			"variables": [],
-			"order": [],
-			"folders_order": [
-				"d3136ae9-ce16-41da-a431-c9f20657e314",
-				"b2991f83-cd46-4a06-b025-ef3e43750763",
-				"789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-				"25b22b65-4cbc-438f-923b-14f277b3e28a",
-				"11aa0843-4cbf-472f-ad43-066bb8924ad3",
-				"34c53b8b-0583-4f77-817d-16afc9c3ecbf",
-				"94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd"
-			],
-			"protocolProfileBehavior": {},
-			"createdAt": "2022-05-01T05:52:41.142Z",
-			"folders": [
-				{
-					"id": "94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd",
-					"uid": "0-94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd",
-					"name": "1.  Create Team -> Project  -> Add Issue -> Add Comment",
-					"description": "# Read this\n\nThis collection is a basic flow to test the following workflow. It is assumed that the user is already logged in the JWT has been set as an environment variable.\n- Create a team\n- Create new project\n- Create an issue\n- Add a comment to the created issue",
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"a797ca1c-b90b-422d-b532-79aa3b53844c",
-						"6da68c1c-ead6-4d23-af9c-fde652ef176b",
-						"e63bc101-a2e3-494d-9940-01b20f60b3e4",
-						"09122035-6724-4153-9ee1-4238ca28d4ac"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-07T03:10:01.310Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd"
-				},
-				{
-					"id": "b2991f83-cd46-4a06-b025-ef3e43750763",
-					"uid": "0-b2991f83-cd46-4a06-b025-ef3e43750763",
-					"name": "Comments",
-					"description": null,
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"05406470-c744-4292-b72f-ec08c87078ec",
-						"1d937c3b-2029-4fbc-a749-729be65004aa",
-						"35a8ad06-ebf0-4e7a-8d96-b447c4ca280c",
-						"d20b3112-0e93-46fa-b14d-bc4570ef2afe",
-						"83c9caaf-0f5b-42f6-877d-b9d24b8a8744"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-01T05:54:59.961Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "b2991f83-cd46-4a06-b025-ef3e43750763"
-				},
-				{
-					"id": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"uid": "0-789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"name": "Issues",
-					"description": null,
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"8e39a54d-a36b-423f-af10-777e58515f45",
-						"8e7952f5-2db4-4688-ba09-b2533815b1b5",
-						"8a78611f-2b97-4808-846c-868d7102d41b",
-						"4c1bba0d-1e57-4f5e-a764-cea6c2814e8c",
-						"4fade525-32d7-4bc4-9932-f125be8c45fb"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-01T05:55:10.071Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4"
-				},
-				{
-					"id": "25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"uid": "0-25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"name": "Projects",
-					"description": "# Project Model\n## Fields\n- TODO: include fields here",
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"fab0ac08-cc1d-45d9-8ecb-9e09e30f9a21",
-						"b64cc40f-080f-408f-a30f-1599b273c357",
-						"dd4de5d6-4075-4d20-8265-3483efd4df9f",
-						"d9c9b8aa-bcbf-4506-a21b-80f60f96c343",
-						"b518916f-fcbe-437c-a84b-0a73f57d4d75"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-01T05:55:17.638Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "25b22b65-4cbc-438f-923b-14f277b3e28a"
-				},
-				{
-					"id": "34c53b8b-0583-4f77-817d-16afc9c3ecbf",
-					"uid": "0-34c53b8b-0583-4f77-817d-16afc9c3ecbf",
-					"name": "Reactions",
-					"description": null,
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"ad12bab7-3cbe-4527-bceb-3d228bf749db",
-						"ac113eac-3ed4-4c9e-86e0-dec514a84ea2"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-01T05:55:38.816Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "34c53b8b-0583-4f77-817d-16afc9c3ecbf"
-				},
-				{
-					"id": "11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"uid": "0-11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"name": "Teams",
-					"description": null,
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"40cef0b3-1315-4231-8e1e-938e523b29eb",
-						"efb0b9c0-a1f6-4d6e-9483-b46f65d1b3fc",
-						"c9bb9fe2-83f9-4a8b-9bd9-479d370c4614",
-						"04d662e5-81dd-4a29-b396-e5c7763eb3a4",
-						"de383a2e-c5b0-4a80-be83-da2d391a5868"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-01T05:55:26.386Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "11aa0843-4cbf-472f-ad43-066bb8924ad3"
-				},
-				{
-					"id": "d3136ae9-ce16-41da-a431-c9f20657e314",
-					"uid": "0-d3136ae9-ce16-41da-a431-c9f20657e314",
-					"name": "UserProfiles",
-					"description": null,
-					"auth": null,
-					"events": null,
-					"collection": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folder": null,
-					"order": [
-						"be13ed76-b5da-4f2e-9d70-36d298279046"
-					],
-					"folders_order": [],
-					"owner": "0",
-					"protocolProfileBehavior": {},
-					"createdAt": "2022-05-01T05:54:16.654Z",
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"folderId": "d3136ae9-ce16-41da-a431-c9f20657e314"
-				}
-			],
-			"requests": [
-				{
-					"id": "04d662e5-81dd-4a29-b396-e5c7763eb3a4",
-					"uid": "0-04d662e5-81dd-4a29-b396-e5c7763eb3a4",
-					"name": "Create Teams Copy",
-					"url": "{{apiBaseUrl}}/{{teamResource}}/<PASTE_TEAM_ID>",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "PUT",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
-						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"teamName\": \"Team Name\",\n    \"teamMembers\": [\"<PASTE USER ID>\"],\n    \"teamDescription\": \"Description\",\n    \"teamImage\": \"url?\"\n}",
-					"pathVariables": {}
-				},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
 				{
-					"id": "05406470-c744-4292-b72f-ec08c87078ec",
-					"uid": "0-05406470-c744-4292-b72f-ec08c87078ec",
 					"name": "Get Comment",
-					"url": "{{apiBaseUrl}}/{{commentResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "b2991f83-cd46-4a06-b025-ef3e43750763",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "09122035-6724-4153-9ee1-4238ca28d4ac",
-					"uid": "0-09122035-6724-4153-9ee1-4238ca28d4ac",
-					"name": "4. Create A Comment",
-					"url": "{{apiBaseUrl}}/{{commentResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{commentResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{commentResource}}",
+								"<PASTE_ID_HERE>"
+							]
 						}
 					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"associatedIssue\": \"{{associatedIssue}}\",\n    \"content\": \"this is a new comment or something like that\"\n}",
-					"pathVariables": {}
+					"response": []
 				},
 				{
-					"id": "1d937c3b-2029-4fbc-a749-729be65004aa",
-					"uid": "0-1d937c3b-2029-4fbc-a749-729be65004aa",
 					"name": "Get All Comments",
-					"url": "{{apiBaseUrl}}/{{commentResource}}?associatedIssue=\"\"",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "associatedIssue",
-							"value": "\"\"",
-							"equals": true,
-							"description": null,
-							"enabled": true
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{commentResource}}?associatedIssue=\"\"",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{commentResource}}"
+							],
+							"query": [
+								{
+									"key": "associatedIssue",
+									"value": "\"\""
+								}
+							]
 						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "b2991f83-cd46-4a06-b025-ef3e43750763",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
+					},
+					"response": []
 				},
 				{
-					"id": "35a8ad06-ebf0-4e7a-8d96-b447c4ca280c",
-					"uid": "0-35a8ad06-ebf0-4e7a-8d96-b447c4ca280c",
 					"name": "Create A Comment",
-					"url": "{{apiBaseUrl}}/{{commentResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "b2991f83-cd46-4a06-b025-ef3e43750763",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"associatedIssue\": \"<PASTE ISSUE ID>\",\n    \"content\": \"this is a new comment or something like that\"\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "40cef0b3-1315-4231-8e1e-938e523b29eb",
-					"uid": "0-40cef0b3-1315-4231-8e1e-938e523b29eb",
-					"name": "Get Teams",
-					"url": "{{apiBaseUrl}}/{{teamResource}}",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
-						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "4c1bba0d-1e57-4f5e-a764-cea6c2814e8c",
-					"uid": "0-4c1bba0d-1e57-4f5e-a764-cea6c2814e8c",
-					"name": "Update Existing Issue",
-					"url": "{{apiBaseUrl}}/{{issueResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "PUT",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"assignedTo\": \"<PASTE USER ID HERE>\",\n    \"associatedProject\": \"<PASTE PROJECT ID HERE>\",\n    \"description\": \"\",\n    \"expectedCloseDate\": \"<PASTE OPTIONAL DATE AS ISO STRING>\",\n    \"priority\": \"\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"\",\n    \"watchedBy\": [\"<PASTE USER ID HERE>\"]\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "4fade525-32d7-4bc4-9932-f125be8c45fb",
-					"uid": "0-4fade525-32d7-4bc4-9932-f125be8c45fb",
-					"name": "Update Existing Issue Copy",
-					"url": "{{apiBaseUrl}}/{{issueResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "DELETE",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"assignedTo\": \"<PASTE USER ID HERE>\",\n    \"associatedProject\": \"<PASTE PROJECT ID HERE>\",\n    \"description\": \"\",\n    \"expectedCloseDate\": \"<PASTE OPTIONAL DATE AS ISO STRING>\",\n    \"priority\": \"\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"\",\n    \"watchedBy\": [\"<PASTE USER ID HERE>\"]\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "6da68c1c-ead6-4d23-af9c-fde652ef176b",
-					"uid": "0-6da68c1c-ead6-4d23-af9c-fde652ef176b",
-					"name": "2. Create New Project",
-					"url": "{{apiBaseUrl}}/{{projectResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "7a32cae7-cc6d-4782-990e-d7cc100f7334",
-								"exec": [
-									"const jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"associatedProject\", jsonData.data._id);"
-								],
-								"type": "text/javascript"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"associatedIssue\": \"<PASTE ISSUE ID>\",\n    \"content\": \"this is a new comment or something like that\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
 							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{commentResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{commentResource}}"
+							]
 						}
-					],
-					"folder": "94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd",
-					"responses_order": [],
-					"preRequestScript": null,
-					"tests": "const jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"associatedProject\", jsonData.data._id);",
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"projectName\": \"BugSplatt Sample Project\",\n    \"description\": \"this is a new project or something like that with a description\",\n    \"projectType\": \"web-app\",\n    \"colorCode\": \"#ff4303\",\n    \"tags\": [\"tag-1\", \"tag-2\"]\n}",
-					"pathVariables": {}
+					},
+					"response": []
 				},
 				{
-					"id": "83c9caaf-0f5b-42f6-877d-b9d24b8a8744",
-					"uid": "0-83c9caaf-0f5b-42f6-877d-b9d24b8a8744",
+					"name": "Update Existing Comment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"this is an edit to an existing comment or something like that\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{commentResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{commentResource}}",
+								"<PASTE_ID_HERE>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Comment",
-					"url": "{{apiBaseUrl}}/{{commentResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{commentResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{commentResource}}",
+								"<PASTE_ID_HERE>"
+							]
 						}
 					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "DELETE",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "b2991f83-cd46-4a06-b025-ef3e43750763",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "",
-					"pathVariables": {}
-				},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Issues",
+			"item": [
 				{
-					"id": "8a78611f-2b97-4808-846c-868d7102d41b",
-					"uid": "0-8a78611f-2b97-4808-846c-868d7102d41b",
-					"name": "Create Issue",
-					"url": "{{apiBaseUrl}}/{{issueResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"assignedTo\": \"<PASTE USER ID HERE>\",\n    \"associatedProject\": \"<PASTE PROJECT ID HERE>\",\n    \"description\": \"\",\n    \"expectedCloseDate\": \"<PASTE OPTIONAL DATE AS ISO STRING>\",\n    \"priority\": \"\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"\",\n    \"watchedBy\": [\"<PASTE USER ID HERE>\"]\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "8e39a54d-a36b-423f-af10-777e58515f45",
-					"uid": "0-8e39a54d-a36b-423f-af10-777e58515f45",
 					"name": "Get All Issues",
-					"url": "{{apiBaseUrl}}/{{issueResource}}",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "8e7952f5-2db4-4688-ba09-b2533815b1b5",
-					"uid": "0-8e7952f5-2db4-4688-ba09-b2533815b1b5",
-					"name": "Get Issue",
-					"url": "{{apiBaseUrl}}/{{issueResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "789c3ec5-2a37-4885-8bcc-c771eaffd3e4",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "a797ca1c-b90b-422d-b532-79aa3b53844c",
-					"uid": "0-a797ca1c-b90b-422d-b532-79aa3b53844c",
-					"name": "1. Create Team",
-					"url": "{{apiBaseUrl}}/{{teamResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{issueResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{issueResource}}"
+							]
 						}
 					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
+					"response": []
+				},
+				{
+					"name": "Get Issue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{issueResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{issueResource}}",
+								"<PASTE_ID_HERE>"
+							]
 						}
-					],
-					"auth": null,
-					"events": [
+					},
+					"response": []
+				},
+				{
+					"name": "Create Issue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignedTo\": \"<PASTE USER ID HERE>\",\n    \"associatedProject\": \"<PASTE PROJECT ID HERE>\",\n    \"description\": \"\",\n    \"expectedCloseDate\": \"<PASTE OPTIONAL DATE AS ISO STRING>\",\n    \"priority\": \"\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"\",\n    \"watchedBy\": [\"<PASTE USER ID HERE>\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{issueResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{issueResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Issue",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignedTo\": \"<PASTE USER ID HERE>\",\n    \"associatedProject\": \"<PASTE PROJECT ID HERE>\",\n    \"description\": \"\",\n    \"expectedCloseDate\": \"<PASTE OPTIONAL DATE AS ISO STRING>\",\n    \"priority\": \"\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"\",\n    \"watchedBy\": [\"<PASTE USER ID HERE>\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{issueResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{issueResource}}",
+								"<PASTE_ID_HERE>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Issue Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignedTo\": \"<PASTE USER ID HERE>\",\n    \"associatedProject\": \"<PASTE PROJECT ID HERE>\",\n    \"description\": \"\",\n    \"expectedCloseDate\": \"<PASTE OPTIONAL DATE AS ISO STRING>\",\n    \"priority\": \"\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"\",\n    \"watchedBy\": [\"<PASTE USER ID HERE>\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{issueResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{issueResource}}",
+								"<PASTE_ID_HERE>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Get All Projects For User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{projectResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{projectResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{projectResource}}/<PASTE_PROJECT_ID>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{projectResource}}",
+								"<PASTE_PROJECT_ID>"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Project",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projectName\": \"BugSplatt Sample Project\",\n    \"description\": \"this is a new project or something like that with a description\",\n    \"projectType\": \"web-app\",\n    \"colorCode\": \"#ff4303\",\n    \"tags\": [\"tag-1\", \"tag-2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{projectResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{projectResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Project",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projectName\": \"BugSplatt One\",\n    \"description\": \"this is a new project or something like that with a description\",\n    \"projectType\": \"web-app\",\n    \"colorCode\": \"#ff4303\",\n    \"tags\": [\"tag-1\", \"tag-2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{projectResource}}/<PASTE_PROJECT_ID>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{projectResource}}",
+								"<PASTE_PROJECT_ID>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{projectResource}}/<PASTE_PROJECT_ID>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{projectResource}}",
+								"<PASTE_PROJECT_ID>"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "# Project Model\n## Fields\n- TODO: include fields here"
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{
+					"name": "Get Teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}/<PASTE_TEAM_ID>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}",
+								"<PASTE_TEAM_ID>"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Teams",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"teamName\": \"Team Name\",\n    \"teamMembers\": [\"<PASTE USER ID>\"],\n    \"teamDescription\": \"Description\",\n    \"teamImage\": \"url?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave Team",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"teamName\": \"Team Name\",\n    \"teamMembers\": [\"<PASTE USER ID>\"],\n    \"teamDescription\": \"Description\",\n    \"teamImage\": \"url?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}/632d23c7e139486bc8221b3d/leave-team",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}",
+								"632d23c7e139486bc8221b3d",
+								"leave-team"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update team",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"teamName\": \"Team Name\",\n    \"teamMembers\": [\"<PASTE USER ID>\"],\n    \"teamDescription\": \"Description\",\n    \"teamImage\": \"url?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}/<PASTE_TEAM_ID>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}",
+								"<PASTE_TEAM_ID>"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user from team",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"teamName\": \"Team Name\",\n    \"teamMembers\": [\"<PASTE USER ID>\"],\n    \"teamDescription\": \"Description\",\n    \"teamImage\": \"url?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}/632d23c7e139486bc8221b3d /remove-user",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}",
+								"632d23c7e139486bc8221b3d ",
+								"remove-user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Team",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}/<PASTE_TEAM_ID>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}",
+								"<PASTE_TEAM_ID>"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reactions",
+			"item": [
+				{
+					"name": "Get Reactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{reactionResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{reactionResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Reactions",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{reactionResource}}/<PASTE_ID_HERE>",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{reactionResource}}",
+								"<PASTE_ID_HERE>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1.  Create Team -> Project  -> Add Issue -> Add Comment",
+			"item": [
+				{
+					"name": "1. Create Team",
+					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "7a618e3c-8e05-4a99-a49d-fe28eaf25d70",
 								"exec": [
 									"const jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"associatedTeam\", jsonData.data._id);"
@@ -609,310 +657,81 @@
 							}
 						}
 					],
-					"folder": "94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd",
-					"responses_order": [],
-					"preRequestScript": null,
-					"tests": "const jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"associatedTeam\", jsonData.data._id);",
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"teamName\": \"Team Name 1\",\n    \"teamMembers\": [\"{{currentUserId}}\"],\n    \"teamDescription\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\",\n    \"teamImage\": \"url?\"\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "ac113eac-3ed4-4c9e-86e0-dec514a84ea2",
-					"uid": "0-ac113eac-3ed4-4c9e-86e0-dec514a84ea2",
-					"name": "Delete Reactions",
-					"url": "{{apiBaseUrl}}/{{reactionResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "DELETE",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "34c53b8b-0583-4f77-817d-16afc9c3ecbf",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "ad12bab7-3cbe-4527-bceb-3d228bf749db",
-					"uid": "0-ad12bab7-3cbe-4527-bceb-3d228bf749db",
-					"name": "Get Reactions",
-					"url": "{{apiBaseUrl}}/{{reactionResource}}",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "34c53b8b-0583-4f77-817d-16afc9c3ecbf",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "b518916f-fcbe-437c-a84b-0a73f57d4d75",
-					"uid": "0-b518916f-fcbe-437c-a84b-0a73f57d4d75",
-					"name": "Delete Project",
-					"url": "{{apiBaseUrl}}/{{projectResource}}/<PASTE_PROJECT_ID>",
-					"description": null,
-					"data": null,
-					"dataOptions": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"teamName\": \"Team Name 1\",\n    \"teamMembers\": [\"{{currentUserId}}\"],\n    \"teamDescription\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\",\n    \"teamImage\": \"url?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{teamResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{teamResource}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
 						}
 					},
-					"dataMode": null,
-					"headerData": null,
-					"method": "DELETE",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
+					"response": []
 				},
 				{
-					"id": "b64cc40f-080f-408f-a30f-1599b273c357",
-					"uid": "0-b64cc40f-080f-408f-a30f-1599b273c357",
-					"name": "Get Project By Id",
-					"url": "{{apiBaseUrl}}/{{projectResource}}/<PASTE_PROJECT_ID>",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
-						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "be13ed76-b5da-4f2e-9d70-36d298279046",
-					"uid": "0-be13ed76-b5da-4f2e-9d70-36d298279046",
-					"name": "New Request",
-					"url": null,
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": null,
-					"queryParams": null,
-					"auth": null,
-					"events": null,
-					"folder": "d3136ae9-ce16-41da-a431-c9f20657e314",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02"
-				},
-				{
-					"id": "c9bb9fe2-83f9-4a8b-9bd9-479d370c4614",
-					"uid": "0-c9bb9fe2-83f9-4a8b-9bd9-479d370c4614",
-					"name": "Create Teams",
-					"url": "{{apiBaseUrl}}/{{teamResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
-						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"teamName\": \"Team Name\",\n    \"teamMembers\": [\"<PASTE USER ID>\"],\n    \"teamDescription\": \"Description\",\n    \"teamImage\": \"url?\"\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "d20b3112-0e93-46fa-b14d-bc4570ef2afe",
-					"uid": "0-d20b3112-0e93-46fa-b14d-bc4570ef2afe",
-					"name": "Update Existing Comment",
-					"url": "{{apiBaseUrl}}/{{commentResource}}/<PASTE_ID_HERE>",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "PUT",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "b2991f83-cd46-4a06-b025-ef3e43750763",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"content\": \"this is an edit to an existing comment or something like that\"\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "d9c9b8aa-bcbf-4506-a21b-80f60f96c343",
-					"uid": "0-d9c9b8aa-bcbf-4506-a21b-80f60f96c343",
-					"name": "Update Existing Project",
-					"url": "{{apiBaseUrl}}/{{projectResource}}/<PASTE_PROJECT_ID>",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "PUT",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"projectName\": \"BugSplatt One\",\n    \"description\": \"this is a new project or something like that with a description\",\n    \"projectType\": \"web-app\",\n    \"colorCode\": \"#ff4303\",\n    \"tags\": [\"tag-1\", \"tag-2\"]\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "dd4de5d6-4075-4d20-8265-3483efd4df9f",
-					"uid": "0-dd4de5d6-4075-4d20-8265-3483efd4df9f",
-					"name": "Create New Project",
-					"url": "{{apiBaseUrl}}/{{projectResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"projectName\": \"BugSplatt Sample Project\",\n    \"description\": \"this is a new project or something like that with a description\",\n    \"projectType\": \"web-app\",\n    \"colorCode\": \"#ff4303\",\n    \"tags\": [\"tag-1\", \"tag-2\"]\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "de383a2e-c5b0-4a80-be83-da2d391a5868",
-					"uid": "0-de383a2e-c5b0-4a80-be83-da2d391a5868",
-					"name": "Delete Team",
-					"url": "{{apiBaseUrl}}/{{teamResource}}/<PASTE_TEAM_ID>",
-					"description": null,
-					"data": null,
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": null,
-					"headerData": null,
-					"method": "DELETE",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
-						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
-				},
-				{
-					"id": "e63bc101-a2e3-494d-9940-01b20f60b3e4",
-					"uid": "0-e63bc101-a2e3-494d-9940-01b20f60b3e4",
-					"name": "3. Create Issue",
-					"url": "{{apiBaseUrl}}/{{issueResource}}",
-					"description": null,
-					"data": [],
-					"dataOptions": {
-						"raw": {
-							"language": "json"
-						}
-					},
-					"dataMode": "raw",
-					"headerData": null,
-					"method": "POST",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": [
+					"name": "2. Create New Project",
+					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "61283ea9-575c-49d0-b38b-0e50e5f4a311",
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"associatedProject\", jsonData.data._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projectName\": \"BugSplatt Sample Project\",\n    \"description\": \"this is a new project or something like that with a description\",\n    \"projectType\": \"web-app\",\n    \"colorCode\": \"#ff4303\",\n    \"tags\": [\"tag-1\", \"tag-2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{projectResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{projectResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
 								"exec": [
 									"const jsonData = JSON.parse(responseBody);",
 									"postman.setEnvironmentVariable(\"associatedIssue\", jsonData.data._id);"
@@ -921,162 +740,136 @@
 							}
 						}
 					],
-					"folder": "94c6c1c4-fbaa-48f7-ada5-4a0d07fc1efd",
-					"responses_order": [],
-					"preRequestScript": null,
-					"tests": "const jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"associatedIssue\", jsonData.data._id);",
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"rawModeData": "{\n    \"assignedTo\": \"{{currentUserId}}\",\n    \"associatedProject\": \"{{associatedProject}}\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \",\n    \"expectedCloseDate\": \"{{expectedCloseDate}}\",\n    \"priority\": \"omg-wtf\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"Test Issue Title\",\n    \"watchedBy\": [\"{{currentUserId}}\"],\n    \"status\": \"active\"\n}",
-					"pathVariables": {}
-				},
-				{
-					"id": "efb0b9c0-a1f6-4d6e-9483-b46f65d1b3fc",
-					"uid": "0-efb0b9c0-a1f6-4d6e-9483-b46f65d1b3fc",
-					"name": "Get Team By Id",
-					"url": "{{apiBaseUrl}}/{{teamResource}}/<PASTE_TEAM_ID>",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [
-						{
-							"key": "",
-							"value": null,
-							"equals": false,
-							"description": null,
-							"enabled": false
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"assignedTo\": \"{{currentUserId}}\",\n    \"associatedProject\": \"{{associatedProject}}\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \",\n    \"expectedCloseDate\": \"{{expectedCloseDate}}\",\n    \"priority\": \"omg-wtf\",\n    \"tags\": [\"tag 1\", \"tag 2\"],\n    \"title\": \"Test Issue Title\",\n    \"watchedBy\": [\"{{currentUserId}}\"],\n    \"status\": \"active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{issueResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{issueResource}}"
+							]
 						}
-					],
-					"auth": null,
-					"events": null,
-					"folder": "11aa0843-4cbf-472f-ad43-066bb8924ad3",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
+					},
+					"response": []
 				},
 				{
-					"id": "fab0ac08-cc1d-45d9-8ecb-9e09e30f9a21",
-					"uid": "0-fab0ac08-cc1d-45d9-8ecb-9e09e30f9a21",
-					"name": "Get All Projects For User",
-					"url": "{{apiBaseUrl}}/{{projectResource}}",
-					"description": null,
-					"data": null,
-					"dataOptions": null,
-					"dataMode": null,
-					"headerData": null,
-					"method": "GET",
-					"pathVariableData": [],
-					"queryParams": [],
-					"auth": null,
-					"events": null,
-					"folder": "25b22b65-4cbc-438f-923b-14f277b3e28a",
-					"responses_order": [],
-					"currentHelper": null,
-					"helperAttributes": null,
-					"collectionId": "9515d96d-bf8e-49e0-ad82-9ceaabb36f02",
-					"pathVariables": {}
+					"name": "4. Create A Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"associatedIssue\": \"{{associatedIssue}}\",\n    \"content\": \"this is a new comment or something like that\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{commentResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{commentResource}}"
+							]
+						}
+					},
+					"response": []
 				}
-			]
-		}
-	],
-	"environments": [
-		{
-			"id": "9178851d-3b2d-4809-b2e1-f5c3bd7bdd83",
-			"name": "BugSplatt - Dev",
-			"values": [
-				{
-					"key": "authToken",
-					"value": "PASTE_A_JWT_HERE",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "apiBaseUrl",
-					"value": "http://localhost:4500/api",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "projectResource",
-					"value": "projects",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "teamResource",
-					"value": "teams",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "issueResource",
-					"value": "issues",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "commentResource",
-					"value": "comments",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "userProfileResource",
-					"value": "users",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "reactionResource",
-					"value": "reactions",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "currentUserId",
-					"value": "PASTE_AN_ID_HERE",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "associatedProject",
-					"value": "PASTE_AN_ID_HERE",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "expectedCloseDate",
-					"value": "PASTE_ISO_DATE_STR",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "associatedIssue",
-					"value": "PASTE_AN_ID_HERE",
-					"type": "default",
-					"enabled": true
-				},
-				{
-					"key": "associatedTeam",
-					"value": "PASTE_AN_ID_HERE",
-					"type": "default",
-					"enabled": true
-				}
-			]
+			],
+			"description": "# Read this\n\nThis collection is a basic flow to test the following workflow. It is assumed that the user is already logged in the JWT has been set as an environment variable.\n- Create a team\n- Create new project\n- Create an issue\n- Add a comment to the created issue"
 		},
 		{
-			"id": "203abc52-99a1-41af-bd2f-1803647b3606",
-			"name": "My Workspace - globals",
-			"values": []
+			"name": "Reported Problems",
+			"item": [
+				{
+					"name": "Get Reported Problems",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{reportedProblemResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{reportedProblemResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Reported Problem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"This does not work as expected\",\n    \"problemType\": \"general\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{reportedProblemResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{reportedProblemResource}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
-	"headerPresets": [],
-	"globals": []
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
 }
