@@ -34,13 +34,7 @@ export const teamApi = api.injectEndpoints({
     }),
     updateTeam: builder.mutation<NewTeamData, Partial<NewTeamData> & Pick<FETeam, '_id'>>({
       query: ({_id, ...patch}) => buildCommonUpdateQuery({_id, ...patch}, targetEndpoint),
-    }),
-    removeUser: builder.mutation<NewTeamData, Partial<NewTeamData> & Pick<FETeam, '_id'>>({
-      query: ({_id, ...patch}) => ({
-        url: `${targetEndpoint}/${_id}/remove-user`,
-        method: 'PATCH',
-        body: patch
-      })
+
     }),
     deleteTeam: builder.mutation<{success: Boolean, _id: string}, string>({
       query: (_id) => buildCommonDeleteQuery(_id, targetEndpoint),
@@ -58,5 +52,4 @@ export const {
   useDeleteTeamMutation,
   useLazyGetAvailableUsersQuery,
   useLeaveTeamMutation,
-  useRemoveUserMutation,
 } = teamApi;

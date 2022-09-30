@@ -5,7 +5,7 @@ import {
   HiCalendar,
   HiCog,
   HiMail,
-  HiPencilAlt, HiRefresh,
+  HiPencilAlt,
   HiTrash,
   HiUserCircle,
   HiUserGroup,
@@ -27,7 +27,7 @@ import {
   useDeleteTeamMutation,
   useLazyGetTeamByIdQuery,
   useUpdateTeamMutation,
-  useLeaveTeamMutation, useRemoveUserMutation,
+  useLeaveTeamMutation,
 } from "../../../data/rtkApis/teamApi";
 import {
   useCreateInviteMutation,
@@ -38,7 +38,6 @@ import {useCurrentUser} from "../../../hooks/useCurrentUser";
 import {FECommonUserData, FETeam, FETeamInvite} from "../../../interfaces";
 import {DATE_FORMATS, FormattingUtils} from "../../../utils/FormattingUtils";
 import {TeamInviteModal} from "../../../components/BaseComponents/TeamInviteModal/TeamInviteModal";
-import {TeamInfoModal} from "../../../components/Modals/TeamInfoModal/TeamInfoModal";
 
 
 export const TeamDetailPage = () => {
@@ -52,8 +51,6 @@ export const TeamDetailPage = () => {
     useState<FECommonUserData | undefined>();
   const [selectedInvite, setSelectedInvite] = useState<FETeamInvite | undefined>();
   const [showLeaveTeamPrompt, setShowLeaveTeamPrompt] = useState(false);
-  const [showUserInfoModal, setShowUserInfoModal] = useState(false);
-  const [isDeletingUser, setIsDeletingUser] = useState(false);
 
   // hooks
   const navigate = useNavigate();
@@ -66,7 +63,6 @@ export const TeamDetailPage = () => {
   const [invitesTrigger, invitesResultObj] = useLazyGetInvitesForTeamQuery();
   const [deleteInviteTrigger, deleteInviteResultObj] = useDeleteInviteMutation();
   const [leaveTeamTrigger, leaveTeamResultObj] = useLeaveTeamMutation();
-  const [removeUserTrigger, removeUserResultObj] = useRemoveUserMutation();
 
   useEffect(() => {
     const {id} = params;
@@ -143,15 +139,6 @@ export const TeamDetailPage = () => {
     }
   }, [team, leaveTeamResultObj]);
 
-  useEffect(() => {
-    if (removeUserResultObj.isSuccess) {
-      setSelectedUser(undefined);
-      setIsDeletingUser(false);
-      toast('User has been removed from the team!');
-      teamTrigger(team?._id);
-    }
-  }, [removeUserResultObj, team]);
-
   return (
     <div className="p-4">
       {team ? (
@@ -167,13 +154,6 @@ export const TeamDetailPage = () => {
             }
             rightActions={
               <>
-                <DefaultButton
-                  active={!teamTrigger.isLoading}
-                  extraCss="bg-slate-600 mr-3"
-                  icon={<HiRefresh className="default-tag--icon" /> }
-                  label="Refresh"
-                  onClick={() => teamTrigger(team._id)}
-                />
                 <DefaultButton
                   active
                   icon={<HiPencilAlt className="default-tag--icon"/>}
@@ -266,28 +246,14 @@ export const TeamDetailPage = () => {
                             />
                           </>
                         ) : (
-                          <>
-                            <DefaultButton
-                              active
-                              extraCss="mr-2"
-                              icon={<HiUserCircle className="default-tag--icon" />}
-                              label="User Details"
-                              onClick={() => {
-                                setSelectedUser(member);
-                                setShowUserInfoModal(true);
-                              }}
-                            />
-                            <DefaultButton
-                              active
-                              buttonSize="small"
-                              icon={<HiCog className="default-tag--icon"/>}
-                              label="Remove"
-                              onClick={() => {
-                                setSelectedUser(member);
-                                setIsDeletingUser(true);
-                              }}
-                            />
-                          </>
+                          <DefaultButton
+                            active
+                            icon={<HiCog className="default-tag--icon"/>}
+                            label="Remove"
+                            onClick={() => {
+                              setSelectedUser(member);
+                            }}
+                          />
                         )}
                       </>
                     }
@@ -305,16 +271,6 @@ export const TeamDetailPage = () => {
                     extraCss="bg-amber-600 self-center"
                     icon={<HiMail className="default-tag--icon"/>}
                     labelText="Invited" size="small"
-                  />
-                  <DefaultButton
-                    active
-                    extraCss="ml-2"
-                    icon={<HiUserCircle className="default-tag--icon" />}
-                    label="User Details"
-                    onClick={() => {
-                      setSelectedUser(invite.invitedUser);
-                      setShowUserInfoModal(true);
-                    }}
                   />
                   <DefaultButton
                     active
@@ -394,16 +350,13 @@ export const TeamDetailPage = () => {
             }}
             visible={showDeleteModal}
           />
-          {(selectedUser && isDeletingUser) && (
+          {selectedUser && (
             <ActionDialogModal
               modalHeaderProps={{
                 title: `Remove user: ${selectedUser.firstName} ${selectedUser.lastName}`,
-                onClose: () => {
-                  setSelectedUser(undefined);
-                  setIsDeletingUser(false);
-                },
+                onClose: () => setSelectedUser(undefined),
               }}
-              actionInProgress={removeUserResultObj.isLoading}
+              actionInProgress={updateTeamResultObj.isLoading}
               dialogActions={
                 <>
                   <DefaultButton
@@ -411,10 +364,7 @@ export const TeamDetailPage = () => {
                     extraCss="bg-slate-700 mr-2"
                     icon={<HiArrowLeft className="default-tag--icon"/>}
                     label="No"
-                    onClick={() => {
-                      setSelectedUser(undefined);
-                      setIsDeletingUser(false);
-                    }}
+                    onClick={() => setSelectedUser(undefined)}
                   />
                   <DefaultButton
                     active
@@ -422,7 +372,10 @@ export const TeamDetailPage = () => {
                     icon={<HiTrash className="default-tag--icon"/>}
                     label="Yes"
                     onClick={() => {
-                      removeUserTrigger({_id: team._id, user: selectedUser._id});
+                      const teamMembers = team.teamMembers
+                        .filter((user) => user._id !== selectedUser._id)
+                        .map((user) => user._id);
+                      updateTeamTrigger({teamMembers, _id: team._id});
                     }}
                   />
                 </>
@@ -477,19 +430,6 @@ export const TeamDetailPage = () => {
             team={team}
             visible={showInviteModal}
           />
-          {selectedUser &&
-            <TeamInfoModal
-              modalHeaderProps={{
-                onClose: () => {
-                  setSelectedUser(undefined);
-                  setShowUserInfoModal(false);
-                },
-                title: `User Details: ${selectedUser.firstName} ${selectedUser.lastName}`
-              }}
-              user={selectedUser}
-              visible={showUserInfoModal}
-            />
-          }
         </>
       ) : (
         <div>{/* TODO: Fill in with empty / 404-content component */}</div>
