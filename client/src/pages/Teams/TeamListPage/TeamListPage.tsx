@@ -47,7 +47,7 @@ export const TeamListPage = () => {
     }
   }, [teamListData]);
 
-  const selectedTeam: FETeam | undefined = useMemo(() => {
+  const selectedTeam: undefined | FETeam = useMemo(() => {
     if (!selectedTeamRef) return undefined;
     return teams.find((el) => el._id === selectedTeamRef);
   }, [teams, selectedTeamRef]);
