@@ -46,7 +46,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{apiBaseUrl}}/{{commentResource}}?associatedIssue=\"\"",
+							"raw": "{{apiBaseUrl}}/{{commentResource}}?associatedIssue=632d339eb414c59dc12f76b4",
 							"host": [
 								"{{apiBaseUrl}}"
 							],
@@ -56,7 +56,7 @@
 							"query": [
 								{
 									"key": "associatedIssue",
-									"value": "\"\""
+									"value": "632d339eb414c59dc12f76b4"
 								}
 							]
 						}
@@ -794,7 +794,7 @@
 			"description": "# Read this\n\nThis collection is a basic flow to test the following workflow. It is assumed that the user is already logged in the JWT has been set as an environment variable.\n- Create a team\n- Create new project\n- Create an issue\n- Add a comment to the created issue"
 		},
 		{
-			"name": "Reported Problems",
+			"name": "Reported Problems & Help Content",
 			"item": [
 				{
 					"name": "Get Reported Problems",
@@ -834,6 +834,23 @@
 							],
 							"path": [
 								"{{reportedProblemResource}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Help Content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}/{{helpContentResource}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							],
+							"path": [
+								"{{helpContentResource}}"
 							]
 						}
 					},
