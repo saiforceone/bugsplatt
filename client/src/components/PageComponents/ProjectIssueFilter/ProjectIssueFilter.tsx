@@ -124,6 +124,7 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
         <DefaultButton
           active
           buttonSize="small"
+          extraCss="ml-2"
           label="Reset"
           icon={<HiRefresh className="default-tag--icon" />}
           onClick={onResetAction}
@@ -131,6 +132,7 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
         {typeof onNewIssue === 'function' && <DefaultButton
           active
           buttonSize="small"
+          extraCss="ml-2"
           label="New Issue"
           icon={<HiPlus className="default-tag--icon" />}
           onClick={onNewIssue}

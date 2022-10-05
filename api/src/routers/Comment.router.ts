@@ -65,18 +65,9 @@ export default class CommentRouter extends BaseRouter {
             : undefined;
 
           const data = associatedIssue
-            ? ((await this._controller
-                .getModel()
-                .find({
-                  associatedIssue,
-                })
-                .populate(POPULATE_ASSOC_ISSUE)
-                .populate(POPULATE_ASSOC_CREATED_BY)) as IComment[])
+            ? await this._controller.getDocuments({associatedIssue}) as IComment[]
             : await this._controller
-                .getModel()
-                .find()
-                .populate(POPULATE_ASSOC_ISSUE)
-                .populate(POPULATE_ASSOC_CREATED_BY) as IComment[];
+                .getDocuments({}) as IComment[];
 
           response.data = data;
           response.success = !!data.length;

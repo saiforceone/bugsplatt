@@ -76,15 +76,17 @@ abstract class BaseController {
    * @method getDocuments
    * @param {object} queryObject Defines the object to filter by
    * @param {number?} page Optionally defines the page of results to return. If not specified, implies all results returned
+   * @param {object} sortOptions
    * @description Given a query object and an optional page number, attempts to retrieve an array of matching documents
    * @returns {Promise<IBase[]>}
    */
-  public async getDocuments(queryObject: object, page?: number): Promise<IBase[]> {
+  public async getDocuments(queryObject: object, page?: number, sortOptions = {createdAt: 'desc'}): Promise<IBase[]> {
+
     if (!page) {
-      return this._model.find(queryObject);
+      return this._model.find(queryObject).sort(sortOptions);
     }
 
-    return this._model.find(queryObject).skip(page * DEFAULT_PAGE_LIMIT).limit(DEFAULT_PAGE_LIMIT);
+    return this._model.find(queryObject).sort(sortOptions).skip(page * DEFAULT_PAGE_LIMIT).limit(DEFAULT_PAGE_LIMIT);
   }
 
   // Update

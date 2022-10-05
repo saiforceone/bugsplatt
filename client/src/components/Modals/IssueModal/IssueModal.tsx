@@ -21,6 +21,8 @@ import {Select} from '../../BaseComponents/Select/Select';
 import {useUpdateIssueMutation} from '../../../data/rtkApis/issueApi';
 import {FE_ISSUE_STATUSES} from '../../../constants/appConstants';
 import {toast} from 'react-toastify';
+import {BiAlarmExclamation} from "react-icons/all";
+import {StackedLabel} from "../../BaseComponents/StackedLabel/StackedLabel";
 
 export interface IssueModalProps {
   issue: FEIssue;
@@ -105,6 +107,12 @@ export const IssueModal: FC<IssueModalProps> = ({
         <div className="issue-modal--tag-row">
           <Tag
             extraCss="issue-modal--tag"
+            icon={<HiCalendar className="default-tag--icon" />}
+            labelText={`Created: ${FormattingUtils.formatDate(issue.createdAt)}`}
+            size="small"
+          />
+          <Tag
+            extraCss="issue-modal--tag"
             icon={<HiFolder className="default-tag--icon" />}
             labelText={issue.associatedProject ? issue.associatedProject.projectName : 'Not Set'}
             size="small"
@@ -119,7 +127,7 @@ export const IssueModal: FC<IssueModalProps> = ({
             extraCss="issue-modal--tag"
             labelText={`Due: ${issue.expectedCloseDate ? FormattingUtils.formatDate(issue.expectedCloseDate) : 'Not Set'}`}
             size="small"
-            icon={<HiCalendar className="default-tag--icon" />}
+            icon={<BiAlarmExclamation className="default-tag--icon" />}
           />
           <Tag
             extraCss="issue-modal--tag"
@@ -130,7 +138,11 @@ export const IssueModal: FC<IssueModalProps> = ({
         </div>
         <div className="my-6">
           <h3 className="issue-modal--section-heading">Issue Details</h3>
-          <p className="issue-modal--description">{issue.description ? issue.description : "Issue details are not available"}</p>
+          <StackedLabel
+            label="Description / Details"
+            content={issue.description ? issue.description : "Issue details are not available"}
+          />
+          <StackedLabel label="Reported By" content={issue.createdBy.firstName} />
         </div>
         <div className="my-4 modal--row items-center">
           <Select
