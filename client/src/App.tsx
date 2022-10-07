@@ -18,6 +18,7 @@ import { TeamListPage } from "./pages/Teams/TeamListPage/TeamListPage";
 import { CurrentUserProvider } from "./Providers/CurrentUserProvider";
 import {useAuth} from './hooks/useAuth';
 import {fetchCurrentUserAction} from './data/actions/currentUserActions';
+import {NavBar} from "./components/Navigation/NavBar/NavBar";
 
 // TODO Fetch the current user using the token
 function App() {
@@ -40,19 +41,7 @@ function App() {
             element={
               <IsAuthenticated>
                 <>
-                  <div>
-                    <Link to="/app">Dashboard</Link>
-                    <br />
-                    <Link to="/app/projects">Projects</Link>
-                    <br />
-                    <Link to="/app/issues">Issues</Link>
-                    <br />
-                    <Link to="/app/teams">Teams</Link>
-                    <br />
-                    <Link to="/app/help">Help & Support</Link>
-                    <br />
-                    <Link to="/app/reported-problems">Reported Problems</Link>
-                  </div>
+                  <NavBar />
                   <Routes>
                     <Route element={<DashboardPage />} path="" />
                     <Route element={<ProjectListingPage />} path="projects" />
