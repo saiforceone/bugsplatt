@@ -1,9 +1,9 @@
 @import '../../../index.css';
 
 .project-filter {
-  @apply bg-slate-100 content-center flex flex-1 p-1;
+  @apply bg-slate-100 content-center flex flex-1 flex-col sm:flex-row sm:items-center p-1;
 }
 
 .project-filter--controls {
-  @apply flex flex-1 mr-2;
+  @apply flex flex-1 mr-2 grid grid-cols-1 sm:grid-cols-3;
 }

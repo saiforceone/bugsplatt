@@ -35,5 +35,9 @@
 }
 
 .default-actions-container {
-  @apply flex self-center;
+  @apply flex self-start sm:self-center;
+}
+
+.default-items-grid {
+  @apply grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 my-8;
 }

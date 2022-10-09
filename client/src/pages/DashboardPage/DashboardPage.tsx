@@ -20,6 +20,7 @@ import {
 } from "../../data/rtkApis/teamInviteApi";
 import { TeamInviteCard } from "../../components/BaseComponents/TeamInviteCard/TeamInviteCard";
 import { ActionDialogModal } from "../../components/Modals/ActionDialogModal/ActionDialogModal";
+import {IconButton} from "../../components/BaseComponents/IconButton/IconButton";
 
 // TODO: Fix overall layout
 
@@ -115,7 +116,7 @@ export const DashboardPage = () => {
     <div className="p-4">
       <PageHeader title="Dashboard" />
       <div>
-        {teamInvites.length && (
+        {!!teamInvites.length && (
           <>
             <SectionHeader
               actions={
@@ -150,19 +151,16 @@ export const DashboardPage = () => {
         <SectionHeader
           actions={
             <>
-              <DefaultButton
+              <IconButton
                 active
-                extraCss="mr-2"
                 icon={<HiRefresh className="default-icon" />}
-                label="Refresh"
                 onClick={() => projectsTrigger({})}
               />
-              <DefaultButton
+              <IconButton
                 active
                 icon={<IoMdOpen className="default-icon" />}
-                label="View All"
                 onClick={() => {
-                  navigate("/projects");
+                  navigate("/app/projects");
                 }}
               />
             </>
@@ -171,7 +169,7 @@ export const DashboardPage = () => {
           subtitle="Your most recent projects at a glance"
         />
         {recentProjects.length ? (
-          <div className="grid gap-3 grid-cols-3 my-8">
+          <div className="default-items-grid">
             {recentProjects.map((project) => (
               <ProjectCard
                 key={`project-${project._id}`}
@@ -200,17 +198,14 @@ export const DashboardPage = () => {
         <SectionHeader
           actions={
             <>
-              <DefaultButton
+              <IconButton
                 active
-                extraCss="mr-2"
                 icon={<HiRefresh className="default-icon" />}
-                label="Refresh"
                 onClick={() => issuesTrigger({})}
               />
-              <DefaultButton
+              <IconButton
                 active
                 icon={<IoMdOpen className="default-icon" />}
-                label="View All"
                 onClick={() => {
                   navigate("/issues");
                 }}

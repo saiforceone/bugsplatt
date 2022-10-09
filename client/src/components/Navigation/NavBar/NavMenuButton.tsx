@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Menu, Transition} from "@headlessui/react";
 import {HiExclamation, HiMenu, HiUserGroup} from "react-icons/hi";
 import {Link} from "react-router-dom";
-import {GoReport, IoRocket} from "react-icons/all";
+import {GoReport, IoRocket, MdDashboard} from "react-icons/all";
 import {MdHelpCenter} from "react-icons/md";
 
 export const NavMenuButton = () => {
@@ -24,6 +24,14 @@ export const NavMenuButton = () => {
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="px-1 py-1 ">
+            <div className="p-1">
+              <Menu.Item>
+                <Link className="flex items-center" to="/app">
+                  <MdDashboard className="mr-2" />
+                  Dashboard
+                </Link>
+              </Menu.Item>
+            </div>
             <div className="p-1">
               <Menu.Item>
                 <Link className="flex items-center" to="/app/projects">

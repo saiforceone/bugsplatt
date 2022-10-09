@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .section-header {
-  @apply content-center flex flex-1 flex-row my-3;
+  @apply content-center flex flex-1 flex-row border-b-2 border-slate-100 pb-4 my-3;
 }
 
 .section-header--content {
@@ -17,5 +17,5 @@
 }
 
 .section-header--actions {
-  @apply flex self-center;
+  @apply flex items-start my-4 sm:self-center sm:my-0;
 }

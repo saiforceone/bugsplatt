@@ -154,21 +154,21 @@ export const ProjectFilter: FC<ProjectFilterProps> = ({
           value={selectedUser}
         /> */}
         <ProjectFilterOption
-          extraCss="mr-1"
+          extraCss="mr-1 mb-2 sm:mb-0"
           label="Team"
           resetAction={onResetOption}
           onClick={() => onShowModal("team")}
           value={selectedTeam}
         />
         <ProjectFilterOption
-          extraCss="mr-1"
+          extraCss="mr-1 mb-2 sm:mb-0"
           label="Type"
           resetAction={onResetOption}
           onClick={() => onShowModal("project-type")}
           value={selectedProjType}
         />
         <ProjectFilterOption
-          extraCss="mr-1"
+          extraCss="mr-1 mb-2 sm:mb-0"
           label="Date"
           onClick={() => setDateSelModalVisible(true)}
           resetAction={() => {}} 

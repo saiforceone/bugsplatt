@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiPlus, HiRefresh } from "react-icons/hi";
-import { DefaultButton } from "../../../components/BaseComponents/DefaultButton/DefaultButton";
 import { PageHeader } from "../../../components/Navigation/PageHeader/PageHeader";
 import {
   useAddProjectMutation,
@@ -22,6 +21,7 @@ import { ProjectFilter } from "../../../components/PageComponents/ProjectFilter/
 import { NoResultCard } from "../../../components/BaseComponents/NoResultCard/NoResultCard";
 import { SectionHeader } from "../../../components/PageComponents/SectionHeader/SectionHeader";
 import ProjectUtils from '../../../utils/ProjectUtils';
+import {IconButton} from "../../../components/BaseComponents/IconButton/IconButton";
 
 export const ProjectListingPage = () => {
   const navigate = useNavigate();
@@ -96,11 +96,9 @@ export const ProjectListingPage = () => {
         title="Projects"
         rightActions={
           <>
-            <DefaultButton
+            <IconButton
               active
-              buttonSize="medium"
               icon={<HiPlus className="default-icon" />}
-              label="New Project"
               onClick={() => setShowNewProjModal(true)}
             />
           </>
@@ -110,9 +108,8 @@ export const ProjectListingPage = () => {
         title={`${projects.length} Project(s) found`}
         actions={
           <>
-            <DefaultButton
+            <IconButton
               active
-              label="Refresh Projects"
               icon={
                 <HiRefresh className="default-icon" />
               }
@@ -130,7 +127,7 @@ export const ProjectListingPage = () => {
       />
       <div>
         {projects.length ? (
-          <div className="grid gap-3 grid-cols-3 my-8">
+          <div className="default-items-grid">
             {projects.map((proj) => (
               <ProjectCard
                 key={`project-${proj._id}`}
