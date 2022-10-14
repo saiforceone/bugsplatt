@@ -122,24 +122,34 @@ export const IssueDetailPage = () => {
             }
             rightActions={
               <>
-                <DefaultButton
+                <IconButton
                   active
-                  icon={<HiPencilAlt className="default-tag--icon"/>}
-                  label="Edit Issue"
+                  icon={<HiPencilAlt className="default-icon"/>}
                   onClick={() => setShowEditIssue(true)}
                 />
-                <DefaultButton
+                <IconButton
                   active
-                  extraCss="ml-3 bg-red-600"
-                  icon={<HiTrash className="default-tag--icon"/>}
-                  label="Delete Issue"
+                  isCloseButton
+                  icon={<HiTrash className="default-icon"/>}
                   onClick={() => setShowDeleteConfirm(true)}
                 />
               </>
             }
             title={`Issue: ${issue.title}`}
-            titleLabel={<Tag extraCss="ml-2 self-center" icon={<HiChevronDoubleUp className="default-tag--icon"/>}
-                             labelText={ProjectUtils.getLabelForIssuePriority(issue.priority)} size="small"/>}
+            titleLabel={
+              <Tag
+                extraCss="ml-2 self-center hidden md:flex"
+                icon={<HiChevronDoubleUp className="default-tag--icon"/>}
+                labelText={ProjectUtils.getLabelForIssuePriority(issue.priority)}
+                size="small"
+              />
+            }
+          />
+          <Tag
+            extraCss="self-center my-4 md:hidden"
+            icon={<HiChevronDoubleUp className="default-tag--icon"/>}
+            labelText={ProjectUtils.getLabelForIssuePriority(issue.priority)}
+            size="small"
           />
           <p>{issue.description}</p>
           <SectionHeader
@@ -174,17 +184,14 @@ export const IssueDetailPage = () => {
           <SectionHeader
             actions={
               <>
-                <DefaultButton
+                <IconButton
                   active
-                  extraCss="mr-2"
-                  icon={<HiPlus className="default-tag--icon"/>}
-                  label="Add Comment"
+                  icon={<HiPlus className="default-icon"/>}
                   onClick={() => setShowAddComment(true)}
                 />
-                <DefaultButton
+                <IconButton
                   active
-                  icon={<HiRefresh className="default-tag--icon"/>}
-                  label="Refresh Comments"
+                  icon={<HiRefresh className="default-icon"/>}
                   onClick={() => commentsTrigger(issue._id)}
                 />
               </>

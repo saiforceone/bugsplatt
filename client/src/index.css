@@ -7,7 +7,7 @@
 */
 
 .default-icon {
-  @apply text-white h-7 w-7;
+  @apply text-white h-5 w-5 self-center;
 }
 
 .default-tag--icon {

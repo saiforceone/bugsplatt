@@ -56,7 +56,7 @@ export const IssueModal: FC<IssueModalProps> = ({
   }, [issue]);
 
   const navigateToIssue = useCallback(() => {
-    navigate(`issues/${issue._id}`);
+    navigate(`/app/issues/${issue._id}`);
   }, [issue]);
 
   useEffect(() => {

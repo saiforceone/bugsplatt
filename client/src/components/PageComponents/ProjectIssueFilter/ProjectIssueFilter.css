@@ -1,7 +1,7 @@
 @import '../../../index.css';
 
 .project-issue-filter {
-  @apply flex content-center justify-between mb-2;
+  @apply bg-slate-100 content-center flex flex-1 flex-col sm:flex-row sm:items-center p-1 md:justify-between;
 }
 
 .project-filter--issue-count {
@@ -13,5 +13,5 @@
 }
 
 .project-issue--actions {
-  @apply flex ml-2 self-center;
+  @apply flex ml-2 self-center md:justify-self-end;
 }

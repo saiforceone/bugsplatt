@@ -44,9 +44,9 @@ export default class IssueRouter extends BaseRouter {
           data.createdBy = req._user!._id;
           if (!data.assignedTo) data.assignedTo = req._user!._id;
           if (!data.status) data.status = 'active';
-          response.data = (await this._controller.createDocument(
+          response.data = await this._controller.createDocument(
             data
-          )) as object;
+          ) as object;
           response.success = !!response.data;
           return res
             .status(
@@ -102,15 +102,16 @@ export default class IssueRouter extends BaseRouter {
           associatedTeam: {$in: [userTeams.map(team => team._id)]}
         }) as IProject[];
 
-        filterObj['associatedProject'] = {$in: [assocProjects.map(project => project._id)]}
+        filterObj['associatedProject'] = {$in: assocProjects.map(project => project._id)}
 
-        const data = await this._controller.getModel().find(filterObj) as IIssue[];
+        const data = await this._controller.getDocuments(filterObj) as IIssue[];
 
         response.data = data;
         response.success = data.length > 0;
         return res.status(ROUTER_RESPONSE_CODES.RESOURCE_FOUND).json(response);
 
       } catch (e) {
+          console.log(e);
         response.error = (e as Error).message;
         return res.status(ROUTER_RESPONSE_CODES.EXCEPTION).json(response);
       }

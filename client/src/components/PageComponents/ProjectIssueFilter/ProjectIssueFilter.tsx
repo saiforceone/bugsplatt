@@ -6,6 +6,7 @@ import { ModalHeaderProps } from "../../Modals/ModalHeader/ModalHeader";
 import { SelectableOptionModal } from "../../Modals/SelectableOptionModal/SelectableOptionModal";
 import { ProjectFilterOption } from "../ProjectFilterOption/ProjectFilterOption";
 import "./ProjectIssueFilter.css";
+import {IconButton} from "../../BaseComponents/IconButton/IconButton";
 
 interface ProjectIssueFilterProps {
   projectPriorities: SelectableOption[];
@@ -114,27 +115,22 @@ export const ProjectIssueFilter: FC<ProjectIssueFilterProps> = ({
         />
       </div>
       <div className="project-issue--actions">
-        <DefaultButton
+        <IconButton
           active
           buttonSize="small"
-          label="Apply"
-          icon={<HiCheck className="default-tag--icon" />}
+          icon={<HiCheck className="default-icon" />}
           onClick={onApplyFiler}
         />
-        <DefaultButton
+        <IconButton
           active
           buttonSize="small"
-          extraCss="ml-2"
-          label="Reset"
-          icon={<HiRefresh className="default-tag--icon" />}
+          icon={<HiRefresh className="default-icon" />}
           onClick={onResetAction}
         />
-        {typeof onNewIssue === 'function' && <DefaultButton
+        {typeof onNewIssue === 'function' && <IconButton
           active
           buttonSize="small"
-          extraCss="ml-2"
-          label="New Issue"
-          icon={<HiPlus className="default-tag--icon" />}
+          icon={<HiPlus className="default-icon" />}
           onClick={onNewIssue}
         />}
       </div>

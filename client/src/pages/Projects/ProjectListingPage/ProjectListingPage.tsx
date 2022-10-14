@@ -86,7 +86,6 @@ export const ProjectListingPage = () => {
   }, [projects, selectedProjRef]);
 
   const onApplyFilter = useCallback((filterObj?: FEProjectSearchCriteria) => {
-    console.log('onApplyFilter with filterObj: ', filterObj);
     filterObj ? projTrigger(filterObj) : projTrigger({});
   }, []);
 
